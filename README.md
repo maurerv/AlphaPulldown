@@ -1,17 +1,20 @@
 # AlphaPulldown
 
-AlphaPulldown is an [AlphaFold](https://github.com/google-deepmind/alphafold) implementation designed for customizable high-throughput screening of protein-protein interactions.
+AlphaPulldown is an implementation of [AlphaFold](https://github.com/google-deepmind/alphafold), designed for customizable high-throughput screening of protein-protein interactions. 
 
-It provides the following features:
-* **Сonvenient command line interface**: Prediction pipeline requires only input fasta file with all proteins of interest and description file of protein combinations to predict.
-* **Separated CPU and GPU stages**: AlphaPulldown splits MSA and features generation step that requires only CPU from GPU-intense model prediction.
-* **No MSA recalculation**: The same CPU stage-generated features can be reused for all GPU model predictions which immensly speeds up the process of screening.
-* **Protein fragments modeling**: AlphaPulldown allows to add numbers of residues that correspond to the fragment you want to model (e.g. Protein1,8-142). In this case there is no need to recalculate CPU stage, pipline works with the features generated from the full-length protien sequence.
-* **Custom templates**: Instead of deafult pdb search for templates you can provide any custom pdf/cif files.
-* **Results Table**: To summarize the results in one CSV table with AlphaFold scores, pDockQ and mpDockQ, PI-score, and various physical parameters of the interface
-* **Interactive Jupyter notebook**: For interactive analysis of the resulting PAE plots and models in one window.
+It offers the following features:
+
+* **Сonvenient command line interface**: The prediction requires only an input _fasta file_ with all proteins of interest and a _description file_ of protein combinations to predict
+* **Optimized CPU/GPU usage**: AlphaPulldown splits the AlphaFold pipeline into two parts: the MSA and feature generation step for every protein sequence, which requires only CPU, and the subsequent step of GPU-intensive model prediction.
+* **No MSA recalculation**: The same CPU-stage generated features can be reused for numerous model predictions, significantly speeding up the screening process.
+* **Protein fragments modeling**: AlphaPulldown allows indicating a region of protein you want to model (e.g., ProteinA,8-142). In this case, there is no need to recalculate the CPU stage; the pipeline works with the features generated from the full-length protein sequence.
+* **Custom templates**: Instead of the default PDB search for templates, you can provide any custom PDF/CIF files.
+* **Results Table**: Provides a summary of all predicted models results in one CSV table with AlphaFold scores, pDockQ and mpDockQ, PI-score, and various physical parameters of the interface.
+* **Interactive Jupyter Notebook**: Provides interactive analysis of the resulting PAE plots and models in one window.
 * **_NEW:_** Integrates cross-link mass spec data with AlphaFold predictions via [AlphaLink2](https://github.com/Rappsilber-Laboratory/AlphaLink2/tree/main) models
 * **_NEW:_** Integrates experimental models into AlphaFold pipeline using custom multimeric databases
+
+Please refer to the manual to explore all the possibilities of AlphaPulludown.
 
 ## Pre-installation
 Check if you have downloaded necessary parameters and databases (e.g. BFD, MGnify etc.) as instructed in [AlphFold's documentation](https://github.com/deepmind/alphafold). You should have a directory like below:
