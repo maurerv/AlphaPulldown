@@ -14,7 +14,7 @@ It offers the following features:
 * **_NEW:_** Integrates cross-link mass spec data with AlphaFold predictions via [AlphaLink2](https://github.com/Rappsilber-Laboratory/AlphaLink2/tree/main) models
 * **_NEW:_** Integrates experimental models into AlphaFold pipeline using custom multimeric databases
 
-For a detailed overview of AlphaPulludown's capabilities, please refer to the manual.
+Please refer to the [manual]( ./manuals/AlphaPulldown_manual.md) for a detailed overview of AlphaPulludown's capabilities.
 
 ## Pre-installation
 Check if you have downloaded necessary parameters and databases (e.g. BFD, MGnify etc.) as instructed in [AlphFold's documentation](https://github.com/deepmind/alphafold). You should have a directory like below:
