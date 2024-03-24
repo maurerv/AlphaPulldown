@@ -6,7 +6,7 @@ It offers the following features:
 
 * **Сonvenient command line interface**: The prediction requires only an input _fasta file_ with all proteins of interest and a _description file_ of protein combinations to predict
 * **Optimized CPU/GPU usage**: AlphaPulldown splits the AlphaFold pipeline into two parts: the MSA and feature generation step for every protein sequence, which requires only CPU, and the subsequent step of GPU-intensive model prediction.
-* **MMseqs2 and ColabFold databases**: To speed up features and MSA prediction, AlphaPuldown supports prediction approaches implemented by ColabFold.
+* **MMseqs2 and ColabFold databases**: To speed up features and MSA prediction, AlphaPuldown supports prediction approaches implemented by [ColabFold](https://github.com/sokrypton/ColabFold).
 * **No MSA recalculation**: The same CPU-stage generated features can be reused for numerous model predictions, significantly speeding up the screening process.
 * **Protein fragments modeling**: AlphaPulldown allows indicating a region of protein you want to model (e.g., ProteinA,8-142). In this case, there is no need to recalculate the CPU stage; the pipeline works with the features generated from the full-length protein sequence.
 * **Custom templates**: Instead of the default PDB search for templates, you can provide any custom PDF/CIF files.
