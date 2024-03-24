@@ -6,7 +6,9 @@ AlphaPulldown is an implementation of [AlphaFold](https://github.com/google-deep
 
 The original AlphaFold-Multimer end-to-end protein complex prediction pipeline may be split into two main steps:
 
-1) **Features generation** At this step for every protein queried protein sequence Alphafold predicts 
+1) **Features and MSA**: At this step for every queried protein sequence AlphaFold searches for preinstalled databases using HMMER and calculates multiple sequence alignment for all finden homologues. Additionally, AlphaFold searches for homolog structures that will be used as templates for features generation. This step requires only CPU to run.
+
+2) **Structuer prediciton**: TBD
 
 installation [link]
 
