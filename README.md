@@ -9,11 +9,10 @@ It offers the following features:
 * **MMseqs2 and ColabFold databases**: To speed up features and MSA prediction, AlphaPuldown supports prediction approaches implemented by [ColabFold](https://github.com/sokrypton/ColabFold).
 * **No MSA recalculation**: The same CPU-stage generated features can be reused for numerous model predictions, significantly speeding up the screening process.
 * **Protein fragments modeling**: AlphaPulldown allows indicating a region of protein you want to model (e.g., ProteinA,8-142). In this case, there is no need to recalculate the CPU stage; the pipeline works with the features generated from the full-length protein sequence.
-* **Custom templates**: Instead of the default PDB search for templates, you can provide any custom PDF/CIF files.
 * **Results Table**: Provides a summary of all predicted models results in one CSV table with AlphaFold scores, pDockQ and mpDockQ, PI-score, and various physical parameters of the interface.
 * **Interactive Jupyter Notebook**: Provides interactive analysis of the resulting PAE plots and models in one window.
-* **_NEW:_** Integrates cross-link mass spec data with AlphaFold predictions via [AlphaLink2](https://github.com/Rappsilber-Laboratory/AlphaLink2/tree/main) models
-* **_NEW:_** Integrates experimental models into AlphaFold pipeline using custom multimeric databases
+* **_NEW:_** Integrates cross-link mass spec data with AlphaFold predictions via [AlphaLink2](https://github.com/Rappsilber-Laboratory/AlphaLink2/tree/main) models.
+* **_NEW:_** Integrates experimental models into AlphaFold pipeline using custom multimeric databases.
 
 Please refer to the [manual]( ./manuals/AlphaPulldown_manual.md) for a detailed overview of AlphaPulludown's capabilities.
 
