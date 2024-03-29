@@ -1,9 +1,26 @@
 # AlphaPulldown Manual
 
-[add version]<br>
-_Note: AlphaPulldown fully ***maintains backward compatibility*** with input files and scripts from versions 1.x. For instructions on using older files and scripts, please refer to the sections marked "Older Version."_
+`[add version]`<br>
+> __Note__: AlphaPulldown fully **maintains backward compatibility** with input files and scripts from versions 1.x. For instructions on using older files and scripts, please refer to the sections marked "Older Version."``
+## About AlphaPulldown
 
-## What is AlphaPulldown?
+<details>
+
+<summary><b>
+ Contents
+</b></summary>
+
+### You can add a header
+
+You can add text within a collapsed section. 
+
+You can add an image or a code block, too.
+
+```ruby
+   puts "Hello World"
+```
+
+</details>
 
 AlphaPulldown is an implementation of [AlphaFold-Multimer](https://github.com/google-deepmind/alphafold) designed for customizable high-throughput screening of protein-protein interactions. Besides, AlphaPulldown provides additional customizations of the AlphaFold which include custom structural templates, MMseqs2 multiple sequence alignment (MSA), protein fragment predictions, and implementation of cross-link mass spec data using [AlphaLink2](https://github.com/Rappsilber-Laboratory/AlphaLink2/tree/main), [add Integrates experimental models into AlphaFold pipeline using custom multimeric databases].
  
@@ -11,15 +28,19 @@ The original AlphaFold-Multimer end-to-end protein complex prediction pipeline m
 
 Let's take a closer look at the features AlphaPuldown has on top of the Alphafold:
 
-1) **Features and MSA**: At this step for every queried protein sequence AlphaFold searches for preinstalled databases using HMMER and calculates multiple sequence alignment (MSA) for all finden homologues. Additionally, AlphaFold searches for homolog structures that will be used as templates for features generation. This step requires only CPU to run.<br>
 
-   a) To speed up the search process MMSeq2 instead of HHMER can be used
-   b) There are a few steps that can be customized at this thing: ${\color{red} Welcome}$
+1) **Features and MSA**: At this step for every queried protein sequence AlphaFold searches for preinstalled databases using HMMER and calculates multiple sequence alignment (MSA) for all finden homologues. Additionally, AlphaFold searches for homolog structures that will be used as templates for features generation. This step requires only CPU to run.<be>
+There are a few customizable options for this step:
+
+   * To speed up the search process MMSeq2 ${\color{red} [add link]}$ instead of HHMER can be used.<br>
+   * Use custom MSA ${\color{red} [add link]}$.
+   * _NEW:_ Use a custom structural template ${\color{red} [add link]}$. Including true multimer.
   
 
-3) **Structre prediciton**: TBD
-
-## Contents
+3) **Structure prediction**: At this step, the AlaphaFold neural network runs and produces the final protein structure, which requires GPU computational powers.
+   Here AlphaPulldown allows to customize: 
+   * Depth of msa
+   * Crosslinking data implementation with AlphaLink. 
 
 
 installation [link]
