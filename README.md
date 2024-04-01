@@ -1,6 +1,8 @@
 # AlphaPulldown
 
-AlphaPulldown is an implementation of [AlphaFold](https://github.com/google-deepmind/alphafold), designed for customizable high-throughput screening of protein-protein interactions. 
+AlphaPulldown is an implementation of [AlphaFold](https://github.com/google-deepmind/alphafold), designed for customizable high-throughput screening of protein-protein interactions.<br>
+<br>
+![demo1](./manuals/AP_pipeline.png)
 
 It offers the following features:
 
