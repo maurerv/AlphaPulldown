@@ -43,9 +43,8 @@ There are a few customizable options for this step:
 For the standard MSA and features calculation, AlphaPulldow requires Genetic databases. Check if you have downloaded necessary parameters and databases (e.g. BFD, MGnify etc.) as instructed in [AlphFold's documentation](https://github.com/deepmind/alphafold). You should have a directory like below:
 
 <details>
-
 <summary><b>
- Databases directory
+Databases directory
 </b></summary>
 
  ```
@@ -153,9 +152,23 @@ Use the following instructions:
     
     
 </details>
+<br>
 
 ## 1. Compute multiple sequence alignment (MSA) and template features (CPU stage)
-### 1. Basic run
+### 1.1. Basic run
+At this step you need to provide [protein FASTA format](https://www.ncbi.nlm.nih.gov/WebSub/html/help/protein.html) file with all protein seuences that will be used for compexes prediction.
+Then run script `create_individual_features.py` with as following:
+
+```bash
+source activate AlphaPulldown
+create_individual_features.py \
+  --fasta_paths=sequences.fasta \
+  --data_dir=<path to alphafold databases> \
+  --output_dir=<dir to save the output objects> \ 
+  --max_template_date=<any date you want, format like: 2050-01-01> \
+```
+### 1.2. FLAGS 
+### 1.3. Run using MMseqs2 and ColabFold databases (faster):
 
 ## 2. Predict structures (GPU stage)
 
