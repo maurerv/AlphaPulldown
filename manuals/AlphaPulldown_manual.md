@@ -82,6 +82,43 @@ For the standard MSA and features calculation, AlphaPulldow requires Genetic dat
 > [!TIP] 
 > Since local installation of all genetic databases is space-consuming, you can alternatively use the remotely-run MMseqs2 and ColabFold databases ${\color{red} [add\ link]}$.
 
+### Create Anaconda environment
+
+**Firstly**, install [Anaconda](https://www.anaconda.com/) and create AlphaPulldown environment, gathering necessary dependencies 
+```bash
+conda create -n AlphaPulldown -c omnia -c bioconda -c conda-forge python==3.10 openmm==8.0 pdbfixer==1.9 kalign2 cctbx-base pytest importlib_metadata hhsuite
+```
+
+**Optionally**, if you do not have it yet on your system, install [HMMER](http://hmmer.org/documentation.html) from Anaconda
+```bash
+source activate AlphaPulldown
+conda install -c bioconda hmmer
+```
+This usually works, but on some compute systems users may wish to use other versions or optimized builds of already installed HMMER and HH-suite.
+
+### Installation using pip
+
+Activate the AlphaPulldown environment and install AlphaPulldown
+```bash
+source activate AlphaPulldown
+
+python3 -m pip install alphapulldown==1.0.4
+pip install jax==0.4.23 jaxlib==0.4.23+cuda11.cudnn86 -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
+```
+
+**For older versions of AlphaFold**: 
+If you haven't updated your databases according to the requirements of AlphaFold 2.3.0, you can still use AlphaPulldown with your older version of AlphaFold database. Please follow the installation instructions on the [dedicated branch](https://github.com/KosinskiLab/AlphaPulldown/tree/AlphaFold-2.2.0)
+
+## Installation for developers
+Use the following instructions:
+
+<details>
+
+<summary><b>
+ Developers
+</b></summary>
+</details>
+
 ## Compute multiple sequence alignment (MSA) and template features (CPU stage)
 TBD
 ## Predict structures (GPU stage)
