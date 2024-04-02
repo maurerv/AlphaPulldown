@@ -35,6 +35,7 @@ There are a few customizable options for this step:
 3) **Results analysis**: The results for all predicted models could be systematized using one of the following two options:
    * Table that contains various scores and physical parameters of protein complexes' interaction.
    * Jupyter notebook with interactive 3D models and PAE plots.
+<br>
 
 ## Installation
 
@@ -105,11 +106,11 @@ source activate AlphaPulldown
 python3 -m pip install alphapulldown==1.0.4
 pip install jax==0.4.23 jaxlib==0.4.23+cuda11.cudnn86 -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
 ```
+>[!NOTE]
+>**For older versions of AlphaFold**: 
+>If you haven't updated your databases according to the requirements of AlphaFold 2.3.0, you can still use AlphaPulldown with your older version of AlphaFold database. Please follow the installation instructions on the [dedicated branch](https://github.com/KosinskiLab/AlphaPulldown/tree/AlphaFold-2.2.0).
 
-**For older versions of AlphaFold**: 
-If you haven't updated your databases according to the requirements of AlphaFold 2.3.0, you can still use AlphaPulldown with your older version of AlphaFold database. Please follow the installation instructions on the [dedicated branch](https://github.com/KosinskiLab/AlphaPulldown/tree/AlphaFold-2.2.0)
-
-## Installation for developers
+### Installation for developers
 Use the following instructions:
 
 <details>
@@ -117,13 +118,48 @@ Use the following instructions:
 <summary><b>
  Developers
 </b></summary>
+
+1. Clone the GitHub repo
+    ```
+    git clone --recurse-submodules git@github.com:KosinskiLab/AlphaPulldown.git
+    cd AlphaPulldown 
+    git submodule init
+    git submodule update 
+    ```
+1. Create the Conda environment as described in [https://github.com/KosinskiLab/AlphaPulldown/blob/installation-intro-update/README.md#create-anaconda-environment](https://github.com/KosinskiLab/AlphaPulldown/tree/main?tab=readme-ov-file#create-anaconda-environment) 
+1. Add AlphaPulldown package and its submodules to the Conda environment
+    ```
+    source activate AlphaPulldown
+    cd AlphaPulldown
+    pip install .
+    pip install -e alphapulldown/ColabFold --no-deps
+    pip install -e alphafold --no-deps
+    ```
+    You need to do it only once.
+1. When you want to develop, activate the environment, modify files, and the changes should be automatically recognized.
+1. Test your package during development using tests in ```test/```, e.g.:
+   ```
+   pip install pytest
+   pytest -s test/
+   pytest -s test/test_predictions_slurm.py
+   pytest -s test/test_features_with_templates.py::TestCreateIndividualFeaturesWithTemplates::test_1a_run_features_generation
+   ```
+1. Before pushing to the remote or submitting pull request
+    ```
+    pip install .
+    pytest -s test/
+    ```
+    to install the package and test. Pytest for predictions only work if slurm is available. Check the created log files in your current directory.
+    
+    
 </details>
 
-## Compute multiple sequence alignment (MSA) and template features (CPU stage)
-TBD
-## Predict structures (GPU stage)
+## 1. Compute multiple sequence alignment (MSA) and template features (CPU stage)
+### 1. Basic run
 
-## Analysis and Visualization
+## 2. Predict structures (GPU stage)
+
+## 3. Analysis and Visualization
 ### Results table
 ### Jupyter notebook
 
