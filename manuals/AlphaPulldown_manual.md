@@ -5,9 +5,14 @@
 ## About AlphaPulldown
 
 AlphaPulldown is an implementation of [AlphaFold-Multimer](https://github.com/google-deepmind/alphafold) designed for customizable high-throughput screening of protein-protein interactions. Besides, AlphaPulldown provides additional customizations of the AlphaFold which include custom structural templates, MMseqs2 multiple sequence alignment (MSA), protein fragment predictions, and implementation of cross-link mass spec data using [AlphaLink2](https://github.com/Rappsilber-Laboratory/AlphaLink2/tree/main), [add Integrates experimental models into AlphaFold pipeline using custom multimeric databases].
-![demo1](../manuals/AP_pipeline.png)
+![AP_pipeline](../manuals/AP_pipeline.png)
  
 The original AlphaFold-Multimer end-to-end protein complex prediction pipeline may be split into two main steps: **(1)** the databases search step that generates Features and MSA and **(2)** protein structure prediction itself. AlphaPluldown executes these steps as independent scripts which is more suitable for modeling a large number of protein complexes. Additionally, **(3)** AlphaPluldown provides two options for the downstream analysis of the resulting protein models.
+
+
+![AP_modes](../manuals/AP_modes.png)
+AlphaPulldown operates in four different modes, each suitable for a particular task: `custom` - user manually enters all combinations of proteins to model, `all_vs_all` - all combinations of lines from the input file are predicted, `pulldown` - every protein is precited in combination with the "bait", `homo-oligomer` models proteins homo-oligomers.
+
 
 Let's take a closer look at the AlphaPuldown pipeline:
 
