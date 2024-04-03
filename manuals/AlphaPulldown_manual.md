@@ -185,7 +185,69 @@ The result of ```create_individual_features.py``` run is pickle format features 
 
 Go to the next step [2.1. Basic run](#2-predict-structures-gpu-stage) 
 
-### 1.2. FLAGS 
+### 1.2. FLAGS
+
+Features calculation script ```create_individual_features.py``` have several optional FLAGS:
+* `--save_msa_files`
+   By default is **False** to save storage stage but can be changed into **True**. If it is set to ```True```, the programme will 
+   create individual folder for each protein. The output directory will look like:
+   
+   ```
+    output_dir
+         |- protein_A.pkl
+         |- protein_A
+               |- uniref90_hits.sto
+               |- pdb_hits.sto
+               |- etc.
+         |- protein_B.pkl
+         |- protein_B
+               |- uniref90_hits.sto
+               |- pdb_hits.sto
+               |- etc.
+   ```
+    
+    
+   If ```save_msa_files=False``` then the ```output_dir``` will look like:
+   
+   ```
+    output_dir
+         |- protein_A.pkl
+         |- protein_B.pkl
+   ```
+
+ 
+
+ * `--use_precomputed_msas`
+   Default value is ```False```. However, if you have already had msa files for your proteins, please set the parameter to be True and arrange your msa files in the format as below:
+   
+   ```
+    example_directory
+         |- protein_A 
+               |- uniref90_hits.sto
+               |- pdb_hits.sto
+               |-***.a3m
+               |- etc
+         |- protein_B
+               |- ***.sto
+               |- etc
+   ```
+   
+   Then, in the command line, set the ```output_dir=/path/to/example_directory```
+
+* `--skip_existing`
+
+  Default is ```False``` but if you have run the 1st step already for some proteins and now add new proteins to the list, you can change ```skip_existing``` to ```True``` in the
+  command line to avoid rerunning the same procedure for the previously calculated proteins.
+
+* `--seq_index`
+   
+   Default is `None` and the programme will run predictions one by one in the given files. However, you can set ```seq_index``` to 
+   different number if you wish to run an array of jobs in parallel then the programme will only run the corresponding job specified by the ```seq_index```. e.g. the programme only calculate features for the 1st protein in your fasta file if ```seq_index``` is set to be 1. See also the Slurm sbatch script above for example how to use it for parallel execution.
+   
+   :exclamation: ```seq_index``` starts from 1. 
+
+
+  
 ### 1.3. Run using MMseqs2 and ColabFold databases (faster):
 
 ## 2. Predict structures (GPU stage)
