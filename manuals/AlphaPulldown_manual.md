@@ -183,7 +183,7 @@ The result of ```create_individual_features.py``` run is pickle format features 
 > [!NOTE]
 > The name of the pickles will be the same as the descriptions of the sequences  in fasta files (e.g. `>sequence_name_A` in the fasta file will yield `sequence_name_A.pkl`). Besides, symbol such as ```| : ; #```, after ```>``` will be replaced with ```_```. 
 
-Go to the next step [2.1. Basic running](#2-predict-structures-gpu-stage) 
+Go to the next step [2.1. Basic run](#2-predict-structures-gpu-stage) 
 
 ### 1.2. FLAGS 
 ### 1.3. Run using MMseqs2 and ColabFold databases (faster):
