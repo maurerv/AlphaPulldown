@@ -251,9 +251,9 @@ Features calculation script ```create_individual_features.py``` have several opt
 
  <details>
    
-   <summary><b>
+   <summary>
    Flags related to TrueMultimer mode:
-   </b></summary>
+   </summary>
 
 * `--path_to_mmt`
   
@@ -372,8 +372,42 @@ output_dir
     |-protein_C.pkl
     ...
 ```
-1.4 Run with custom templates
 
+### 1.4 Run with custom templates
+Instead of using the default search through PDB database for structural templates, you can provide a custom database. AlphaPulldown supports True multimer templates please refer to ${\color{red} [add\ link]}$ for more details. 
+
+Create directories named "fastas" and "templates" and put the sequences and pdb/cif files in the corresponding directories.
+Then, create a text file with a description for generating features (description.csv).
+
+**Please note**, the first column must be an exact copy of the protein description from your fasta files. Please consider shortening them in fasta files using your favorite text editor for convenience. These names will be used to generate pickle files with monomeric features!
+The description.csv for the NS1-P85B complex should look like:
+
+```
+>sp|P03496|NS1_I34A1,3L4Q.cif,A
+>sp|P23726|P85B_BOVIN,3L4Q.cif,C
+```
+
+In this example we refer to the NS1 protein as chain A and to the P85B protein as chain C in multimeric template 3L4Q.cif.
+
+**Please note**, that your template will be renamed to a PDB code taken from *_entry_id*. If you use a *.pdb file instead of *.cif, AlphaPulldown will first try to parse the PDB code from the file. Then it will check if the filename is 4-letter long. If it is not, it will generate a random 4-letter code and use it as the PDB code.
+
+Now run:
+
+```bash
+  create_individual_features.py \
+    --description_file=description.csv \
+    --fasta_paths=fastas/P03496.fasta,fastas/P23726.fasta \
+    --path_to_mmt=templates/ \
+    --data_dir=/scratch/AlphaFold_DBs/2.3.2/ \
+    --save_msa_files=True \
+    --output_dir=features \
+    --use_precomputed_msas=True \
+    --max_template_date=2050-01-01 \
+    --skip_existing=True
+```
+
+It is also possible to combine all your fasta files into a single fasta file.
+```create_individual_features_with.py``` will compute the features utilizing the provided templates instead of the PDB database.
 
 ## 2. Predict structures (GPU stage)
 
