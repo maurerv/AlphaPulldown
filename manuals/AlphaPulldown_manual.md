@@ -106,51 +106,52 @@ There are a few customizable options for this step:
    pip install jax==0.4.23 jaxlib==0.4.23+cuda11.cudnn86 -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
    ```
    
-   >**For older versions of AlphaFold**:
+   >**For older versions of AlphaFold**
    >
    >If you haven't updated your databases according to the requirements of AlphaFold 2.3.0, you can still use AlphaPulldown with your older version of AlphaFold database. Please follow the installation instructions on the [dedicated branch](https://github.com/KosinskiLab/AlphaPulldown/tree/AlphaFold-2.2.0).
 
-### Installation for developers
+   ### Installation for developers
    <details>
    
    <summary><b>
     Instructions
    </b></summary>
 
-1. Clone the GitHub repo
-    ```
-    git clone --recurse-submodules git@github.com:KosinskiLab/AlphaPulldown.git
-    cd AlphaPulldown 
-    git submodule init
-    git submodule update 
-    ```
-1. Create the Conda environment as described in [https://github.com/KosinskiLab/AlphaPulldown/blob/installation-intro-update/README.md#create-anaconda-environment](https://github.com/KosinskiLab/AlphaPulldown/tree/main?tab=readme-ov-file#create-anaconda-environment) 
-1. Add AlphaPulldown package and its submodules to the Conda environment
-    ```
-    source activate AlphaPulldown
-    cd AlphaPulldown
-    pip install .
-    pip install -e alphapulldown/ColabFold --no-deps
-    pip install -e alphafold --no-deps
-    ```
-    You need to do it only once.
-1. When you want to develop, activate the environment, modify files, and the changes should be automatically recognized.
-1. Test your package during development using tests in ```test/```, e.g.:
-   ```
-   pip install pytest
-   pytest -s test/
-   pytest -s test/test_predictions_slurm.py
-   pytest -s test/test_features_with_templates.py::TestCreateIndividualFeaturesWithTemplates::test_1a_run_features_generation
-   ```
-1. Before pushing to the remote or submitting pull request
-    ```
-    pip install .
-    pytest -s test/
-    ```
-    to install the package and test. Pytest for predictions only work if slurm is available. Check the created log files in your current directory.
-    
-    
-   </details>
+    1. Clone the GitHub repo
+        ```
+        git clone --recurse-submodules git@github.com:KosinskiLab/AlphaPulldown.git
+        cd AlphaPulldown 
+        git submodule init
+        git submodule update 
+        ```
+    2. Create the Conda environment as described in [https://github.com/KosinskiLab/AlphaPulldown/blob/installation-intro-update/README.md#create-anaconda-environment](https://github.com/KosinskiLab/AlphaPulldown/tree/main?tab=readme-ov-file#create-anaconda-environment) 
+    3. Add AlphaPulldown package and its submodules to the Conda environment
+        ```
+        source activate AlphaPulldown
+        cd AlphaPulldown
+        pip install .
+        pip install -e alphapulldown/ColabFold --no-deps
+        pip install -e alphafold --no-deps
+        ```
+        You need to do it only once.
+    4. When you want to develop, activate the environment, modify files, and the changes should be automatically recognized.
+    5. Test your package during development using tests in ```test/```, e.g.:
+       ```
+       pip install pytest
+       pytest -s test/
+       pytest -s test/test_predictions_slurm.py
+       pytest -s test/test_features_with_templates.py::TestCreateIndividualFeaturesWithTemplates::test_1a_run_features_generation
+       ```
+    5. Before pushing to the remote or submitting pull request
+        ```
+        pip install .
+        pytest -s test/
+        ```
+        to install the package and test. Pytest for predictions only work if slurm is available. Check the created log files in your current directory.
+        
+        
+       </details>
+       
 <br>
 
 ## 1. Compute multiple sequence alignment (MSA) and template features (CPU stage)
@@ -158,9 +159,9 @@ There are a few customizable options for this step:
 At this step, you need to provide a [protein FASTA format](https://www.ncbi.nlm.nih.gov/WebSub/html/help/protein.html) file with all protein sequences that will be used for complexes prediction.
 ```
 >sequence_name_A
-SEQVENCEA
+SEQUENCEA
 >sequence_name_B
-SEQVENCEB
+SEQUENCEB
 ```
 
 Then activate the AlphaPulldown environment and run script `create_individual_features.py` with as follows:
@@ -173,7 +174,16 @@ create_individual_features.py \
   --output_dir=<dir to save the output objects> \ 
   --max_template_date=<any date you want, format like: 2050-01-01> \
 ```
-Instead of `<sequences.fasta>` provide a path to your input fasta file. Instead of `<path to alphafold databases>` provide a path to the genetic database (see step [0. Alphafold-databases](#installation) of the installation part). Instead of `<dir to save the output objects>` provide a path to the output directory. A date in the flag `--max_template_date` is needed to restrict the search of protein structures that are deoposited 
+* Instead of `<sequences.fasta>` provide a path to your input fasta file. <br>
+* Instead of `<path to alphafold databases>` provide a path to the genetic database (see [0. Alphafold-databases](#installation) of the installation part).<br>
+* Instead of `<dir to save the output objects>` provide a path to the output directory, where your features files will be saved. <br>
+* A date in the flag `--max_template_date` is needed to restrict the search of protein structures that are deposited before the indicated date. Unless the date is later than the date of your local genomic database's last update, the script will search for templates among all available structures.
+
+As a result, ```create_individual_features.py``` will compute necessary features each protein from the input fasta file (e.g. `sequence_name_A.pkl` and `sequence_name_B.pkl`) and store them in the ```output_dir```. Please be aware that everything after ```>``` will be 
+taken as the description of the protein and **please be aware** that any special symbol, such as ```| : ; #```, after ```>``` will be replaced with ```_```. 
+
+The name of the pickles will be the same as the descriptions of the sequences  in fasta files (e.g. ">protein_A" in the fasta file will yield "protein_A.pkl")
+
 ### 1.2. FLAGS 
 ### 1.3. Run using MMseqs2 and ColabFold databases (faster):
 
