@@ -289,7 +289,7 @@ Nature Methods (2022) doi: 10.1038/s41592-022-01488-1
 >[!Caution]
 >To avoid overloading the remote server, do not submit a large number of jobs at the same time. If you want to calculate MSAs for many sequences, please use  [mmseqs2 locally](#run-mmseqs2-locally)
 
-Same as for 1.1 Basic run to run `create_individual_features.py` just add `--use_mmseqs2=True` FALG:
+Same as for [1.1 Basic](#11-basic-run) run to run `create_individual_features.py` just add `--use_mmseqs2=True` FALG:
 ```bash
 source activate AlphaPulldown
 create_individual_features.py \
