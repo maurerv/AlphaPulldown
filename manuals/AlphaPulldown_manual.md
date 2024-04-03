@@ -80,7 +80,7 @@ There are a few customizable options for this step:
     ```
    </details>
    
-   > Note: Since local installation of all genetic databases is space-consuming, you can alternatively use the remotely-run MMseqs2 and ColabFold databases ${\color{red} [add\ link]}$.
+   > Note: Since the local installation of all genetic databases is space-consuming, you can alternatively use the remotely-run MMseqs2 and ColabFold databases ${\color{red} [add\ link]}$.
 
 1. #### Create Anaconda environment
 
@@ -241,14 +241,141 @@ Features calculation script ```create_individual_features.py``` have several opt
 
 * `--seq_index`
    
-   Default is `None` and the programme will run predictions one by one in the given files. However, you can set ```seq_index``` to 
-   different number if you wish to run an array of jobs in parallel then the programme will only run the corresponding job specified by the ```seq_index```. e.g. the programme only calculate features for the 1st protein in your fasta file if ```seq_index``` is set to be 1. See also the Slurm sbatch script above for example how to use it for parallel execution.
+   Default is `None` and the program will run predictions one by one in the given files. However, you can set ```seq_index``` to 
+   different number if you wish to run an array of jobs in parallel then the program will only run the corresponding job specified by the ```seq_index```. e.g. the programme only calculate features for the 1st protein in your fasta file if ```seq_index``` is set to be 1. See also the Slurm sbatch script above for example how to use it for parallel execution.
    
-   :exclamation: ```seq_index``` starts from 1. 
-
-
+   :exclamation: ```seq_index``` starts from 1.
+* `--use_mmseqs2`
   
+  Use mmseqs2 remotely or not. 'true' or 'false', default is 'false' ${\color{red} [add\ description]}$
+
+ <details>
+   
+   <summary><b>
+   Flags related to TrueMultimer mode:
+   </b></summary>
+
+* `--path_to_mmt`
+  
+  Path to directory with multimeric template mmCIF files". ${\color{red} [add\ description]}$
+  
+* `--description_file`
+  
+  Path to the text file with descriptions. ${\color{red} [add\ description]}$
+
+* `--threshold_clashes`
+  
+  Threshold for VDW overlap to identify clashes. The VDW overlap between two atoms is defined as the sum of their VDW radii minus the distance between their centers.
+  If the overlap exceeds this threshold, the two atoms are considered to be clashing.
+  A positive threshold is how far the VDW surfaces are allowed to interpenetrate before considering the atoms to be clashing.
+  (default: 1000, i.e. no threshold, for thresholding, use 0.6-0.9)
+  
+* `--hb_allowance`
+  
+  Additional allowance for hydrogen bonding (default: 0.4) ${\color{red} [add\ description]}$
+
+* `--plddt_threshold`
+  
+  Threshold for pLDDT score (default: 0)
+ </details>
+ <br>
+ 
 ### 1.3. Run using MMseqs2 and ColabFold databases (faster):
+>[!Note]
+>If you used mmseqs2 in either of these 2 options, please remember to cite: 
+Mirdita M, Schütze K, Moriwaki Y, Heo L, Ovchinnikov S and Steinegger M. ColabFold: Making protein folding accessible to all.
+Nature Methods (2022) doi: 10.1038/s41592-022-01488-1
+
+#### 1.3.1 Run mmseqs2 remotely 
+
+>[!Caution]
+>To avoid overloading the remote server, do not submit a large number of jobs at the same time. If you want to calculate MSAs for many sequences, please use Option 2 below
+${\color{red} [add example]}$
+
+Same as for 1.1 Basic run to run `create_individual_features.py` just add `--use_mmseqs2=True` FALG:
+```bash
+source activate AlphaPulldown
+create_individual_features.py \
+  --fasta_paths=example_1_sequences.fasta \
+  --data_dir=<path to alphafold databases> \
+  --output_dir=<dir to save the output objects> \ 
+  --use_mmseqs2=True \
+  --max_template_date=<any date you want, format like: 2050-01-01> \ 
+
+```
+
+and your output_dir will look like:
+```bash
+output_dir
+    |-protein_A.a3m
+    |-protein_A_env/
+    |-protein_A.pkl
+    |-protein_B.a3m
+    |-protein_B_env/
+    |-protein_B.pkl
+    ...
+```
+
+### 1.3.2 Run mmseqs2 locally 
+
+AlphaPulldown does **NOT** provide interface or codes that will run mmseqs2 locally. Neither will it install mmseqs or any other programme required. The user has to
+install mmseqs, colabfold databases, colab_search and other required dependencies and run msa alignments first. An example guide can be found on [Colabfold github](https://github.com/sokrypton/ColabFold).
+
+Suppose you have run mmseqs locally successfully using ```colab_search``` programme, for each protein of your interest, it will generate an a3m file. Thus, your output_dir
+should look like this:
+
+```
+output_dir
+    |-0.a3m
+    |-1.a3m
+    |-2.a3m
+    |-3.a3m
+    ...
+```
+These a3m files from```colabfold_search``` are named in such inconvenient way. Thus, we have provided a ```rename_colab_search_a3m.py``` script that will help you rename all these files. Simply run:
+
+```bash
+# within the same conda env where you have installed AlphaPulldown
+cd output_dir
+rename_colab_search_a3m.py
+```
+Then your ```output_dir``` will become:
+
+```
+output_dir
+    |-protein_A.a3m
+    |-protein_B.a3m
+    |-protein_C.a3m
+    |-protein_D.a3m
+    ...
+```
+where ```protein_A``` ```protein_B``` ... correspond to the names you have in your input fasta file (">protein_A" will give you "protein_A.a3m", "protein_B" -> "protein_B.a3m" etc.). 
+After this, go back to your project directory with the original FASTA file and point to this directory in the command:
+
+```bash
+source activate AlphaPulldown
+create_individual_features.py \
+  --fasta_paths=example_1_sequences.fasta \
+  --data_dir=<path to alphafold databases> \
+  --output_dir=output_dir \ 
+  --skip_existing=False \
+  --use_mmseqs2=True \
+  --seq_index=<any number you want or skip the flag to run all one after another>
+```
+
+and AlphaPulldown will automatically search each protein's corresponding a3m files. In the end, your output_dir will look like:
+
+```
+output_dir
+    |-protein_A.a3m
+    |-protein_A.pkl
+    |-protein_B.a3m
+    |-protein_B.pkl
+    |-protein_C.a3m
+    |-protein_C.pkl
+    ...
+```
+
 
 ## 2. Predict structures (GPU stage)
 
