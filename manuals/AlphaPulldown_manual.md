@@ -39,84 +39,83 @@ There are a few customizable options for this step:
 
 ## Installation
 
-### Alphafold databases
-For the standard MSA and features calculation, AlphaPulldow requires Genetic databases. Check if you have downloaded necessary parameters and databases (e.g. BFD, MGnify etc.) as instructed in [AlphFold's documentation](https://github.com/deepmind/alphafold). You should have a directory like below:
+0. #### Alphafold databases
 
-<details>
-<summary><b>
-Databases directory
-</b></summary>
+   For the standard MSA and features calculation, AlphaPulldow requires Genetic databases. Check if you have downloaded necessary parameters and databases (e.g. BFD, MGnify etc.) as instructed in [AlphFold's documentation](https://github.com/deepmind/alphafold). You should have a directory like below:
 
- ```
- alphafold_database/                             # Total: ~ 2.2 TB (download: 438 GB)
-    bfd/                                   # ~ 1.7 TB (download: 271.6 GB)
-        # 6 files.
-    mgnify/                                # ~ 64 GB (download: 32.9 GB)
-        mgy_clusters_2018_12.fa
-    params/                                # ~ 3.5 GB (download: 3.5 GB)
-        # 5 CASP14 models,
-        # 5 pTM models,
-        # 5 AlphaFold-Multimer models,
-        # LICENSE,
-        # = 16 files.
-    pdb70/                                 # ~ 56 GB (download: 19.5 GB)
-        # 9 files.
-    pdb_mmcif/                             # ~ 206 GB (download: 46 GB)
-        mmcif_files/
-            # About 180,000 .cif files.
-        obsolete.dat
-    pdb_seqres/                            # ~ 0.2 GB (download: 0.2 GB)
-        pdb_seqres.txt
-    small_bfd/                             # ~ 17 GB (download: 9.6 GB)
-        bfd-first_non_consensus_sequences.fasta
-    uniclust30/                            # ~ 86 GB (download: 24.9 GB)
-        uniclust30_2018_08/
-            # 13 files.
-    uniprot/                               # ~ 98.3 GB (download: 49 GB)
-        uniprot.fasta
-    uniref90/                              # ~ 58 GB (download: 29.7 GB)
-        uniref90.fasta
- ```
-</details>
+   <details>
+   <summary><b>
+   Databases directory
+   </b></summary>
+   
+    ```
+    alphafold_database/                             # Total: ~ 2.2 TB (download: 438 GB)
+       bfd/                                   # ~ 1.7 TB (download: 271.6 GB)
+           # 6 files.
+       mgnify/                                # ~ 64 GB (download: 32.9 GB)
+           mgy_clusters_2018_12.fa
+       params/                                # ~ 3.5 GB (download: 3.5 GB)
+           # 5 CASP14 models,
+           # 5 pTM models,
+           # 5 AlphaFold-Multimer models,
+           # LICENSE,
+           # = 16 files.
+       pdb70/                                 # ~ 56 GB (download: 19.5 GB)
+           # 9 files.
+       pdb_mmcif/                             # ~ 206 GB (download: 46 GB)
+           mmcif_files/
+               # About 180,000 .cif files.
+           obsolete.dat
+       pdb_seqres/                            # ~ 0.2 GB (download: 0.2 GB)
+           pdb_seqres.txt
+       small_bfd/                             # ~ 17 GB (download: 9.6 GB)
+           bfd-first_non_consensus_sequences.fasta
+       uniclust30/                            # ~ 86 GB (download: 24.9 GB)
+           uniclust30_2018_08/
+               # 13 files.
+       uniprot/                               # ~ 98.3 GB (download: 49 GB)
+           uniprot.fasta
+       uniref90/                              # ~ 58 GB (download: 29.7 GB)
+           uniref90.fasta
+    ```
+   </details>
+   
+   > Note: Since local installation of all genetic databases is space-consuming, you can alternatively use the remotely-run MMseqs2 and ColabFold databases ${\color{red} [add\ link]}$.
 
-> [!TIP] 
-> Since local installation of all genetic databases is space-consuming, you can alternatively use the remotely-run MMseqs2 and ColabFold databases ${\color{red} [add\ link]}$.
+1. #### Create Anaconda environment
 
-### Create Anaconda environment
+   **Firstly**, install [Anaconda](https://www.anaconda.com/) and create AlphaPulldown environment, gathering necessary dependencies 
+   ```bash
+   conda create -n AlphaPulldown -c omnia -c bioconda -c conda-forge python==3.10 openmm==8.0 pdbfixer==1.9 kalign2 cctbx-base pytest importlib_metadata hhsuite
+   ```
+   
+   **Optionally**, if you do not have it yet on your system, install [HMMER](http://hmmer.org/documentation.html) from Anaconda
+   ```bash
+   source activate AlphaPulldown
+   conda install -c bioconda hmmer
+   ```
+   This usually works, but on some compute systems users may wish to use other versions or optimized builds of already installed HMMER and HH-suite.
 
-**Firstly**, install [Anaconda](https://www.anaconda.com/) and create AlphaPulldown environment, gathering necessary dependencies 
-```bash
-conda create -n AlphaPulldown -c omnia -c bioconda -c conda-forge python==3.10 openmm==8.0 pdbfixer==1.9 kalign2 cctbx-base pytest importlib_metadata hhsuite
-```
+2. #### Installation using pip
 
-**Optionally**, if you do not have it yet on your system, install [HMMER](http://hmmer.org/documentation.html) from Anaconda
-```bash
-source activate AlphaPulldown
-conda install -c bioconda hmmer
-```
-This usually works, but on some compute systems users may wish to use other versions or optimized builds of already installed HMMER and HH-suite.
-
-### Installation using pip
-
-Activate the AlphaPulldown environment and install AlphaPulldown
-```bash
-source activate AlphaPulldown
-
-python3 -m pip install alphapulldown==1.0.4
-pip install jax==0.4.23 jaxlib==0.4.23+cuda11.cudnn86 -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
-```
->[!NOTE]
->**For older versions of AlphaFold**: 
->If you haven't updated your databases according to the requirements of AlphaFold 2.3.0, you can still use AlphaPulldown with your older version of AlphaFold database. Please follow the installation instructions on the [dedicated branch](https://github.com/KosinskiLab/AlphaPulldown/tree/AlphaFold-2.2.0).
+   Activate the AlphaPulldown environment and install AlphaPulldown
+   ```bash
+   source activate AlphaPulldown
+   
+   python3 -m pip install alphapulldown==1.0.4
+   pip install jax==0.4.23 jaxlib==0.4.23+cuda11.cudnn86 -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
+   ```
+   
+   >**For older versions of AlphaFold**:
+   >
+   >If you haven't updated your databases according to the requirements of AlphaFold 2.3.0, you can still use AlphaPulldown with your older version of AlphaFold database. Please follow the installation instructions on the [dedicated branch](https://github.com/KosinskiLab/AlphaPulldown/tree/AlphaFold-2.2.0).
 
 ### Installation for developers
-Use the following instructions:
-
-<details>
-
-<summary><b>
- Developers
-</b></summary>
+   <details>
+   
+   <summary><b>
+    Instructions
+   </b></summary>
 
 1. Clone the GitHub repo
     ```
@@ -151,22 +150,23 @@ Use the following instructions:
     to install the package and test. Pytest for predictions only work if slurm is available. Check the created log files in your current directory.
     
     
-</details>
+   </details>
 <br>
 
 ## 1. Compute multiple sequence alignment (MSA) and template features (CPU stage)
 ### 1.1. Basic run
-At this step you need to provide [protein FASTA format](https://www.ncbi.nlm.nih.gov/WebSub/html/help/protein.html) file with all protein seuences that will be used for compexes prediction.
-Then run script `create_individual_features.py` with as following:
+At this step you need to provide [protein FASTA format](https://www.ncbi.nlm.nih.gov/WebSub/html/help/protein.html) file with all protein sequences that will be used for complexes prediction.
+Then activate the AlphaPulldown environment and run script `create_individual_features.py` with as follows:
 
 ```bash
 source activate AlphaPulldown
 create_individual_features.py \
-  --fasta_paths=sequences.fasta \
+  --fasta_paths=<sequences.fasta> \
   --data_dir=<path to alphafold databases> \
   --output_dir=<dir to save the output objects> \ 
   --max_template_date=<any date you want, format like: 2050-01-01> \
 ```
+Instead of `<sequences.fasta>` provide a path to your input fasta file. Instead of `<path to alphafold databases>` provide a path to the genetic database (see step [0. Alphafold-databases](#alphafold-databases) of the installation part. Instead of `<dir to save the output objects>` provide a path to the output directory. Date in the flag `--max_template_date` is needed to restrict the search of protein structures 
 ### 1.2. FLAGS 
 ### 1.3. Run using MMseqs2 and ColabFold databases (faster):
 
