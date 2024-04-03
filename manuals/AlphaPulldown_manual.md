@@ -179,10 +179,10 @@ create_individual_features.py \
 * Instead of `<dir to save the output objects>` provide a path to the output directory, where your features files will be saved. <br>
 * A date in the flag `--max_template_date` is needed to restrict the search of protein structures that are deposited before the indicated date. Unless the date is later than the date of your local genomic database's last update, the script will search for templates among all available structures.
 
-As a result, ```create_individual_features.py``` will compute necessary features each protein from the input fasta file (e.g. `sequence_name_A.pkl` and `sequence_name_B.pkl`) and store them in the ```output_dir```. Please be aware that everything after ```>``` will be 
-taken as the description of the protein and **please be aware** that any special symbol, such as ```| : ; #```, after ```>``` will be replaced with ```_```. 
+The result of ```create_individual_features.py``` run is pickle format features for each protein from the input fasta file (e.g. `sequence_name_A.pkl` and `sequence_name_B.pkl`) stored in the ```output_dir```. 
+> [!NOTE]
+> The name of the pickles will be the same as the descriptions of the sequences  in fasta files (e.g. `>sequence_name_A` in the fasta file will yield `sequence_name_A.pkl`). Besides, symbol such as ```| : ; #```, after ```>``` will be replaced with ```_```. 
 
-The name of the pickles will be the same as the descriptions of the sequences  in fasta files (e.g. ">protein_A" in the fasta file will yield "protein_A.pkl")
 
 ### 1.2. FLAGS 
 ### 1.3. Run using MMseqs2 and ColabFold databases (faster):
