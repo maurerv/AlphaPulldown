@@ -157,23 +157,23 @@ There are a few customizable options for this step:
 ## 1. Compute multiple sequence alignment (MSA) and template features (CPU stage)
 ### 1.1. Basic run
 At this step, you need to provide a [protein FASTA format](https://www.ncbi.nlm.nih.gov/WebSub/html/help/protein.html) file with all protein sequences that will be used for complexes prediction.
-```
->sequence_name_A
-SEQUENCEA
->sequence_name_B
-SEQUENCEB
-```
+   ```
+   >sequence_name_A
+   SEQUENCEA
+   >sequence_name_B
+   SEQUENCEB
+   ```
 
 Then activate the AlphaPulldown environment and run script `create_individual_features.py` with as follows:
 
-```bash
-source activate AlphaPulldown
-create_individual_features.py \
-  --fasta_paths=<sequences.fasta> \
-  --data_dir=<path to alphafold databases> \
-  --output_dir=<dir to save the output objects> \ 
-  --max_template_date=<any date you want, format like: 2050-01-01> \
-```
+   ```bash
+   source activate AlphaPulldown
+   create_individual_features.py \
+     --fasta_paths=<sequences.fasta> \
+     --data_dir=<path to alphafold databases> \
+     --output_dir=<dir to save the output objects> \ 
+     --max_template_date=<any date you want, format like: 2050-01-01> \
+   ```
 * Instead of `<sequences.fasta>` provide a path to your input fasta file. <br>
 * Instead of `<path to alphafold databases>` provide a path to the genetic database (see [0. Alphafold-databases](#installation) of the installation part).<br>
 * Instead of `<dir to save the output objects>` provide a path to the output directory, where your features files will be saved. <br>
@@ -183,7 +183,7 @@ The result of ```create_individual_features.py``` run is pickle format features 
 > [!NOTE]
 > The name of the pickles will be the same as the descriptions of the sequences  in fasta files (e.g. `>sequence_name_A` in the fasta file will yield `sequence_name_A.pkl`). Besides, symbol such as ```| : ; #```, after ```>``` will be replaced with ```_```. 
 
-Go to the next step [2.1. Basic run](#2-predict-structures-gpu-stage) 
+Go to the next step [2.1. Basic run](#2-predict-structures-gpu-stage)
 
 ### 1.2. FLAGS
 
@@ -278,19 +278,16 @@ Features calculation script ```create_individual_features.py``` have several opt
   
   Threshold for pLDDT score (default: 0)
  </details>
- <br>
- 
+
 ### 1.3. Run using MMseqs2 and ColabFold databases (faster):
->[!Note]
->If you used mmseqs2 in either of these 2 options, please remember to cite: 
+>If you used mmseqs2 please remember to cite: 
 Mirdita M, Schütze K, Moriwaki Y, Heo L, Ovchinnikov S and Steinegger M. ColabFold: Making protein folding accessible to all.
 Nature Methods (2022) doi: 10.1038/s41592-022-01488-1
 
-#### 1.3.1 Run mmseqs2 remotely 
+#### Run mmseqs2 remotely 
 
 >[!Caution]
->To avoid overloading the remote server, do not submit a large number of jobs at the same time. If you want to calculate MSAs for many sequences, please use Option 2 below
-${\color{red} [add example]}$
+>To avoid overloading the remote server, do not submit a large number of jobs at the same time. If you want to calculate MSAs for many sequences, please use  [mmseqs2 locally](#run-mmseqs2-locally)
 
 Same as for 1.1 Basic run to run `create_individual_features.py` just add `--use_mmseqs2=True` FALG:
 ```bash
@@ -316,7 +313,7 @@ output_dir
     ...
 ```
 
-### 1.3.2 Run mmseqs2 locally 
+#### Run mmseqs2 locally 
 
 AlphaPulldown does **NOT** provide interface or codes that will run mmseqs2 locally. Neither will it install mmseqs or any other programme required. The user has to
 install mmseqs, colabfold databases, colab_search and other required dependencies and run msa alignments first. An example guide can be found on [Colabfold github](https://github.com/sokrypton/ColabFold).
@@ -375,6 +372,7 @@ output_dir
     |-protein_C.pkl
     ...
 ```
+1.4 Run with custom templates
 
 
 ## 2. Predict structures (GPU stage)
