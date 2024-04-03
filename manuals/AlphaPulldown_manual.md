@@ -166,7 +166,7 @@ create_individual_features.py \
   --output_dir=<dir to save the output objects> \ 
   --max_template_date=<any date you want, format like: 2050-01-01> \
 ```
-Instead of `<sequences.fasta>` provide a path to your input fasta file. Instead of `<path to alphafold databases>` provide a path to the genetic database (see step [0. Alphafold-databases](#alphafold-databases) of the installation part. Instead of `<dir to save the output objects>` provide a path to the output directory. Date in the flag `--max_template_date` is needed to restrict the search of protein structures 
+Instead of `<sequences.fasta>` provide a path to your input fasta file. Instead of `<path to alphafold databases>` provide a path to the genetic database (see step [0. Alphafold-databases](#Installation) of the installation part. Instead of `<dir to save the output objects>` provide a path to the output directory. Date in the flag `--max_template_date` is needed to restrict the search of protein structures 
 ### 1.2. FLAGS 
 ### 1.3. Run using MMseqs2 and ColabFold databases (faster):
 
