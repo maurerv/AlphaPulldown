@@ -158,13 +158,13 @@ There are a few customizable options for this step:
 ### 1.1. Basic run
 At this step, you need to provide a [protein FASTA format](https://www.ncbi.nlm.nih.gov/WebSub/html/help/protein.html) file with all protein sequences that will be used for complexes prediction.
    ```
-   >sequence_name_A
-   SEQUENCEA
-   >sequence_name_B
-   SEQUENCEB
+   >protein_A
+   SEQUENCEOFPROTEINA
+   >protein_B
+   SEQUENCEOFPROTEINB
    ```
 
-Then activate the AlphaPulldown environment and run script `create_individual_features.py` with as follows:
+Then activate the AlphaPulldown environment and run script `create_individual_features.py` as follows:
 
    ```bash
    source activate AlphaPulldown
@@ -181,7 +181,7 @@ Then activate the AlphaPulldown environment and run script `create_individual_fe
 
 The result of ```create_individual_features.py``` run is pickle format features for each protein from the input fasta file (e.g. `sequence_name_A.pkl` and `sequence_name_B.pkl`) stored in the ```output_dir```. 
 > [!NOTE]
-> The name of the pickles will be the same as the descriptions of the sequences  in fasta files (e.g. `>sequence_name_A` in the fasta file will yield `sequence_name_A.pkl`). Besides, symbol such as ```| : ; #```, after ```>``` will be replaced with ```_```. 
+> The name of the pickles will be the same as the descriptions of the sequences  in fasta files (e.g. `>prtoein_A` in the fasta file will yield `protein_A.pkl`). Note that special symbols such as ```| : ; #```, after ```>``` will be replaced with ```_```. 
 
 Go to the next step [2.1. Basic run](#2-predict-structures-gpu-stage)
 
