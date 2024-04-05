@@ -422,7 +422,7 @@ ${\color{red}Add\ True\ Multimer\ limitations}$
 
 Go to the next step [2.X. Template run](#2-predict-structures-gpu-stage) ${\color{red}Correct}$ 
 
-For additional Flags for tru multimer mode refer to [FLAGS](#12-flags)
+For additional Flags of true multimer mode run refer to [FLAGS](#12-flags)
 
 ## 2. Predict structures (GPU stage)
 
