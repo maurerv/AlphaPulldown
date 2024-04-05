@@ -378,7 +378,7 @@ output_dir
 ```
 Go to the next step [2.1. Basic run](#2-predict-structures-gpu-stage)
 
-### 1.4 Run with custom templates
+### 1.4 Run with custom templates (TrueMultimer)
 Instead of using the default search through the PDB database for structural templates, you can provide a custom database. AlphaPulldown supports a feature called "True Multimer," which allows AlphaFold to use multi-chain structural templates during the prediction process. This can be beneficial for protein complexes where the arrangement of the chains may vary. True Multimer mode will arrange different complex subunits as in the template.  
 
 1. **Prepare a FASTA File:** Create a FASTA file containing all protein sequences that will be used for predictions as outlined in [1.1 Basic run](#11-basic-run).
@@ -424,7 +424,7 @@ ${\color{red}Add\ True\ Multimer\ limitations}$
 
 Go to the next step [2.X. Template run](#2-predict-structures-gpu-stage) ${\color{red}Correct}$ 
 
-For additional Flags of true multimer mode run refer to [FLAGS](#12-flags)
+For additional Flags of TrueMultimer mode run refer to [FLAGS](#12-flags)
 
 ## 2. Predict structures (GPU stage)
 
