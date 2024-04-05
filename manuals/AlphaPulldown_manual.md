@@ -407,7 +407,7 @@ Now run:
   create_individual_features.py \
     --fasta_paths=<sequences.fasta> \
     --path_to_mmt=<path to template directory>/ \
-    --description_file=description.csv \
+    --description_file=<description.csv> \
     --data_dir=<path to alphafold databases> \
     --output_dir=<dir to save the output objects> \ 
     --max_template_date=<any date you want, format like: 2050-01-01> \
