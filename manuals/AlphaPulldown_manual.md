@@ -379,19 +379,21 @@ Go to the next step [2.1. Basic run](#2-predict-structures-gpu-stage)
 ### 1.4 Run with custom templates
 Instead of using the default search through the PDB database for structural templates, you can provide a custom database. AlphaPulldown supports a feature called "True Multimer," which allows AlphaFold to use multi-chain structural templates during the prediction process. This can be beneficial for protein complexes where the arrangement of the chains may vary. True Multimer mode will arrange different complex subunits as in the template.  
 
-Create a directory named for instance "templates" and put pdb/cif files in this directory that you want to be used as templates. Create a fasta file with all protein sequences that will be used for predictions as in [1.1 Basic](#11-basic-run).
-
->[!Note]
->The first column must be an exact copy of the protein description from your fasta files. Please consider shortening them and ${\color{red} remove\ all\ special\ symbols}$  in fasta files using your favorite text editor for convenience. These names will be used to generate pickle files with monomeric features!
-The description.csv should look like this:
+1. **Prepare a FASTA File:** Create a FASTA file containing all protein sequences that will be used for predictions as outlined in [1.1 Basic run](#11-basic-run).
+   ${\color{red} remove\ all\ special\ symbols \from \fasta}$
+3. **Create a Template Directory:** Designate a folder (e.g., "templates") to store your custom template files in PDB or CIF format.
+4. **Create a description file:** This `description.csv` file links protein sequences to templates:
 
 ```
 >protein_A,TMPL.cif,A
 >protein_B,TMPL.cif,B
 ```
 
-Every row starts from the symbol `>`. The name of the protein exactly as in the fasta file follows `protein_A`. After the coma the name of the template structure in pdb or cif format `TMPL.cif`. Lastly, the ID of the chain in the template to which the query sequence corresponds `A`. One protein may contain several templates. Just Add an additional row with the same protein name but another template and chain:
-
+   * **Column 1** (>protein_A): Must exactly match protein descriptions from your FASTA file. 
+   * **Column 2** (TMPL.cif): The filename of your template structure in PDB or CIF format.
+   * **Column 3** (A): The chain ID within the template that the query sequence corresponds to.
+     
+**For Multiple Templates:**  If you want to provide multiple templates for a single protein, add additional rows with the same protein name but different templates and chain IDs:
 ```
 >protein_A,TMPL.cif,A
 >protein_A,TMP2.cif,B
@@ -415,8 +417,10 @@ Now run:
     --use_precomputed_msas=True \
     --skip_existing=True
 ```
-The result of the run is pickle format features for each protein from the `description.csv` file stored in the ```output_dir```. 
+Output: Pickle format features for each protein in the `description.csv` file stored in the ```output_dir```. 
 ${\color{red}Add\ True\ Multimer\ limitations}$ 
+
+Go to the next step [2.X. Template run](#2-predict-structures-gpu-stage) ${\color{red}Correct}$ 
 
 ## 2. Predict structures (GPU stage)
 
