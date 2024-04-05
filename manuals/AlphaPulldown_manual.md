@@ -183,7 +183,7 @@ The result of ```create_individual_features.py``` run is pickle format features 
 > [!NOTE]
 > The name of the pickles will be the same as the descriptions of the sequences  in fasta files (e.g. `>prtoein_A` in the fasta file will yield `protein_A.pkl`). Note that special symbols such as ```| : ; #```, after ```>``` will be replaced with ```_```. 
 
-Go to the next step [2.1. Basic run](#2-predict-structures-gpu-stage)
+Go to the next step [2.1. Basic run](#2-predict-structures-gpu-stage).
 
 ### 1.2. FLAGS
 
@@ -280,11 +280,12 @@ Features calculation script ```create_individual_features.py``` have several opt
  </details>
 
 ### 1.3. Run using MMseqs2 and ColabFold databases (faster):
+MMseq2 is another method for homologs search and MSA generation. It offers an alternative to the default HMMer and HHblits used by AlphaFold. The results of these different approaches might lead to slightly different protein structure predictions due to the variations in the captured evolutionary information within the MSAs. AlphaPulldown supports the implementation of MMseq2 search made by ColabFold, which also provides a web server for MSA generation, so no local installation of databases is needed.
 >If you used mmseqs2 please remember to cite: 
 Mirdita M, Schütze K, Moriwaki Y, Heo L, Ovchinnikov S and Steinegger M. ColabFold: Making protein folding accessible to all.
 Nature Methods (2022) doi: 10.1038/s41592-022-01488-1
 
-#### Run mmseqs2 remotely 
+#### Run MMseqs2 remotely 
 
 >[!Caution]
 >To avoid overloading the remote server, do not submit a large number of jobs at the same time. If you want to calculate MSAs for many sequences, please use  [mmseqs2 locally](#run-mmseqs2-locally)
@@ -301,7 +302,7 @@ create_individual_features.py \
 
 ```
 
-and your output_dir will look like:
+After the script run is finished, your output_dir will look like this:
 ```bash
 output_dir
     |-protein_A.a3m
@@ -312,6 +313,7 @@ output_dir
     |-protein_B.pkl
     ...
 ```
+Go to the next step [2.1. Basic run](#2-predict-structures-gpu-stage)
 
 #### Run mmseqs2 locally 
 
@@ -372,24 +374,32 @@ output_dir
     |-protein_C.pkl
     ...
 ```
+Go to the next step [2.1. Basic run](#2-predict-structures-gpu-stage)
 
 ### 1.4 Run with custom templates
-Instead of using the default search through PDB database for structural templates, you can provide a custom database. AlphaPulldown supports True multimer templates please refer to ${\color{red} [add\ link]}$ for more details. 
+Instead of using the default search through the PDB database for structural templates, you can provide a custom database. AlphaPulldown supports a feature called "True Multimer," which allows AlphaFold to use multi-chain structural templates during the prediction process. This can be beneficial for protein complexes where the arrangement of the chains may vary. True Multimer mode will arrange different complex subunits as in the template.  
 
-Create directories named "fastas" and "templates" and put the sequences and pdb/cif files in the corresponding directories.
-Then, create a text file with a description for generating features (description.csv).
+Create a directory named for instance "templates" and put pdb/cif files in this directory that you want to be used as templates. Create a fasta file with all protein sequences that will be used for predictions as in [1.1 Basic](#11-basic-run).
 
-**Please note**, the first column must be an exact copy of the protein description from your fasta files. Please consider shortening them in fasta files using your favorite text editor for convenience. These names will be used to generate pickle files with monomeric features!
-The description.csv for the NS1-P85B complex should look like:
+>[!Note]
+>The first column must be an exact copy of the protein description from your fasta files. Please consider shortening them and ${\color{red} remove\ all\ special\ symbols}$  in fasta files using your favorite text editor for convenience. These names will be used to generate pickle files with monomeric features!
+The description.csv should look like this:
 
 ```
->sp|P03496|NS1_I34A1,3L4Q.cif,A
->sp|P23726|P85B_BOVIN,3L4Q.cif,C
+>protein_A,TMPL.cif,A
+>protein_B,TMPL.cif,B
 ```
 
-In this example we refer to the NS1 protein as chain A and to the P85B protein as chain C in multimeric template 3L4Q.cif.
+Every row starts from the symbol `>`. The name of the protein exactly as in the fasta file follows `protein_A`. After the coma the name of the template structure in pdb or cif format `TMPL.cif`. Lastly, the ID of the chain in the template to which the query sequence corresponds `A`. One protein may contain several templates. Just Add an additional row with the same protein name but another template and chain:
 
-**Please note**, that your template will be renamed to a PDB code taken from *_entry_id*. If you use a *.pdb file instead of *.cif, AlphaPulldown will first try to parse the PDB code from the file. Then it will check if the filename is 4-letter long. If it is not, it will generate a random 4-letter code and use it as the PDB code.
+```
+>protein_A,TMPL.cif,A
+>protein_A,TMP2.cif,B
+>protein_B,TMPL.cif,B
+```
+
+>[!Note]
+>Your template will be renamed to a PDB code taken from *_entry_id*. If you use a *.pdb file instead of *.cif, AlphaPulldown will first try to parse the PDB code from the file. Then it will check if the filename is 4-letter long. If it is not, it will generate a random 4-letter code and use it as the PDB code.
 
 Now run:
 
@@ -408,6 +418,7 @@ Now run:
 
 It is also possible to combine all your fasta files into a single fasta file.
 ```create_individual_features_with.py``` will compute the features utilizing the provided templates instead of the PDB database.
+${\color{red}Add\ True\ Multimer\ limitations}$ 
 
 ## 2. Predict structures (GPU stage)
 
