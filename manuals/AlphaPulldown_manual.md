@@ -405,19 +405,17 @@ Now run:
 
 ```bash
   create_individual_features.py \
+    --fasta_paths=<sequences.fasta> \
+    --path_to_mmt=<path to template directory>/ \
     --description_file=description.csv \
-    --fasta_paths=fastas/P03496.fasta,fastas/P23726.fasta \
-    --path_to_mmt=templates/ \
-    --data_dir=/scratch/AlphaFold_DBs/2.3.2/ \
+    --data_dir=<path to alphafold databases> \
+    --output_dir=<dir to save the output objects> \ 
+    --max_template_date=<any date you want, format like: 2050-01-01> \
     --save_msa_files=True \
-    --output_dir=features \
     --use_precomputed_msas=True \
-    --max_template_date=2050-01-01 \
     --skip_existing=True
 ```
-
-It is also possible to combine all your fasta files into a single fasta file.
-```create_individual_features_with.py``` will compute the features utilizing the provided templates instead of the PDB database.
+The result of the run is pickle format features for each protein from the `description.csv` file stored in the ```output_dir```. 
 ${\color{red}Add\ True\ Multimer\ limitations}$ 
 
 ## 2. Predict structures (GPU stage)
