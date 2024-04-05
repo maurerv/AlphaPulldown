@@ -427,7 +427,7 @@ Go to the next step [2.X. Template run](#2-predict-structures-gpu-stage) ${\colo
 For additional Flags of TrueMultimer mode run refer to [FLAGS](#12-flags)
 
 ### 1.5 Older versions
-If you are updating from previous versions of AlphaPulldown, and the local databases have not changed, there's no change to how features are generated. Input files from previous versions will work without modification in the current version.
+If you are updating from previous versions of AlphaPulldown, and the local databases have not changed, there's no change to how features are generated. Input files and scripts from previous versions will work without modification in the current version.
 ${\color{red} Correct\ if\ there\ are\ any\ changes}$
 
 
