@@ -168,6 +168,8 @@ Then activate the AlphaPulldown environment and run script `create_individual_fe
 
    ```bash
    source activate AlphaPulldown
+   ```
+   ```bash
    create_individual_features.py \
      --fasta_paths=<sequences.fasta> \
      --data_dir=<path to alphafold databases> \
