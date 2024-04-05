@@ -426,7 +426,23 @@ Go to the next step [2.X. Template run](#2-predict-structures-gpu-stage) ${\colo
 
 For additional Flags of TrueMultimer mode run refer to [FLAGS](#12-flags)
 
+### 1.5 Older versions
+If you are updating from previous versions of AlphaPulldown, and the local databases have not changed, there's no change to how features are generated. Input files from previous versions will work without modification in the current version.
+${\color{red} Correct\ if\ there\ are\ any\ changes}$
+
+
 ## 2. Predict structures (GPU stage)
+### 2.1 Basic run
+```
+run_multimer_jobs.py \
+  --mode=custom \
+  --output_path=<path to output directory> \ 
+  --num_cycle=3 \
+  --oligomer_state_file=example_oligomer_state_file.txt \ 
+  --monomer_objects_dir=<directory that stores monomer pickle files> \ 
+  --data_dir=/path-to-Alphafold-data-dir \ 
+  --job_index=$SLURM_ARRAY_TASK_ID    
+```
 
 ## 3. Analysis and Visualization
 ### Results table
