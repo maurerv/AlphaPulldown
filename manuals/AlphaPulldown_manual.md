@@ -11,7 +11,11 @@ The original AlphaFold-Multimer protein complex prediction pipeline may be split
 
 
 ![AP_modes](../manuals/AP_modes.png)
-AlphaPulldown's main advantage is easily definable combinations of proteins to predict together. Either you can provide a file with proteins combinations listed in rows, or several files where every row from one file will be combined with every row from another. 
+A key strength of AlphaPulldown is its ability to flexibly define how proteins are combined for structure prediction of protein complexes. Here are the two main approaches you can use:
+
+* Single file: Create a file where each row lists the protein sequences you want to predict together.
+* Multiple Files: Provide several files, each containing protein sequences. AlphaPulldown will automatically generate all possible combinations by pairing rows of protein names from each file.
+
 
 Let's take a closer look at the AlphaPuldown pipeline:
 
