@@ -1,4 +1,5 @@
 # AlphaPulldown
+[![Downloads](https://static.pepy.tech/badge/alphapulldown)](https://pepy.tech/project/alphapulldown)  [![python3.10](https://img.shields.io/badge/python-3.10-blue.svg)](https://www.python.org/downloads/release/python-3100/) ![GPL3 license](https://img.shields.io/badge/license-GPLv3-green)   
 
 AlphaPulldown is an implementation of [AlphaFold](https://github.com/google-deepmind/alphafold), designed for customizable high-throughput screening of protein-protein interactions.
 ![demo1](./manuals/AP_pipeline.png)
