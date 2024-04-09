@@ -493,7 +493,7 @@ Full structure of the output directory is the following:
 ```
 Please refer to [AlphaFold manual](https://github.com/google-deepmind/alphafold) for more details on output files.
 >[!Caution]
->Since AlphaPulldown is designed for screening the default output of its run doesn't relax the structures, please use --models_to_relax=best FLAG to relax ranked_0 structure.
+>Since AlphaPulldown is designed for screening the default output of its run doesn't relax the structures, please use `--models_to_relax=best` FLAG to relax ranked_0 structure.
 
 ## 3. Analysis and Visualization
 ### Results table
