@@ -1,7 +1,7 @@
 # AlphaPulldown Manual
 
 `[add version]`<br>
-> __Note__: AlphaPulldown fully **maintains backward compatibility** with input files and scripts from versions 1.x. For instructions on using older files and scripts, please refer to the sections marked "Older Version."``
+> AlphaPulldown fully **maintains backward compatibility** with input files and scripts from versions 1.x. For instructions on using older files and scripts, please refer to the sections marked "Older Version."``
 ## About AlphaPulldown
 
 AlphaPulldown is an implementation of [AlphaFold-Multimer](https://github.com/google-deepmind/alphafold) designed for customizable high-throughput screening of protein-protein interactions. Besides, AlphaPulldown provides additional customizations of the AlphaFold which include custom structural templates, MMseqs2 multiple sequence alignment (MSA), protein fragment predictions, and implementation of cross-link mass spec data using [AlphaLink2](https://github.com/Rappsilber-Laboratory/AlphaLink2/tree/main), [add Integrates experimental models into AlphaFold pipeline using custom multimeric databases].
@@ -436,6 +436,24 @@ ${\color{red} Correct\ if\ there\ are\ any\ changes}$
 
 ## 2. Predict structures (GPU stage)
 ### 2.1 Basic run
+This step requires pickle files (.pkl) that were generated during the [first step](#1-compute-multiple-sequence-alignment-msa-and-template-features-cpu-stage).
+Secondly, for this step, you should provide a list of protein combinations to predict. 
+
+If you have three features pickle files for three proteins (`protein_A.pkl`, `protein_B.pkl`, `protein_C.pkl`) and you want to predict their monomeric structure, list the names of the structures in separate lines:
+```
+protein_A
+protein_B
+protein_C
+```
+To predict complexes, lines should contain semicolon `;` delimited names. For homo-oligomers instead of writing the same name you can you can indicate a number of protein copies after the name of protein and `,`. The file for prediction three complexes ABC, BB, BBBB, CCA will be like the following:
+```
+protein_A;protein_B;protein_C
+protein_B;protein_B
+protein_B,4
+protein_C,2;protein_A
+```
+
+To predict complexes you should write
 ```
 run_multimer_jobs.py \
   --mode=custom \
