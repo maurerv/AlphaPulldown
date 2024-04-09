@@ -446,7 +446,7 @@ protein_A
 protein_B
 protein_C
 ```
-You also can specify the part of the protein to predict. To do so, add a range of residues after coma `,` which will be used for the prediction (`n1-n2`). Counting stars from 1 and both residues `n1` and `n2` are included in the range. File to predict structure of the first one hundred residues of protein will be like this:
+You can also specify the part of the protein to predict. To do so, add a range of residues after coma `,` which will be used for the prediction (`n1-n2`). Counting stars from 1 and both residues `n1` and `n2` are included in the range. File to predict structure of the first one hundred residues of protein will be like this:
 ```
 protein_A,1-100
 ```
@@ -462,22 +462,38 @@ You can combine indications of homo-oligomers number and residue range. To predi
 protein_A,4,1-100;protein_B
 ```
 
-To predict complexes activate AlphaPulldown environment and run script create_individual_features.py as follows:
+To predict complexes, activate AlphaPulldown environment and run script create_individual_features.py as follows:
  ```bash
  source activate AlphaPulldown
  ```
 ```
 run_multimer_jobs.py \
   --mode=custom \
-  --monomer_objects_dir=<directory that stores monomer pickle files> \ 
+  --monomer_objects_dir=<dir that stores monomer pickle files> \ 
   --protein_lists=<protein_list.txt> \
   --output_path=<path to output directory> \ 
   --num_cycle=<any number e.g. 3> 
 ```
-${\color{red}Do\ we\ need\ to\ specify\ datadir?}$
-**{\color{red} text}**
+$\textrm{\color{red}Do we need to specify data dir?}$
+* Instead of `<dir that stores monomer pickle files>` provide a path to the directory that contains features .pkl files form the step one.
+* Instead of `<protein_list.txt>` provide a path to the list of prtoins combinations.
+* Instead of `<path to output directory>` provide a path where subdirectories with final structures will be saved.
+* `--num_cycle` flag takes a number of recycles, which indicate a number of times that AlphaFold neural networks will run, taking the output of one cycle as input for the next cycle. Increaseing this number you may get a better final structure, essepecialy for big complexes. However, bigger values proportionally increaeses runtime.
 
-
+The result of `create_individual_features.py` is a set of directories for specified protein complex. Every dirictory contains `ranked_*.pdb` files ranked from the best to the worst quality, and coresponding MSA plots in png format.
+Full structure of the output directory is the following:
+```
+<complex_name>/
+    <complex_name>_ranked_{0,1,2,3,4}.png
+    ranked_{0,1,2,3,4}.pdb
+    ranking_debug.json
+    result_model_{1,2,3,4,5}_*.pkl
+    timings.json
+    unrelaxed_model_{1,2,3,4,5}_*.pdb
+```
+Please refer to [AlphaFold manual](https://github.com/google-deepmind/alphafold) for more details on output files.
+>[!Caution]
+>Since AlphaPulldown is designed for screening the default output of its run doesn't relax the structures, please use --models_to_relax=best FLAG to relax ranked_0 structure.
 
 ## 3. Analysis and Visualization
 ### Results table
