@@ -436,52 +436,59 @@ ${\color{red} Correct\ if\ there\ are\ any\ changes}$
 
 ## 2. Predict structures (GPU stage)
 ### 2.1 Basic run
-This step requires pickle files (.pkl) that were generated during the [first step](#1-compute-multiple-sequence-alignment-msa-and-template-features-cpu-stage).
-Secondly, for this step, you should provide a list of protein combinations to predict.
+This step requires the pickle files (.pkl) generated during the [first stage](#1-compute-multiple-sequence-alignment-msa-and-template-features-cpu-stage).
+Additionally, you'll need to provide a list of protein combinations you intend to predict.
 
-#### Protein combinations file
-If you have three features pickle files for three proteins (`protein_A.pkl`, `protein_B.pkl`, `protein_C.pkl`) and you want to predict their monomeric structure, list the names of the structures in separate lines:
-```
-protein_A
-protein_B
-protein_C
-```
-You can also specify the part of the protein to predict. To do so, add a range of residues after coma `,` which will be used for the prediction (`n1-n2`). Counting stars from 1 and both residues `n1` and `n2` are included in the range. File to predict structure of the first one hundred residues of protein will be like this:
-```
-protein_A,1-100
-```
-To predict complexes, lines should contain semicolon `;` delimited names. For homo-oligomers instead of writing the same name you can you can indicate a number of protein copies after the name of protein and `,`. The file for prediction three complexes ABC, BB, BBBB, CCA will be like the following:
-```
-protein_A;protein_B;protein_C
-protein_B;protein_B
-protein_B,4
-protein_C,2;protein_A
-```
-You can combine indications of homo-oligomers number and residue range. To predict protein B with tetramer of the first one hundred residues of protein A:
-```
-protein_A,4,1-100;protein_B
-```
+#### Protein Combinations File
+Here's how to structure your combinations file `protein_list.txt`, with explanations:
 
-To predict complexes, activate AlphaPulldown environment and run script create_individual_features.py as follows:
+**Prediction of monomers**:
+  ```
+  protein_A
+  protein_B
+  protein_C,1-100  
+  ```
+  * Each line is a separate prediction
+  * Lines like `protein_A` will trigger a prediction of the entire sequence.
+  * To predict specific residue ranges (e.g., the first 100 residues of protein_C), use the format "protein_C,1-100".
+
+ **Prediction of complexes**:
+   ```
+   protein_A;protein_B;protein_C
+   protein_B;protein_B 
+   protein_B,4
+   protein_C,2;protein_A
+   protein_A,4,1-100;protein_B
+   ```
+   * Use semicolons (`;`) to separate protein names within a complex.
+   * Instead of repeating the protein name for homooligomers, specify the number of copies after the protein's name (e.g., `protein_B,4` for a tetramer).
+   * Combine residue ranges and homooligomer notation for specific predictions (e.g., `protein_A,4,1-100;protein_B`).
+
+#### Running Structure Prediction
+To predict structures, activate the AlphaPulldown environment and run the script `run_multimer_jobs.py` as follows:
  ```bash
  source activate AlphaPulldown
  ```
-```
+```bash
 run_multimer_jobs.py \
   --mode=custom \
-  --monomer_objects_dir=<dir that stores monomer pickle files> \ 
+  --monomer_objects_dir=<dir that stores feature pickle files> \ 
   --protein_lists=<protein_list.txt> \
   --output_path=<path to output directory> \ 
   --num_cycle=<any number e.g. 3> 
 ```
 $\textrm{\color{red}Do we need to specify data dir?}$
-* Instead of `<dir that stores monomer pickle files>` provide a path to the directory that contains features .pkl files form the step one.
-* Instead of `<protein_list.txt>` provide a path to the list of prtoins combinations.
-* Instead of `<path to output directory>` provide a path where subdirectories with final structures will be saved.
-* `--num_cycle` flag takes a number of recycles, which indicate a number of times that AlphaFold neural networks will run, taking the output of one cycle as input for the next cycle. Increaseing this number you may get a better final structure, essepecialy for big complexes. However, bigger values proportionally increaeses runtime.
 
-The result of `create_individual_features.py` is a set of directories for specified protein complex. Every dirictory contains `ranked_*.pdb` files ranked from the best to the worst quality, and coresponding MSA plots in png format.
-Full structure of the output directory is the following:
+Explanation of arguments:
+* Instead of `<dir that stores feature pickle files>` provide the path to the directory containing the `.pkl` feature files generated in the previous step.
+* Instead of `<protein_list.txt>` provide the path to a text file containing a list of protein combinations to be modeled.
+* Instead of `<path to output directory>` provide the path where subdirectories containing the final structures will be saved.
+* `--num_cycle` This flag specifies the number of times the AlphaFold neural network will run, using the output of one cycle as input for the next. Increasing this number may improve the quality of the final structures (especially for large complexes), but it will also increase the runtime.
+
+#### Output
+
+The `run_multimer_jobs.py` script generates a set of directories for each specified protein complex.
+Full structure of the output directories is the following:
 ```
 <complex_name>/
     <complex_name>_ranked_{0,1,2,3,4}.png
@@ -491,9 +498,14 @@ Full structure of the output directory is the following:
     timings.json
     unrelaxed_model_{1,2,3,4,5}_*.pdb
 ```
-Please refer to [AlphaFold manual](https://github.com/google-deepmind/alphafold) for more details on output files.
->[!Caution]
->Since AlphaPulldown is designed for screening the default output of its run doesn't relax the structures, please use `--models_to_relax=best` FLAG to relax ranked_0 structure.
+Please refer to the [AlphaFold manual](https://github.com/google-deepmind/alphafold) for more details on output files.
+
+**Key files**:
+* `ranked_{0,1,2,3,4}.pdb`: Structure files ranked from best to worst predicted quality.
+*  `<complex_name>_ranked_{0,1,2,3,4}.png`: Plots of predicted aligned errors (PAE) providing a visual representation of the structure's confidence.
+
+> [!Caution]
+> AlphaPulldown is designed for screening, so its default output doesn't relax structures. To relax the top-ranked structure (`ranked_0.pdb`), you can run AlphaPulldown with the `--models_to_relax=best` flag or relax structures using script $\text{\color{red} add script name}$.
 
 ## 3. Analysis and Visualization
 ### Results table
