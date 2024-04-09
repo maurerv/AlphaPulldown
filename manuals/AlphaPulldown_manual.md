@@ -445,6 +445,10 @@ protein_A
 protein_B
 protein_C
 ```
+You also can specify the part of the protein to predict. To do so, add a range of residues after coma `,` which will be used for the prediction (`n1-n2`). Counting stars from 1 and both residues `n1` and `n2` are included in the range. File to predict structure of the first one hundred residues of protein will be like this:
+```
+protein_A,1-100
+```
 To predict complexes, lines should contain semicolon `;` delimited names. For homo-oligomers instead of writing the same name you can you can indicate a number of protein copies after the name of protein and `,`. The file for prediction three complexes ABC, BB, BBBB, CCA will be like the following:
 ```
 protein_A;protein_B;protein_C
@@ -452,8 +456,12 @@ protein_B;protein_B
 protein_B,4
 protein_C,2;protein_A
 ```
+You can combine indications of homo-oligomers number and residue range. To predict protein B with tetramer of the first one hundred residues of protein A 
+```
+protein_A,4,1-100;protein_B
+```
 
-To predict complexes you should write
+To predict complexes run
 ```
 run_multimer_jobs.py \
   --mode=custom \
@@ -464,6 +472,9 @@ run_multimer_jobs.py \
   --data_dir=/path-to-Alphafold-data-dir \ 
   --job_index=$SLURM_ARRAY_TASK_ID    
 ```
+
+
+
 
 ## 3. Analysis and Visualization
 ### Results table
