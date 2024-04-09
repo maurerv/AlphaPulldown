@@ -437,8 +437,9 @@ ${\color{red} Correct\ if\ there\ are\ any\ changes}$
 ## 2. Predict structures (GPU stage)
 ### 2.1 Basic run
 This step requires pickle files (.pkl) that were generated during the [first step](#1-compute-multiple-sequence-alignment-msa-and-template-features-cpu-stage).
-Secondly, for this step, you should provide a list of protein combinations to predict. 
+Secondly, for this step, you should provide a list of protein combinations to predict.
 
+#### Protein combinations file
 If you have three features pickle files for three proteins (`protein_A.pkl`, `protein_B.pkl`, `protein_C.pkl`) and you want to predict their monomeric structure, list the names of the structures in separate lines:
 ```
 protein_A
@@ -456,22 +457,24 @@ protein_B;protein_B
 protein_B,4
 protein_C,2;protein_A
 ```
-You can combine indications of homo-oligomers number and residue range. To predict protein B with tetramer of the first one hundred residues of protein A 
+You can combine indications of homo-oligomers number and residue range. To predict protein B with tetramer of the first one hundred residues of protein A:
 ```
 protein_A,4,1-100;protein_B
 ```
 
-To predict complexes run
+To predict complexes activate AlphaPulldown environment and run script create_individual_features.py as follows:
+ ```bash
+ source activate AlphaPulldown
+ ```
 ```
 run_multimer_jobs.py \
   --mode=custom \
-  --output_path=<path to output directory> \ 
-  --num_cycle=3 \
-  --oligomer_state_file=example_oligomer_state_file.txt \ 
   --monomer_objects_dir=<directory that stores monomer pickle files> \ 
-  --data_dir=/path-to-Alphafold-data-dir \ 
-  --job_index=$SLURM_ARRAY_TASK_ID    
+  --protein_lists=<protein_list.txt> \
+  --output_path=<path to output directory> \ 
+  --num_cycle=<any number e.g. 3> 
 ```
+${\color{red}Do\ we\ need\ to\ specify\ datadir?}$
 
 
 
