@@ -14,3 +14,7 @@
 	path = ColabFold
 	url = https://github.com/sokrypton/ColabFold.git
 	branch = main
+[submodule "openfold"]
+	path = openfold
+	url = https://github.com/dingquanyu/openfold.git
+	branch = main
