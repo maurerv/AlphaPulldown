@@ -5,12 +5,20 @@
 ## About AlphaPulldown
 
 AlphaPulldown is an implementation of [AlphaFold-Multimer](https://github.com/google-deepmind/alphafold) designed for customizable high-throughput screening of protein-protein interactions. Besides, AlphaPulldown provides additional customizations of the AlphaFold which include custom structural templates, MMseqs2 multiple sequence alignment (MSA), protein fragment predictions, and implementation of cross-link mass spec data using [AlphaLink2](https://github.com/Rappsilber-Laboratory/AlphaLink2/tree/main), [add Integrates experimental models into AlphaFold pipeline using custom multimeric databases].
-![AP_pipeline](../manuals/AP_pipeline.png)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="../manuals/AP_pipeline_dark.png">
+  <source media="(prefers-color-scheme: light)" srcset="../manuals/AP_pipeline.png">
+  <img alt="Shows an illustrated sun in light mode and a moon with stars in dark mode." src="../manuals/AP_pipeline.png">
+</picture>
  
 The original AlphaFold-Multimer protein complex prediction pipeline may be split into two main steps: **(1)** the databases search step that generates Features and MSA for every individual protein sequence and **(2)** protein complex structure prediction itself. AlphaPluldown executes these steps as independent scripts which is more suitable for modeling a large number of protein complexes. Additionally, **(3)** AlphaPluldown provides two options for the downstream analysis of the resulting protein models.
 
 
-![AP_modes](../manuals/AP_modes.png)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="../manuals/AP_modes_dark.png">
+  <source media="(prefers-color-scheme: light)" srcset="../manuals/AP_modes.png">
+  <img alt="Shows an illustrated sun in light mode and a moon with stars in dark mode." src="../manuals/AP_modes.png">
+</picture>
 A key strength of AlphaPulldown is its ability to flexibly define how proteins are combined for structure prediction of protein complexes. Here are the two main approaches you can use:
 
 * Single file: Create a file where each row lists the protein sequences you want to predict together.
