@@ -2,7 +2,13 @@
 [![Downloads](https://static.pepy.tech/badge/alphapulldown)](https://pepy.tech/project/alphapulldown)  [![python3.10](https://img.shields.io/badge/python-3.10-blue.svg)](https://www.python.org/downloads/release/python-3100/) ![GPL3 license](https://img.shields.io/badge/license-GPLv3-green)   
 
 AlphaPulldown is an implementation of [AlphaFold](https://github.com/google-deepmind/alphafold), designed for customizable high-throughput screening of protein-protein interactions.
-![demo1](./manuals/AP_pipeline.png)
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="./manuals/AP_pipeline_dark.png">
+  <source media="(prefers-color-scheme: light)" srcset="./manuals/AP_pipeline.png">
+  <img alt="Shows an illustrated sun in light mode and a moon with stars in dark mode." src="../manuals/AP_pipeline.png">
+</picture>
+
 It offers the following features:
 
 * **Сonvenient command line interface**: The prediction requires only an input _fasta file_ with all proteins of interest and a _description file_ of protein combinations to predict
