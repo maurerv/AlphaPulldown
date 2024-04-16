@@ -22,6 +22,7 @@ The original AlphaFold-Multimer protein complex prediction pipeline may be split
   <source media="(prefers-color-scheme: light)" srcset="../manuals/AP_modes.png">
   <img alt="Shows an illustrated sun in light mode and a moon with stars in dark mode." src="../manuals/AP_modes.png">
 </picture>
+
 A key strength of AlphaPulldown is its ability to flexibly define how proteins are combined for structure prediction of protein complexes. Here are the three main approaches you can use:
 
 * Single file: Create a file where each row lists the protein sequences you want to predict together.
@@ -488,6 +489,7 @@ run_multimer_jobs.py \
   --num_cycle=<any number e.g. 3> 
 ```
 $\textrm{\color{red}Do we need to specify data dir?}$
+$\textrm{\color{red}Can we delete custom mode here?}$
 
 Explanation of arguments:
 * Instead of `<dir that stores feature pickle files>` provide the path to the directory containing the `.pkl` feature files generated in the previous step.
@@ -515,7 +517,66 @@ Please refer to the [AlphaFold manual](https://github.com/google-deepmind/alphaf
 *  `<complex_name>_ranked_{0,1,2,3,4}.png`: Plots of predicted aligned errors (PAE) providing a visual representation of the structure's confidence.
 
 > [!Caution]
-> AlphaPulldown is designed for screening, so its default output doesn't relax structures. To relax the top-ranked structure (`ranked_0.pdb`), you can run AlphaPulldown with the `--models_to_relax=best` flag or relax structures using script $\text{\color{red} add script name}$.
+> AlphaPulldown is designed for screening, so its default output doesn't relax structures. To relax the top-ranked structure (`ranked_0.pdb`), you can run AlphaPulldown with the `--models_to_relax=best` flag.
+
+### 2.2 Pulldown and All versus all modes
+Instead of manually typing all combinations of proteins, AlphaPulldown provides two different modes of automatic generation of such combinations.
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="../manuals/AP_modes_dark.png">
+  <source media="(prefers-color-scheme: light)" srcset="../manuals/AP_modes.png">
+  <img alt="Shows an illustrated sun in light mode and a moon with stars in dark mode." src="../manuals/AP_modes.png">
+</picture>
+
+#### Multiple inputs "pulldown" mode
+
+This mode allows to provide two or more lists of proteins that will generate all combinations of proteins from one list with all proteins from another list.
+If you want to emulate _in silico_ pulldown of some hypothetical protein_A bait against proteins B-G you can use two `protein_list.csv` files:
+
+The first `protein_list1.csv`:
+```
+protein_A
+```
+
+The second `protein_list2.csv`:
+```
+protein_B
+protein_C
+protein_D
+protein_E
+protein_F
+protein_G
+```
+
+This results in the following combinations of proteins: A-B, A-C, A-D, A-E, A-F, A-G.
+
+Can you add the third ``protein_list3.csv`:
+```
+protein_X
+protein_Z
+```
+And resulting models will contain proteins A-B-X, A-B-Z, A-C-X, A-C-Z...
+
+In fact, you can provide as many files as you wish, the number of combinations you will receive is the product of numbers of lines in the input files.
+
+Lines in files should not necessarily be single proteins. Input files follow the same rules as described for [2.1 Basic run](#21-basic-run). 
+
+$\text{\color{red} add comments}$.
+
+To run `run_multimer_jobs.py` in `pulldown` mode use the following script:
+
+```bash
+run_multimer_jobs.py \
+  --mode=pulldown \
+  --monomer_objects_dir=<dir that stores feature pickle files> \ 
+  --protein_lists=<protein_list1.csv>,<protein_list2.csv> \
+  --output_path=<path to output directory> \ 
+  --num_cycle=<any number e.g. 3> 
+```
+* From [2.1 Basic run](#21-basic-run) this example is different in `--mode=pulldown` flag ($\text{\color{red}don't need to mention it if delete custom mode flag form the basic run}$.) that defines mode of run.
+* Instead of `<protein_list1.txt>`,`<protein_list2.csv>` provides the paths to the files containing a list of protein combinations to be modeled.
+ 
+#### "all_vs_all" mode
 
 ## 3. Analysis and Visualization
 ### Results table
