@@ -550,7 +550,7 @@ protein_G
 
 This results in the following combinations of proteins: A-B, A-C, A-D, A-E, A-F, A-G.
 
-Can you add the third ``protein_list3.csv`:
+Can you add the third `protein_list3.csv`:
 ```
 protein_X
 protein_Z
