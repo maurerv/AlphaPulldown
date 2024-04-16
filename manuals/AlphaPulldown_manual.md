@@ -1,10 +1,12 @@
 # AlphaPulldown Manual
 
-`[add version]`<br>
-> AlphaPulldown fully **maintains backward compatibility** with input files and scripts from versions 1.x. For instructions on using older files and scripts, please refer to the sections marked "Older Version."``
+`version 2.0 (beta)`
+
+> AlphaPulldown fully **maintains backward compatibility** with input files and scripts from versions 1.x. For instructions on using older files and scripts, please refer to the sections marked "Older Version".
+
 ## About AlphaPulldown
 
-AlphaPulldown is an implementation of [AlphaFold-Multimer](https://github.com/google-deepmind/alphafold) designed for customizable high-throughput screening of protein-protein interactions. Besides, AlphaPulldown provides additional customizations of the AlphaFold which include custom structural templates, MMseqs2 multiple sequence alignment (MSA), protein fragment predictions, and implementation of cross-link mass spec data using [AlphaLink2](https://github.com/Rappsilber-Laboratory/AlphaLink2/tree/main), [add Integrates experimental models into AlphaFold pipeline using custom multimeric databases].
+AlphaPulldown is an implementation of [AlphaFold-Multimer](https://github.com/google-deepmind/alphafold) designed for customizable high-throughput screening of protein-protein interactions. Besides, AlphaPulldown provides additional customizations of the AlphaFold which include custom structural multimeric templates (TrueMultimer), MMseqs2 multiple sequence alignment (MSA) and [ColabFold](https://github.com/sokrypton/ColabFold) databases, protein fragment predictions, and implementation of cross-link mass spec data using [AlphaLink2](https://github.com/Rappsilber-Laboratory/AlphaLink2/tree/main).
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="../manuals/AP_pipeline_dark.png">
@@ -20,13 +22,14 @@ The original AlphaFold-Multimer protein complex prediction pipeline may be split
   <source media="(prefers-color-scheme: light)" srcset="../manuals/AP_modes.png">
   <img alt="Shows an illustrated sun in light mode and a moon with stars in dark mode." src="../manuals/AP_modes.png">
 </picture>
-A key strength of AlphaPulldown is its ability to flexibly define how proteins are combined for structure prediction of protein complexes. Here are the two main approaches you can use:
+A key strength of AlphaPulldown is its ability to flexibly define how proteins are combined for structure prediction of protein complexes. Here are the three main approaches you can use:
 
 * Single file: Create a file where each row lists the protein sequences you want to predict together.
 * Multiple Files: Provide several files, each containing protein sequences. AlphaPulldown will automatically generate all possible combinations by pairing rows of protein names from each file.
+* All versus all: AlphaPulldown will generate all possible non-redundant combinations of proteins in the list. 
 
 
-Let's take a closer look at the AlphaPuldown pipeline:
+AlphaPuldown work pipeline is the following:
 
 
 1) **Features and MSA**: At this step for every queried protein sequence AlphaFold searches for preinstalled databases using HMMER and calculates multiple sequence alignment (MSA) for all finden homologues. Additionally, AlphaFold searches for homolog structures that will be used as templates for features generation. This step requires only CPU to run.<be>
@@ -34,17 +37,17 @@ There are a few customizable options for this step:
 
    * To speed up the search process MMSeq2 ${\color{red} [add link]}$ instead of HHMER can be used.<br>
    * Use custom MSA ${\color{red} [add link]}$.
-   * _NEW:_ Use a custom structural template ${\color{red} [add link]}$. Including true multimer.
+   * _NEW:_ Use a custom structural template ${\color{red} [add link]}$. Including a multimeric one (TrueMultimer mode).
   
 
 2) **Structure prediction**: At this step, the AlaphaFold neural network runs and produces the final protein structure, which requires GPU computational powers.
    Here, AlphaPulldown allows:
-   * Read all combinations of proteins to predict from one file
-   * Specify the number of residues that correspond to the part of the protein you want to predict
-   * Adjust MSA depth (allows control over how much the initial MSA influences the final model)
+   * Read all combinations of proteins to predict from one file or generate combinations of proteins using `pulldown` or `all_versus_all` modes.
+   * Specify the number of residues that correspond to the part of the protein you want to predict.
+   * Adjust MSA depth (allows control over how much the initial MSA influences the final model).
    * Crosslinking data implementation with [AlphaLink2](https://github.com/Rappsilber-Laboratory/AlphaLink2/tree/main).
 
-3) **Results analysis**: The results for all predicted models could be systematized using one of the following two options:
+3) **Results analysis**: The results for all predicted models could be systematized using one of the following options:
    * Table that contains various scores and physical parameters of protein complexes' interaction.
    * Jupyter notebook with interactive 3D models and PAE plots.
 <br>
