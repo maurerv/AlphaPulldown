@@ -28,9 +28,7 @@ A key strength of AlphaPulldown is its ability to flexibly define how proteins a
 * Multiple Files: Provide several files, each containing protein sequences. AlphaPulldown will automatically generate all possible combinations by pairing rows of protein names from each file.
 * All versus all: AlphaPulldown will generate all possible non-redundant combinations of proteins in the list. 
 
-
-AlphaPuldown work pipeline is the following:
-
+AlphaPulldown work pipeline is the following:
 
 1) **Features and MSA**: At this step for every queried protein sequence AlphaFold searches for preinstalled databases using HMMER and calculates multiple sequence alignment (MSA) for all finden homologues. Additionally, AlphaFold searches for homolog structures that will be used as templates for features generation. This step requires only CPU to run.<be>
 There are a few customizable options for this step:
