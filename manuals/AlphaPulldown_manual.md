@@ -519,7 +519,9 @@ Please refer to the [AlphaFold manual](https://github.com/google-deepmind/alphaf
 > [!Caution]
 > AlphaPulldown is designed for screening, so its default output doesn't relax structures. To relax the top-ranked structure (`ranked_0.pdb`), you can run AlphaPulldown with the `--models_to_relax=best` flag.
 
-### 2.2 Pulldown and All versus all modes
+### 2.2 FLAGS
+
+### 2.3 Pulldown and All versus all modes
 Instead of manually typing all combinations of proteins, AlphaPulldown provides two different modes of automatic generation of such combinations.
 
 <picture>
@@ -589,6 +591,9 @@ protein_D
 protein_E
 ```
 The resulting models will be combinations of proteins A-B, A-C, A-D, A-E, B-C, B-D, B-E, C-D, C-E, D-E. 
+
+>[!Caution]
+> The number of predictions rapidly increases with the number of lines in the input `protein_list.csv.` 
 
 Lines in files should not necessarily be single proteins. Input files follow the same rules as described for [2.1 Basic run](#21-basic-run). It can contain several protein names, indicate a number of oligomers, and have residue ranges.
 
