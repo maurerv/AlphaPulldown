@@ -522,7 +522,7 @@ Please refer to the [AlphaFold manual](https://github.com/google-deepmind/alphaf
 ### 2.2 FLAGS
 
 Structures prediction script `run_multimer_jobs.py` has several several optional FLAGS:
-
+$\text{\color{red}add FLAGS}$
 
 ### 2.3 Pulldown and All versus all modes
 Instead of manually typing all combinations of proteins, AlphaPulldown provides two different modes of automatic generation of such combinations.
@@ -612,8 +612,10 @@ run_multimer_jobs.py \
   --num_cycle=<any number e.g. 3> 
 ```
 
+### 2.X Older version
+
 ## 3. Analysis and Visualization
 ### Results table
 ### Jupyter notebook
-
+## Running with SLURM (EMBL cluster)
 ## SnakeMake running
