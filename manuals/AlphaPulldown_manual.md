@@ -203,7 +203,7 @@ Go to the next step [2.1. Basic run](#2-predict-structures-gpu-stage).
 
 ### 1.2. FLAGS
 
-Features calculation script ```create_individual_features.py``` have several optional FLAGS:
+Features calculation script ```create_individual_features.py``` has several optional FLAGS:
 * `--save_msa_files`
    By default is **False** to save storage stage but can be changed into **True**. If it is set to ```True```, the programme will 
    create individual folder for each protein. The output directory will look like:
@@ -520,6 +520,9 @@ Please refer to the [AlphaFold manual](https://github.com/google-deepmind/alphaf
 > AlphaPulldown is designed for screening, so its default output doesn't relax structures. To relax the top-ranked structure (`ranked_0.pdb`), you can run AlphaPulldown with the `--models_to_relax=best` flag.
 
 ### 2.2 FLAGS
+
+Structures prediction script `run_multimer_jobs.py` has several several optional FLAGS:
+
 
 ### 2.3 Pulldown and All versus all modes
 Instead of manually typing all combinations of proteins, AlphaPulldown provides two different modes of automatic generation of such combinations.
