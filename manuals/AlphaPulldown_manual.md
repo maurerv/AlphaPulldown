@@ -559,9 +559,7 @@ And resulting models will contain proteins A-B-X, A-B-Z, A-C-X, A-C-Z...
 
 In fact, you can provide as many files as you wish, the number of combinations you will receive is the product of numbers of lines in the input files.
 
-Lines in files should not necessarily be single proteins. Input files follow the same rules as described for [2.1 Basic run](#21-basic-run). 
-
-$\text{\color{red} add comments}$.
+Lines in files should not necessarily be single proteins. Input files follow the same rules as described for [2.1 Basic run](#21-basic-run). It can contain several protein names, indicate a number of oligomers, and have residue ranges.
 
 To run `run_multimer_jobs.py` in `pulldown` mode use the following script:
 
@@ -570,13 +568,41 @@ run_multimer_jobs.py \
   --mode=pulldown \
   --monomer_objects_dir=<dir that stores feature pickle files> \ 
   --protein_lists=<protein_list1.csv>,<protein_list2.csv> \
-  --output_path=<path to output directory> \ 
+  --output_path=<path to output directory> \
+  --data_dir=<path to AlphaFold data directory> \ 
   --num_cycle=<any number e.g. 3> 
 ```
-* From [2.1 Basic run](#21-basic-run) this example is different in `--mode=pulldown` flag ($\text{\color{red}don't need to mention it if delete custom mode flag form the basic run}$.) that defines mode of run.
-* Instead of `<protein_list1.txt>`,`<protein_list2.csv>` provides the paths to the files containing a list of protein combinations to be modeled.
+From [2.1 Basic run](#21-basic-run) this example is different with:
+* `--mode=pulldown` flag ($\text{\color{red}don't need to mention it if delete custom mode flag form the basic run}$.) that defines the mode of the run.
+* Instead of `<protein_list1.csv>`,`<protein_list2.csv>` provides the paths to the files containing a list of protein combinations to be modeled.
  
 #### "all_vs_all" mode
+
+In this mode, AlphaPulldown takes lines from the input `protein_list.csv` file and generates all possible combinations of these lines.
+
+It is useful when you have a set of proteins, and you want to find out which interact with which. If you provide the list of proteins:
+```
+protein_A
+protein_B
+protein_C
+protein_D
+protein_E
+```
+The resulting models will be combinations of proteins A-B, A-C, A-D, A-E, B-C, B-D, B-E, C-D, C-E, D-E. 
+
+Lines in files should not necessarily be single proteins. Input files follow the same rules as described for [2.1 Basic run](#21-basic-run). It can contain several protein names, indicate a number of oligomers, and have residue ranges.
+
+To run `run_multimer_jobs.py` in `all_vs_all` mode use the following script:
+
+```bash
+run_multimer_jobs.py \
+  --mode=all_vs_all \
+  --monomer_objects_dir=<dir that stores feature pickle files>
+  --protein_lists=<protein_list.csv> \
+  --output_path=<path to output directory> \ 
+  --data_dir=<path to AlphaFold data directory> \ 
+  --num_cycle=<any number e.g. 3> 
+```
 
 ## 3. Analysis and Visualization
 ### Results table
