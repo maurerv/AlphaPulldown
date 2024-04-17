@@ -596,7 +596,7 @@ protein_E
 The resulting models will be combinations of proteins A-B, A-C, A-D, A-E, B-C, B-D, B-E, C-D, C-E, D-E. 
 
 >[!Caution]
-> The number of predictions rapidly increases with the number of lines in the input `protein_list.csv.` 
+> The number of predictions rapidly increases with the number of lines in the input `protein_list.csv`. 
 
 Lines in files should not necessarily be single proteins. Input files follow the same rules as described for [2.1 Basic run](#21-basic-run). It can contain several protein names, indicate a number of oligomers, and have residue ranges.
 
