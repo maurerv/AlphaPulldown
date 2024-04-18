@@ -614,8 +614,32 @@ run_multimer_jobs.py \
 
 ### 2.X Older version
 
+
 ## 3. Analysis and Visualization
+The resulting predictions from the [step 2](#2-predict-structures-gpu-stage) can be used directly as they are. However, for evaluation systematization and ranking of the prediction, you can use an interactive Jupyter Notebook and/or table with models scores. 
+
+### Jupyter Notebook
+$\text{\color{red}Is Jupiter-lab installed in the env?}$.
+In order to create the notebook run:
+
+Go to the model's output directory from the [step 2](#2-predict-structures-gpu-stage).
+```bash
+cd <models_output_dir>
+```
+
+And run the script in the activated conda environment:
+```bash
+source activate AlphaPulldown
+jupyter-lab output.ipynb
+```
+>[!Note]
+>If you run AlphaPulldown on a remote computer cluster, you will need a graphical connection to open the notebook in a browser, mount the remote directory to your local computer as a network directory, or copy the entire ```<models_output_dir>``` to the local computer.
+>$\text{\color{red}Add example}$
+
+#### Jupyter Notebook parameters
+
+* ```--cutoff=<value>``` - Check the value of PAE between chains. In the case of multimers, the analysis program will create the notebook only from models with inter-chain PAE values smaller than the cutoff.
+
 ### Results table
-### Jupyter notebook
 ## Running with SLURM (EMBL cluster)
 ## SnakeMake running
