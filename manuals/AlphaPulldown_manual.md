@@ -644,7 +644,8 @@ jupyter-lab output.ipynb
 > <b>Run Jupyter Notebook on cluster</b>
 > </summary> 
 > $\text{\color{red}Add example}$
-> ```jupyter-lab --no-browser --port=XXXX```
+> 
+> `jupyter-lab --no-browser --port=XXXX`
 > replace XXXX with any number of port you want to use
 > </details>
 
