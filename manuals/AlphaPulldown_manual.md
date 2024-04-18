@@ -647,6 +647,7 @@ $\text{\color{red}Add how to run example}$
   <source media="(prefers-color-scheme: light)" srcset="../manuals/example_notebook_screenshot.png">
   <img alt="Shows an illustrated sun in light mode and a moon with stars in dark mode." src="../manuals/example_notebook_screenshot.png">
 </picture>
+
 $\text{\color{red}Add drak/light screenshots}$
 
 ### Results table
