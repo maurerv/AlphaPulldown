@@ -627,14 +627,28 @@ Go to the model's output directory from the [step 2](#2-predict-structures-gpu-s
 cd <models_output_dir>
 ```
 
-And run the script in the activated conda environment:
+And run the script in the activated conda environment to create a Jupyter Notebook:
 ```bash
 source activate AlphaPulldown
+create_notebook.py --cutoff=5.0 --output_dir=<models_output_dir>
+```
+
+Then launch the created notebook:
+```bash
 jupyter-lab output.ipynb
 ```
 >[!Note]
 >If you run AlphaPulldown on a remote computer cluster, you will need a graphical connection to open the notebook in a browser, mount the remote directory to your local computer as a network directory, or copy the entire ```<models_output_dir>``` to the local computer.
->$\text{\color{red}Add example}$
+> <details>
+> <summary> 
+> <b>Run Jupyter Notebook on cluster</b>
+> </summary> 
+> $\text{\color{red}Add example}$
+> ```jupyter-lab --no-browser --port=XXXX```
+> replace XXXX with any number of port you want to use
+> </details>
+
+>
 
 #### Jupyter Notebook parameters
 
@@ -651,5 +665,8 @@ $\text{\color{red}Add how to run example}$
 $\text{\color{red}Add drak/light screenshots}$
 
 ### Results table
+
+
+
 ## Running with SLURM (EMBL cluster)
 ## SnakeMake running
