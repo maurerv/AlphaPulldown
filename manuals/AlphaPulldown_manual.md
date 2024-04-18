@@ -640,6 +640,15 @@ jupyter-lab output.ipynb
 
 * ```--cutoff=<value>``` - Check the value of PAE between chains. In the case of multimers, the analysis program will create the notebook only from models with inter-chain PAE values smaller than the cutoff.
 
+$\text{\color{red}Add how to run example}$
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="../manuals/example_notebook_screenshot.png">
+  <source media="(prefers-color-scheme: light)" srcset="../manuals/example_notebook_screenshot.png">
+  <img alt="Shows an illustrated sun in light mode and a moon with stars in dark mode." src="../manuals/example_notebook_screenshot.png">
+</picture>
+$\text{\color{red}Add drak/light screenshots}$
+
 ### Results table
 ## Running with SLURM (EMBL cluster)
 ## SnakeMake running
