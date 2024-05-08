@@ -657,9 +657,9 @@ jupyter-lab output.ipynb
 $\text{\color{red}Add how to run example}$
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="../manuals/example_notebook_screenshot.png">
-  <source media="(prefers-color-scheme: light)" srcset="../manuals/example_notebook_screenshot.png">
-  <img alt="Shows an illustrated sun in light mode and a moon with stars in dark mode." src="../manuals/example_notebook_screenshot.png">
+  <source media="(prefers-color-scheme: dark)" srcset="../manuals/Jupyter_results_dark.png">
+  <source media="(prefers-color-scheme: light)" srcset="../manuals/Jupyter_results.png">
+  <img alt="Shows an illustrated sun in light mode and a moon with stars in dark mode." src="../manuals/Jupyter_results.png">
 </picture>
 
 $\text{\color{red}Add drak/light screenshots}$
