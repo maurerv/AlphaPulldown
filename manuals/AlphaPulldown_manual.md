@@ -95,7 +95,7 @@ There are a few customizable options for this step:
    </details>
    
 > [!NOTE]
-> Since the local installation of all genetic databases is space-consuming, you can alternatively use the [remotely-run MMseqs2 and ColabFold databases](https://github.com/sokrypton/ColabFold). Use corresponding [instructions](#13-run-using-mmseqs2-and-colabfold-databases-faster)
+> Since the local installation of all genetic databases is space-consuming, you can alternatively use the [remotely-run MMseqs2 and ColabFold databases](https://github.com/sokrypton/ColabFold). Follow the corresponding [instruction](#13-run-using-mmseqs2-and-colabfold-databases-faster).
 
 #### 1. Create Anaconda environment
 
