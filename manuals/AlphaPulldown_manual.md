@@ -1,6 +1,6 @@
 # AlphaPulldown Manual
 
-`version 2.0 (beta)`
+`version 2.0.0 (beta)`
 
 > AlphaPulldown fully **maintains backward compatibility** with input files and scripts from versions 1.x. For instructions on using older files and scripts, please refer to the sections marked "Older Version".
 
@@ -53,7 +53,7 @@ There are a few customizable options for this step:
 
 ## Installation
 
-0. #### Alphafold databases
+#### 0. Alphafold databases
 
    For the standard MSA and features calculation, AlphaPulldow requires Genetic databases. Check if you have downloaded necessary parameters and databases (e.g. BFD, MGnify etc.) as instructed in [AlphFold's documentation](https://github.com/deepmind/alphafold). You should have a directory like below:
 
@@ -94,23 +94,25 @@ There are a few customizable options for this step:
     ```
    </details>
    
-   > Note: Since the local installation of all genetic databases is space-consuming, you can alternatively use the remotely-run MMseqs2 and ColabFold databases ${\color{red} [add\ link]}$.
+> [!NOTE]
+> Since the local installation of all genetic databases is space-consuming, you can alternatively use the [remotely-run MMseqs2 and ColabFold databases](https://github.com/sokrypton/ColabFold). Use corresponding [instructions](#13-run-using-mmseqs2-and-colabfold-databases-faster)
 
-1. #### Create Anaconda environment
+#### 1. Create Anaconda environment
 
-   **Firstly**, install [Anaconda](https://www.anaconda.com/) and create AlphaPulldown environment, gathering necessary dependencies 
-   ```bash
-   conda create -n AlphaPulldown -c omnia -c bioconda -c conda-forge python==3.10 openmm==8.0 pdbfixer==1.9 kalign2 cctbx-base pytest importlib_metadata hhsuite
-   ```
-   
-   **Optionally**, if you do not have it yet on your system, install [HMMER](http://hmmer.org/documentation.html) from Anaconda
-   ```bash
-   source activate AlphaPulldown
-   conda install -c bioconda hmmer
-   ```
-   This usually works, but on some compute systems users may wish to use other versions or optimized builds of already installed HMMER and HH-suite.
+  **Firstly**, install [Anaconda](https://www.anaconda.com/) and create AlphaPulldown environment, gathering necessary dependencies 
+  ```bash
+  conda create -n AlphaPulldown -c omnia -c bioconda -c conda-forge python==3.10 openmm==8.0 pdbfixer==1.9 kalign2 cctbx-base pytest importlib_metadata hhsuite
+  ```
+       
+  **Optionally**, if you do not have it yet on your system, install [HMMER](http://hmmer.org/documentation.html) from Anaconda
+  
+  ```bash
+  source activate AlphaPulldown
+  conda install -c bioconda hmmer
+  ```
+  This usually works, but on some compute systems users may wish to use other versions or optimized builds of already installed HMMER and HH-suite.
 
-2. #### Installation using pip
+#### 2. Installation using pip
 
    Activate the AlphaPulldown environment and install AlphaPulldown
    ```bash
@@ -124,47 +126,53 @@ There are a few customizable options for this step:
    >
    >If you haven't updated your databases according to the requirements of AlphaFold 2.3.0, you can still use AlphaPulldown with your older version of AlphaFold database. Please follow the installation instructions on the [dedicated branch](https://github.com/KosinskiLab/AlphaPulldown/tree/AlphaFold-2.2.0).
 
-   ### Installation for developers
-   <details>
+### Installation for developers
+<details>
    
-   <summary><b>
-    Instructions
-   </b></summary>
+<summary><b>
+Instructions
+</b></summary>
 
-    1. Clone the GitHub repo
-        ```
-        git clone --recurse-submodules git@github.com:KosinskiLab/AlphaPulldown.git
-        cd AlphaPulldown 
-        git submodule init
-        git submodule update 
-        ```
-    2. Create the Conda environment as described in [https://github.com/KosinskiLab/AlphaPulldown/blob/installation-intro-update/README.md#create-anaconda-environment](https://github.com/KosinskiLab/AlphaPulldown/tree/main?tab=readme-ov-file#create-anaconda-environment) 
-    3. Add AlphaPulldown package and its submodules to the Conda environment
-        ```
-        source activate AlphaPulldown
-        cd AlphaPulldown
-        pip install .
-        pip install -e alphapulldown/ColabFold --no-deps
-        pip install -e alphafold --no-deps
-        ```
-        You need to do it only once.
-    4. When you want to develop, activate the environment, modify files, and the changes should be automatically recognized.
-    5. Test your package during development using tests in ```test/```, e.g.:
-       ```
-       pip install pytest
-       pytest -s test/
-       pytest -s test/test_predictions_slurm.py
-       pytest -s test/test_features_with_templates.py::TestCreateIndividualFeaturesWithTemplates::test_1a_run_features_generation
-       ```
-    5. Before pushing to the remote or submitting pull request
-        ```
-        pip install .
-        pytest -s test/
-        ```
-        to install the package and test. Pytest for predictions only work if slurm is available. Check the created log files in your current directory.
+1. Clone the GitHub repo
+    
+    ```
+    git clone --recurse-submodules git@github.com:KosinskiLab/AlphaPulldown.git
+    cd AlphaPulldown 
+    git submodule init
+    git submodule update 
+    ```
         
-        
-       </details>
+2. Create the Conda environment as described in [https://github.com/KosinskiLab/AlphaPulldown/blob/installation-intro-update/README.md#create-anaconda-environment](https://github.com/KosinskiLab/AlphaPulldown/tree/main?tab=readme-ov-file#create-anaconda-environment) 
+3. Add AlphaPulldown package and its submodules to the Conda environment
+    
+    ```
+    source activate AlphaPulldown
+    cd AlphaPulldown
+    pip install .
+    pip install -e alphapulldown/ColabFold --no-deps
+    pip install -e alphafold --no-deps
+    ```
+            
+    You need to do it only once.
+   
+4. When you want to develop, activate the environment, modify files, and the changes should be automatically recognized.
+5. Test your package during development using tests in ```test/```, e.g.:
+    
+    ```
+    pip install pytest
+    pytest -s test/
+    pytest -s test/test_predictions_slurm.py
+    pytest -s test/test_features_with_templates.py::TestCreateIndividualFeaturesWithTemplates::test_1a_run_features_generation
+    ```
+       
+6. Before pushing to the remote or submitting pull request
+      
+    ```
+    pip install .
+    pytest -s test/
+    ```
+    to install the package and test. Pytest for predictions only work if slurm is available. Check the created log files in your current directory.
+</details>
        
 <br>
 
