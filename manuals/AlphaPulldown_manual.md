@@ -624,10 +624,9 @@ run_multimer_jobs.py \
 
 
 ## 3. Analysis and Visualization
-The resulting predictions from the [step 2](#2-predict-structures-gpu-stage) can be used directly as they are. However, for evaluation systematization and ranking of the prediction, you can use an interactive Jupyter Notebook and/or table with models scores. 
+The resulting predictions from the [step 2](#2-predict-structures-gpu-stage) can be used directly as they are. However, for evaluation systematization and ranking of the prediction, you can use an interactive [Jupyter Notebook](https://jupyter.org/) and/or table with models scores. 
 
 ### Jupyter Notebook
-$\text{\color{red}Is Jupiter-lab installed in the env?}$.
 
 Go to the model's output directory from the [step 2](#2-predict-structures-gpu-stage).
 ```bash
@@ -639,6 +638,21 @@ And run the script in the activated conda environment:
 source activate AlphaPulldown
 create_notebook.py --cutoff=5.0 --output_dir=<models_output_dir>
 ```
+<details>
+   
+<summary>
+Parameters:
+</summary>
+
+* `--cutoff`:
+  check the value of PAE between chains. In the case of multimers, the analysis program will create the notebook only from models with inter-chain PAE values smaller than the cutoff. Increases this parameter if you miss predictions in your notebook (e.g., 50).
+* `--output_dir`:
+  Directory where predicted models are stored $\text{\color{red}Why do we need to change the dir then?}$
+* `--pae_figsize`:
+   Figsize of pae_plot, default is 50
+* `--surface_thres` - $\text{\color{red}Add description or delete}$
+
+</details>
 
 Then launch the created notebook:
 ```bash
@@ -647,14 +661,9 @@ jupyter-lab output.ipynb
 >[!Note]
 >If you run AlphaPulldown on a remote computer cluster, you will need a graphical connection, network mount of the remote directory, or a copy of the entire `<models_output_dir>` to open the notebook in a browser.
 >
->For an example of how to establish a remote connection, please refer to the [Run on EMBL cluster](#add_link) part of this manual.
+>For an example of how to establish a remote connection, please refer to the [Run on EMBL cluster](#add_link) part of this manual $\text{\color{red}cahnge link}$. 
 
 
-#### Jupyter Notebook parameters
-
-* ```--cutoff=<value>``` - Check the value of PAE between chains. In the case of multimers, the analysis program will create the notebook only from models with inter-chain PAE values smaller than the cutoff.
-
-$\text{\color{red}Add how to run example}$
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="../manuals/Jupyter_results_dark.png">
@@ -662,7 +671,7 @@ $\text{\color{red}Add how to run example}$
   <img alt="Shows an illustrated sun in light mode and a moon with stars in dark mode." src="../manuals/Jupyter_results.png">
 </picture>
 
-$\text{\color{red}Add drak/light screenshots}$
+
 
 ### Results table
 
