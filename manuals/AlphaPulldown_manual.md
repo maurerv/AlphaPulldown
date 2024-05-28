@@ -718,7 +718,69 @@ By default, you will have a csv file named ```predictions_with_good_interpae.csv
 
 $\text{\color{red}Change description, add scores}$
 
-
-
 ## Running with SLURM (EMBL cluster)
+Computational clusters often use SLURM (Simple Linux Utility for Resource Management) to efficiently manage and schedule jobs. SLURM allows users to allocate resources and run jobs on HPC systems seamlessly; besides, it allows to run all jobs in parallel as a job array. The EMBL cluster utilizes SLURM, and to run AlphaPulldown on this cluster, you need to submit your job scripts through SLURM's scheduling system. This part of the manual will provide the necessary SLURM sbatch scripts to run AlphaPulldown. 
+>[!NOTE]
+>For more details about the SLURM system on the EMBL cluster, please refer to the [EMBL Cluster wiki](https://wiki.embl.de/cluster/Main_Page) using the EMBL network.
+
+### 1.  Compute multiple sequence alignment (MSA) and template features (CPU stage)
+
+Create the ```create_individual_features_SLURM.sh``` script and place the following code in it. Don't forget to change the input of `create_individual_features.py` script as described [previously in manual](#1-compute-multiple-sequence-alignment-msa-and-template-features-cpu-stage):
+
+```bash
+#!/bin/bash
+
+#A typical run takes couple of hours but may be much longer
+#SBATCH --job-name=array
+#SBATCH --time=10:00:00
+
+#log files:
+#SBATCH -e logs/create_individual_features_%A_%a_err.txt
+#SBATCH -o logs/create_individual_features_%A_%a_out.txt
+
+#qos sets priority
+#SBATCH --qos=low
+
+#Limit the run to a single node
+#SBATCH -N 1
+
+#Adjust this depending on the node
+#SBATCH --ntasks=8
+#SBATCH --mem=64000
+
+module load HMMER/3.4-gompi-2023a
+module load HH-suite/3.3.0-gompi-2023a
+module load Anaconda3
+source activate AlphaPulldown
+
+create_individual_features.py \
+  --fasta_paths=<sequences.fasta> \
+  --data_dir=/scratch/AlphaFold_DBs/2.3.2/ \
+  --output_dir=<dir to save the output objects> \ 
+  --max_template_date=<any date you want, format like: 2050-01-01> \
+  --skip_existing \
+  --seq_index=$SLURM_ARRAY_TASK_ID
+```
+
+Make the script executable by running:
+
+```bash
+chmod +x create_individual_features_SLURM.sh
+```
+
+And then run using:
+
+```bash
+mkdir logs
+#Count the number of jobs corresponding to the number of sequences:
+baits=`grep ">" baits.fasta | wc -l`
+candidates=`grep ">" example_1_sequences_shorter.fasta | wc -l`
+count=$(( $baits + $candidates ))
+#Run the job array, 100 jobs at a time:
+sbatch --array=1-$count%100 create_individual_features_SLURM.sh
+```
+
+
+
 ## SnakeMake running
+
