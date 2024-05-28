@@ -779,6 +779,78 @@ count=$(( $baits + $candidates ))
 #Run the job array, 100 jobs at a time:
 sbatch --array=1-$count%100 create_individual_features_SLURM.sh
 ```
+### 2. Predict structures (GPU stage)
+
+Create the ```run_multimer_jobs_SLURM.sh``` script and place the following code in it. Don't forget to change the input of `run_multimer_jobs.sh` script as described [previously in manual](#2-predict-structures-gpu-stage):
+
+```bash
+#!/bin/bash
+
+#A typical run takes couple of hours but may be much longer
+#SBATCH --job-name=array
+#SBATCH --time=2-00:00:00
+
+#log files:
+#SBATCH -e logs/run_multimer_jobs_%A_%a_err.txt
+#SBATCH -o logs/run_multimer_jobs_%A_%a_out.txt
+
+#qos sets priority
+#SBATCH --qos=low
+
+#SBATCH -p gpu
+#lower end GPUs might be sufficient for pairwise screens:
+#SBATCH -C "gpu=2080Ti|gpu=3090"
+
+#Reserve the entire GPU so no-one else slows you down
+#SBATCH --gres=gpu:1
+
+#Limit the run to a single node
+#SBATCH -N 1
+
+#Adjust this depending on the node
+#SBATCH --ntasks=8
+#SBATCH --mem=64000
+
+module load Anaconda3 
+module load CUDA/11.8.0
+module load cuDNN/8.7.0.84-CUDA-11.8.0
+source activate AlphaPulldown
+
+MAXRAM=$(echo `ulimit -m` '/ 1024.0'|bc)
+GPUMEM=`nvidia-smi --query-gpu=memory.total --format=csv,noheader,nounits|tail -1`
+export XLA_PYTHON_CLIENT_MEM_FRACTION=`echo "scale=3;$MAXRAM / $GPUMEM"|bc`
+export TF_FORCE_UNIFIED_MEMORY='1'
+
+run_multimer_jobs.py \
+  --mode=custom \
+  --monomer_objects_dir=<dir that stores feature pickle files> \ 
+  --protein_lists=<protein_list.txt> \
+  --output_path=<path to output directory> \ 
+  --num_cycle=<any number e.g. 3> \
+  --data_dir=/scratch/AlphaFold_DBs/2.3.2/ \
+  --job_index=$SLURM_ARRAY_TASK_ID
+```
+$\textrm{\color{red}Do we need to specify data dir?}$
+$\textrm{\color{red}Can we delete custom mode here?}$
+$\textrm{\color{red}Num of pred per model?}$
+
+Make the script executable by running:
+
+```bash
+chmod +x run_multimer_jobs_SLURM.sh
+```
+
+And then run using:
+
+```
+mkdir -p logs
+#Count the number of jobs corresponding to the number of sequences:
+baits=`grep -c "" baits.txt` #count lines even if the last one has no end of line
+candidates=`grep -c "" candidates_shorter.txt` #count lines even if the last one has no end of line
+count=$(( $baits * $candidates ))
+sbatch --array=1-$count example_data/run_multimer_jobs_SLURM.sh
+```
+
 
 
 
