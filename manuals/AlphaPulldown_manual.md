@@ -126,6 +126,12 @@ There are a few customizable options for this step:
    >
    >If you haven't updated your databases according to the requirements of AlphaFold 2.3.0, you can still use AlphaPulldown with your older version of AlphaFold database. Please follow the installation instructions on the [dedicated branch](https://github.com/KosinskiLab/AlphaPulldown/tree/AlphaFold-2.2.0).
 
+#### 3. Installation for the Analysis step (optional)
+$\text{\color{red}Add description of the requirements for installation of the singularity and downloading images}$
+
+#### Snakemake pipeline installation
+$\text{\color{red}Add description}$
+
 ### Installation for developers
 <details>
    
@@ -686,29 +692,28 @@ parse_results('./ProteinA_and_ProteinB', models=10)
 
 ### Results table
 
-We have also provided a singularity image called ```alpha-analysis.sif```to generate a CSV table with structural properties and scores.
+Making a CSV table with structural properties and scores requires the download of the singularity image ```alpha-analysis.sif```
 Firstly, download the singularity image:
 
-⚠️ If your results are from AlphaPulldown prior version 1.0.0: [alpha-analysis_jax_0.3.sif](https://www.embl-hamburg.de/AlphaPulldown/downloads/alpha-analysis_jax_0.3.sif). 
+* If your results are from AlphaPulldown prior to version 1.0.0: [alpha-analysis_jax_0.3.sif](https://www.embl-hamburg.de/AlphaPulldown/downloads/alpha-analysis_jax_0.3.sif). 
 
-⚠️ If your results are from AlphaPulldown with version >=1.0.0: [alpha-analysis_jax_0.4.sif](https://www.embl-hamburg.de/AlphaPulldown/downloads/alpha-analysis_jax_0.4.sif). 
-Chrome user may not be able to download it after clicking the link. If so, please right click and select "Save link as".
-
+* If your results are from AlphaPulldown with version >=1.0.0: [alpha-analysis_jax_0.4.sif](https://www.embl-hamburg.de/AlphaPulldown/downloads/alpha-analysis_jax_0.4.sif). 
+Chrome users may not be able to download it after clicking the link. If so, please right-click and select "Save link as".
 
 Then execute the singularity image (i.e. the sif file) by:
 
-```
+```bash
 singularity exec \
     --no-home \
-    --bind /path/to/your/output/dir:/mnt \
+    --bind </path/to/your/output/dir:/mnt> \
     <path to your downloaded image>/alpha-analysis_jax_0.4.sif \
     run_get_good_pae.sh \
     --output_dir=/mnt \
     --cutoff=10
 ```
+$\text{\color{red}What is </path/to/your/output/dir:/mnt> }$. 
 
-**About the outputs**
-By default, you will have a csv file named ```predictions_with_good_interpae.csv``` created in the directory ```/path/to/your/output/dir``` as you have given in the command above. ```predictions_with_good_interpae.csv``` reports: 1. iptm, iptm+ptm scores provided by AlphaFold 2. mpDockQ score developed by [Bryant _et al._, 2022](https://gitlab.com/patrickbryant1/molpc)  3. PI_score developed by [Malhotra _et al._, 2021](https://gitlab.com/sm2185/ppi_scoring/-/wikis/home). The detailed explainations on these scores can be found in our paper and an example screenshot of the table is below. ![example](./example_table_screenshot.png)
+By default, you will have a csv file named ```predictions_with_good_interpae.csv``` created in the directory ```/path/to/your/output/dir``` as you have given in the command above. ```predictions_with_good_interpae.csv``` reports: 1. iptm, iptm+ptm scores provided by AlphaFold 2. mpDockQ score developed by [Bryant _et al._, 2022](https://gitlab.com/patrickbryant1/molpc)  3. PI_score developed by [Malhotra _et al._, 2021](https://gitlab.com/sm2185/ppi_scoring/-/wikis/home). The detailed explainations on these scores can be found in our paper and an example screenshot of the table is below. ![example](./example_table_screenshot.png) $\text{\color{red}Change description, add scores}$
 
 
 
