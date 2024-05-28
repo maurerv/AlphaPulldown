@@ -686,6 +686,30 @@ parse_results('./ProteinA_and_ProteinB', models=10)
 
 ### Results table
 
+We have also provided a singularity image called ```alpha-analysis.sif```to generate a CSV table with structural properties and scores.
+Firstly, download the singularity image:
+
+⚠️ If your results are from AlphaPulldown prior version 1.0.0: [alpha-analysis_jax_0.3.sif](https://www.embl-hamburg.de/AlphaPulldown/downloads/alpha-analysis_jax_0.3.sif). 
+
+⚠️ If your results are from AlphaPulldown with version >=1.0.0: [alpha-analysis_jax_0.4.sif](https://www.embl-hamburg.de/AlphaPulldown/downloads/alpha-analysis_jax_0.4.sif). 
+Chrome user may not be able to download it after clicking the link. If so, please right click and select "Save link as".
+
+
+Then execute the singularity image (i.e. the sif file) by:
+
+```
+singularity exec \
+    --no-home \
+    --bind /path/to/your/output/dir:/mnt \
+    <path to your downloaded image>/alpha-analysis_jax_0.4.sif \
+    run_get_good_pae.sh \
+    --output_dir=/mnt \
+    --cutoff=10
+```
+
+**About the outputs**
+By default, you will have a csv file named ```predictions_with_good_interpae.csv``` created in the directory ```/path/to/your/output/dir``` as you have given in the command above. ```predictions_with_good_interpae.csv``` reports: 1. iptm, iptm+ptm scores provided by AlphaFold 2. mpDockQ score developed by [Bryant _et al._, 2022](https://gitlab.com/patrickbryant1/molpc)  3. PI_score developed by [Malhotra _et al._, 2021](https://gitlab.com/sm2185/ppi_scoring/-/wikis/home). The detailed explainations on these scores can be found in our paper and an example screenshot of the table is below. ![example](./example_table_screenshot.png)
+
 
 
 ## Running with SLURM (EMBL cluster)
