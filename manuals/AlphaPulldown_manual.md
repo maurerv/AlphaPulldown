@@ -654,7 +654,7 @@ Parameters:
 
 </details>
 
-Then launch the created notebook:
+This command will yield an `output.ipynb`, which you can open via JupyterLab. JupyterLab is already installed when installing AlphaPulldown with pip. Thus, to view the notebook launch the created notebook:
 ```bash
 jupyter-lab output.ipynb
 ```
@@ -663,7 +663,7 @@ jupyter-lab output.ipynb
 >
 >For an example of how to establish a remote connection, please refer to the [Run on EMBL cluster](#add_link) part of this manual $\text{\color{red}cahnge link}$. 
 
-In the window choose output.ipynb if it is not oppend automatically and then go to the **Run** > **Run All Cells**, after the all cells executions for every protiens complex you will see PAE plots, interactive structures colored by pLDDT, interactive structures colored by chain.
+In the JupyterLab window, choose output.ipynb if it is not opened automatically and then go to the **Run** > **Run All Cells**; after all cells executions for every proteins complex, you will see PAE plots, interactive structures colored by pLDDT, interactive structures colored by a chain.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="../manuals/Jupyter_results_dark.png">
@@ -680,7 +680,8 @@ To zoom in PAE plots, click twice on them. To increase the number of displayed i
 parse_results('./ProteinA_and_ProteinB', models=10)
 ```
 
-If Jupiter Notebook has too many proteins, some interactive structures may disappear due to memory limitations. To restore the output of the cell, just rerun it by choosing it and using **Run** > **Run Selected Cell** or pressing Shift + Enter.
+> [!WARNING]
+> If Jupyter Notebook has too many proteins, some interactive structures may disappear due to memory limitations. To restore the output of the cell, just rerun it by choosing it and going to **Run** > **Run Selected Cell** or pressing **Shift + Enter**.
 
 
 ### Results table
