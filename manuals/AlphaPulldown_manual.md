@@ -785,6 +785,7 @@ sbatch --array=1-$count%100 create_individual_features_SLURM.sh
    <summary>
    If you have several FASTA files, use the following commands:
    </summary>
+
 Example for two files (for more files create `count3`, `count4`, etc. variables and add them as a term to the sum of counts):
  ```bash
 mkdir logs
