@@ -725,7 +725,7 @@ Computational clusters often use SLURM (Simple Linux Utility for Resource Manage
 
 ### 1.  Compute multiple sequence alignment (MSA) and template features (CPU stage)
 
-Create the ```create_individual_features_SLURM.sh``` script and place the following code in it. Don't forget to change the input of `create_individual_features.py` script as described [previously in manual](#1-compute-multiple-sequence-alignment-msa-and-template-features-cpu-stage):
+Create the ```create_individual_features_SLURM.sh``` bash file using vi, nano, or any other text editor and place the following code in it. Don't forget to change the input of `create_individual_features.py` script as described [previously in manual](#1-compute-multiple-sequence-alignment-msa-and-template-features-cpu-stage):
 
 ```bash
 #!/bin/bash
@@ -753,6 +753,8 @@ module load HH-suite/3.3.0-gompi-2023a
 module load Anaconda3
 source activate AlphaPulldown
 
+# CUSTOMIZE THE FOLLOWING SCRIPT PARAMETERS FOR YOUR SPECIFIC TASK:
+####
 create_individual_features.py \
   --fasta_paths=<sequences.fasta> \
   --data_dir=/scratch/AlphaFold_DBs/2.3.2/ \
@@ -760,6 +762,7 @@ create_individual_features.py \
   --max_template_date=<any date you want, format like: 2050-01-01> \
   --skip_existing \
   --seq_index=$SLURM_ARRAY_TASK_ID
+#####
 ```
 
 Make the script executable by running:
@@ -768,17 +771,27 @@ Make the script executable by running:
 chmod +x create_individual_features_SLURM.sh
 ```
 
-And then run using:
+Next, execute the following commands, replacing `<sequences.fasta>` with the path to your input FASTA file:
 
 ```bash
 mkdir logs
 #Count the number of jobs corresponding to the number of sequences:
-baits=`grep ">" baits.fasta | wc -l`
-candidates=`grep ">" example_1_sequences_shorter.fasta | wc -l`
-count=$(( $baits + $candidates ))
+count=`grep ">" <sequences.fasta> | wc -l`
 #Run the job array, 100 jobs at a time:
 sbatch --array=1-$count%100 create_individual_features_SLURM.sh
 ```
+If you have several FASTA files, use the following script:
+
+```bash
+mkdir logs
+#Count the number of jobs corresponding to the number of sequences:
+count1=`grep ">" <sequences1.fasta> | wc -l`
+count2=`grep ">" <sequences1.fasta> | wc -l`
+count=$(( $count1 + $count2 )) 
+#Run the job array, 100 jobs at a time:
+sbatch --array=1-$count%100 create_individual_features_SLURM.sh
+```
+
 ### 2. Predict structures (GPU stage)
 
 Create the ```run_multimer_jobs_SLURM.sh``` script and place the following code in it. Don't forget to change the input of `run_multimer_jobs.sh` script as described [previously in manual](#2-predict-structures-gpu-stage):
@@ -840,7 +853,7 @@ Make the script executable by running:
 chmod +x run_multimer_jobs_SLURM.sh
 ```
 
-And then run using:
+And for the `custom` mode run, use the following commands:
 
 ```bash
 mkdir -p logs
