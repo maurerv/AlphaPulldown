@@ -783,14 +783,14 @@ sbatch --array=1-$count%100 create_individual_features_SLURM.sh
  <details>
    
    <summary>
-   If you have several FASTA files, use the following script:
+   If you have several FASTA files, use the following commands:
    </summary>
-
+Example for two files (for more files create `count3`, `count4`, etc. variables and add them as a term to the sum of counts):
  ```bash
 mkdir logs
 #Count the number of jobs corresponding to the number of sequences:
 count1=`grep ">" <sequences1.fasta> | wc -l`
-count2=`grep ">" <sequences1.fasta> | wc -l`
+count2=`grep ">" <sequences2.fasta> | wc -l`
 count=$(( $count1 + $count2 )) 
 #Run the job array, 100 jobs at a time:
 sbatch --array=1-$count%100 create_individual_features_SLURM.sh
@@ -840,6 +840,8 @@ GPUMEM=`nvidia-smi --query-gpu=memory.total --format=csv,noheader,nounits|tail -
 export XLA_PYTHON_CLIENT_MEM_FRACTION=`echo "scale=3;$MAXRAM / $GPUMEM"|bc`
 export TF_FORCE_UNIFIED_MEMORY='1'
 
+# CUSTOMIZE THE FOLLOWING SCRIPT PARAMETERS FOR YOUR SPECIFIC TASK:
+####
 run_multimer_jobs.py \
   --mode=custom \
   --monomer_objects_dir=<dir that stores feature pickle files> \ 
@@ -848,6 +850,7 @@ run_multimer_jobs.py \
   --num_cycle=<any number e.g. 3> \
   --data_dir=/scratch/AlphaFold_DBs/2.3.2/ \
   --job_index=$SLURM_ARRAY_TASK_ID
+####
 ```
 $\textrm{\color{red}Do we need to specify data dir?}$
 $\textrm{\color{red}Can we delete custom mode here?}$
@@ -859,18 +862,43 @@ Make the script executable by running:
 chmod +x run_multimer_jobs_SLURM.sh
 ```
 
-And for the `custom` mode run, use the following commands:
+Next, for `custom` mode, execute the following commands, replacing `<protein_list.txt>` with the path to your protein combinations file:
 
 ```bash
 mkdir -p logs
 #Count the number of jobs corresponding to the number of sequences:
-baits=`grep -c "" baits.txt` #count lines even if the last one has no end of line
-candidates=`grep -c "" candidates_shorter.txt` #count lines even if the last one has no end of line
-count=$(( $baits * $candidates ))
+count=`grep -c "" <protein_list.txt>` #count lines even if the last one has no end of line
 sbatch --array=1-$count example_data/run_multimer_jobs_SLURM.sh
 ```
 
-$\textrm{\color{red}Num of pred per model?}$
+ <details>
+   
+   <summary>
+   Commands for other modes:
+   </summary>
+
+For `pulldown` mode for two files (for more files, create `count3`, `count4`, etc. variables and add them as a multiplier to the product):
+
+```bash
+mkdir -p logs
+#Count the number of jobs corresponding to the number of sequences:
+count1=`grep -c "" <protein_list1.txt>` #count lines even if the last one has no end of line
+count2=`grep -c "" <protein_list2.txt>` #count lines even if the last one has no end of line
+count=$(( $count1 * $count2 ))
+sbatch --array=1-$count example_data/run_multimer_jobs_SLURM.sh
+```
+
+For `all_vs_all` mode:
+
+```bash
+mkdir -p logs
+#Count the number of jobs corresponding to the number of sequences:
+count1=`grep -c "" <protein_list.txt>` #count lines even if the last one has no end of line
+count=$(( $count1 * ( $count1 - 1) / 2 ))
+sbatch --array=1-$count example_data/run_multimer_jobs_SLURM.sh
+```
+
+ </details>
 
 
 ### 3.
