@@ -902,8 +902,9 @@ sbatch --array=1-$count example_data/run_multimer_jobs_SLURM.sh
  </details>
 
 
-### 3.
-
+### 3. Analysis and Visualization
+#### Jupyter Notebook
+Create Jupyter Notebook as described [previously](#jupyter-notebook)
 
 
 
