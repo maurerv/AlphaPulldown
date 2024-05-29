@@ -780,9 +780,13 @@ count=`grep ">" <sequences.fasta> | wc -l`
 #Run the job array, 100 jobs at a time:
 sbatch --array=1-$count%100 create_individual_features_SLURM.sh
 ```
-If you have several FASTA files, use the following script:
+ <details>
+   
+   <summary>
+   If you have several FASTA files, use the following script:
+   </summary>
 
-```bash
+ ```bash
 mkdir logs
 #Count the number of jobs corresponding to the number of sequences:
 count1=`grep ">" <sequences1.fasta> | wc -l`
@@ -791,6 +795,8 @@ count=$(( $count1 + $count2 ))
 #Run the job array, 100 jobs at a time:
 sbatch --array=1-$count%100 create_individual_features_SLURM.sh
 ```
+ </details>
+
 
 ### 2. Predict structures (GPU stage)
 
