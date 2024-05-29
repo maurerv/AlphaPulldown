@@ -842,7 +842,7 @@ chmod +x run_multimer_jobs_SLURM.sh
 
 And then run using:
 
-```
+```bash
 mkdir -p logs
 #Count the number of jobs corresponding to the number of sequences:
 baits=`grep -c "" baits.txt` #count lines even if the last one has no end of line
@@ -850,6 +850,11 @@ candidates=`grep -c "" candidates_shorter.txt` #count lines even if the last one
 count=$(( $baits * $candidates ))
 sbatch --array=1-$count example_data/run_multimer_jobs_SLURM.sh
 ```
+
+$\textrm{\color{red}Num of pred per model?}$
+
+
+### 3.
 
 
 
