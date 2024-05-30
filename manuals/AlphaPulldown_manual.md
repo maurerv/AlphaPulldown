@@ -943,3 +943,22 @@ You will be prompted to enter the token provided earlier when you launched Jupyt
 
 #### Results table
 To create a results table, please refer to the relevant [section of the manual](#results-table).
+
+
+## Results management scripts
+AlpahPulldown provides scripts that can help optimize data storage and prepare structures for deposition.
+
+### Deceraes the size of AlphaPulldown output
+The most space-consuming part of the structure prediction results are pickle files `result_model_{1,2,3,4,5}_*.pkl files`. Please refer to the [AlphaFold manual](https://github.com/google-deepmind/alphafold) for more details on output files. Some information in these files is needed only for very special tasks, so there is no need to store it, which may decrease the size of the output up to 100 times. The `truncate_pickles.py` script copies the output of the AlphaPulldown to the new directory and deletes the indicated information from pickle files.
+
+```bash
+source activate AlphaPulldown
+truncate_pickles.py \
+  --src_dir=</path/to/source> \
+  --dst_dir=/path/to/destination \
+  --keys_to_exclude=aligned_confidence_probs,distogram,masked_msa
+  --number_of_threads=8 \
+```
+
+
+
