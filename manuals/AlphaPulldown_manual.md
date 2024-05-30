@@ -933,6 +933,9 @@ http://localhost:8895
 
 You will be prompted to enter the token provided earlier when you launched Jupyter Lab on the cluster. Copy and paste the token from the command output into the browser prompt to gain access.
 
+#### Results table
+To create a results table, please refer to the relevant [section of the manual](#results-table).
+
 
 ## SnakeMake running
 
