@@ -905,9 +905,33 @@ sbatch --array=1-$count example_data/run_multimer_jobs_SLURM.sh
 
 
 ### 3. Analysis and Visualization
-#### Jupyter Notebook
-Create Jupyter Notebook as described [previously](#jupyter-notebook)
+#### Jupyter Notebook remote access 
+To create a Jupyter Notebook, follow the instructions provided [previously](#jupyter-notebook). 
 
+To connect remotely, first launch Jupyter Notebook on the cluster. You can choose a different port number if the selected one is already in use:
+
+```bash 
+jupyter-lab --no-browser --port=8895 output.ipynb
+```
+The output of this command will provide you with a link and a token for connection. The token is a unique string that is required for authentication when you first access the Jupyter Notebook interface. Here is an example of what the output might look like:
+
+```
+http://localhost:8895/?token=abc123def456
+```
+
+Next, establish an SSH tunnel using your local machine's command line. The port numbers should match those used in the previous command. Replace <login> with your EMBL login, or if you are using a different cluster, provide the address of that cluster and your login in the format `<login>@<address>`:
+
+```bash
+ssh -N -f -L localhost:8895:localhost:8895 <login>@login01.cluster.embl.de
+```
+
+After establishing the SSH tunnel, you can access the Jupyter Notebook in your web browser. Open your browser and navigate to the following URL:
+
+```
+http://localhost:8895
+```
+
+You will be prompted to enter the token provided earlier when you launched Jupyter Lab on the cluster. Copy and paste the token from the command output into the browser prompt to gain access.
 
 
 ## SnakeMake running
