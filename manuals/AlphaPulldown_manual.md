@@ -6,7 +6,7 @@
 
 ## About AlphaPulldown
 
-AlphaPulldown is an implementation of [AlphaFold-Multimer](https://github.com/google-deepmind/alphafold) designed for customizable high-throughput screening of protein-protein interactions. Besides, AlphaPulldown provides additional customizations of the AlphaFold which include custom structural multimeric templates (TrueMultimer), MMseqs2 multiple sequence alignment (MSA) and [ColabFold](https://github.com/sokrypton/ColabFold) databases, protein fragment predictions, and implementation of cross-link mass spec data using [AlphaLink2](https://github.com/Rappsilber-Laboratory/AlphaLink2/tree/main).
+AlphaPulldown is an implementation of [AlphaFold2-Multimer](https://github.com/google-deepmind/alphafold) designed for customizable high-throughput screening of protein-protein interactions. Besides, AlphaPulldown provides additional customizations of the AlphaFold which include custom structural multimeric templates (TrueMultimer), MMseqs2 multiple sequence alignment (MSA) and [ColabFold](https://github.com/sokrypton/ColabFold) databases, protein fragment predictions, and implementation of cross-link mass spec data using [AlphaLink2](https://github.com/Rappsilber-Laboratory/AlphaLink2/tree/main).
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="../manuals/AP_pipeline_dark.png">
@@ -95,7 +95,9 @@ There are a few customizable options for this step:
    </details>
    
 > [!NOTE]
-> Since the local installation of all genetic databases is space-consuming, you can alternatively use the [remotely-run MMseqs2 and ColabFold databases](https://github.com/sokrypton/ColabFold). Follow the corresponding [instruction](#13-run-using-mmseqs2-and-colabfold-databases-faster).
+> Since the local installation of all genetic databases is space-consuming, you can alternatively use the [remotely-run MMseqs2 and ColabFold databases](https://github.com/sokrypton/ColabFold). Follow the corresponding [instruction](#13-run-using-mmseqs2-and-colabfold-databases-faster). Nonetheless, for AlaphaPulldown to function, you have to download the parameters stored in the `params/` directory of AlpahFold.
+
+$\text{\color{red}Do people need to download anything else in case of MMseq2 run?}$
 
 #### 1. Create Anaconda environment
 
