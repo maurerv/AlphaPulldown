@@ -720,6 +720,14 @@ By default, you will have a csv file named ```predictions_with_good_interpae.csv
 
 $\text{\color{red}Change description, add scores}$
 
+<br>
+
+## SnakeMake of AlphaPulldown
+Alternatively, you can integrate AlphaPulldown with the Snakemake pipeline to execute all steps sequentially. For detailed installation and execution instructions, please refer to the [AlphaPulldownSnakemake](https://github.com/KosinskiLab/AlphaPulldownSnakemake) repository.
+$\text{\color{red}Must cluster have SLURM to support the pipeline?}$. 
+
+<br>
+
 ## Running with SLURM (EMBL cluster)
 Computational clusters often use SLURM (Simple Linux Utility for Resource Management) to efficiently manage and schedule jobs. SLURM allows users to allocate resources and run jobs on HPC systems seamlessly; besides, it allows to run all jobs in parallel as a job array. The EMBL cluster utilizes SLURM, and to run AlphaPulldown on this cluster, you need to submit your job scripts through SLURM's scheduling system. This part of the manual will provide the necessary SLURM sbatch scripts to run AlphaPulldown. 
 >[!NOTE]
@@ -935,7 +943,3 @@ You will be prompted to enter the token provided earlier when you launched Jupyt
 
 #### Results table
 To create a results table, please refer to the relevant [section of the manual](#results-table).
-
-
-## SnakeMake running
-
