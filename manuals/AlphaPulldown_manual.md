@@ -95,7 +95,7 @@ For the standard MSA and features calculation, AlphaPulldown requires genetic da
     ```
    </details>
    
-> [!NOTE]
+> [!NOTE] 
 > Since the local installation of all genetic databases is space-consuming, you can alternatively use the [remotely-run MMseqs2 and ColabFold databases](https://github.com/sokrypton/ColabFold). Follow the corresponding [instructions](#13-run-using-mmseqs2-and-colabfold-databases-faster). However, for AlphaPulldown to function, you must download the parameters stored in the `params/` directory of AlphaFold.
 
 $\text{\color{red}Do people need to download anything else in case of MMseq2 run?}$
@@ -125,8 +125,8 @@ $\text{\color{red}Do people need to download anything else in case of MMseq2 run
    ```
 $\text{\color{red}Change the version of AlphaPulldown}$
    
-   >**For older versions of AlphaFold**
-   >
+   >[!NOTE] 
+   >**For older versions of AlphaFold**:
    >If you haven't updated your databases according to the requirements of AlphaFold 2.3.0, you can still use AlphaPulldown with your older version of AlphaFold database. Please follow the installation instructions on the [dedicated branch](https://github.com/KosinskiLab/AlphaPulldown/tree/AlphaFold-2.2.0).
 
 #### 3. Installation for the Analysis step (optional)
@@ -200,9 +200,9 @@ At this step, you need to provide a [protein FASTA format](https://www.ncbi.nlm.
 Example of a FASTA file (`sequences.fasta`):
 
    ```
-   >protein_A
+   >proteinA
    SEQUENCEOFPROTEINA
-   >protein_B
+   >proteinB
    SEQUENCEOFPROTEINB
    ```
 
@@ -222,9 +222,84 @@ Activate the AlphaPulldown environment and run the script `create_individual_fea
 * Instead of `<dir to save the output objects>` provide a path to the output directory, where your features files will be saved. <br>
 * A date in the flag `--max_template_date` is needed to restrict the search of protein structures that are deposited before the indicated date. Unless the date is later than the date of your local genomic database's last update, the script will search for templates among all available structures.
 
+Features calculation script ```create_individual_features.py``` has several optional FLAGS:
+
+ <details>
+   <summary>
+    Parameters (FLAGS) description
+   </summary>
+   
+* `--save_msa_files`: By default is **False** to save storage stage but can be changed into **True**. If it is set to ```True```, the programme will 
+   create individual folder for each protein. The output directory will look like:
+   
+   ```
+    output_dir
+         |- proteinA.pkl
+         |- proteinA
+               |- uniref90_hits.sto
+               |- pdb_hits.sto
+               |- etc.
+         |- proteinB.pkl
+         |- proteinB
+               |- uniref90_hits.sto
+               |- pdb_hits.sto
+               |- etc.
+   ```
+    
+    
+   If ```save_msa_files=False``` then the ```output_dir``` will look like:
+   
+   ```
+    output_dir
+         |- proteinA.pkl
+         |- proteinB.pkl
+   ```
+
+ * `--use_precomputed_msas`: Default value is ```False```. However, if you have already had msa files for your proteins, please set the parameter to be True and arrange your msa files in the format as below:
+   
+   ```
+    example_directory
+         |- proteinA 
+               |- uniref90_hits.sto
+               |- pdb_hits.sto
+               |- ***.a3m
+               |- etc
+         |- proteinB
+               |- ***.sto
+               |- etc
+   ```
+   
+   Then, in the command line, set the ```output_dir=/path/to/example_directory```
+
+* `--skip_existing`: Default is ```False``` but if you have run the 1st step already for some proteins and now add new proteins to the list, you can change ```skip_existing``` to ```True``` in the
+  command line to avoid rerunning the same procedure for the previously calculated proteins.
+
+* `--seq_index`: Default is `None` and the program will run predictions one by one in the given files. However, you can set ```seq_index``` to 
+   different number if you wish to run an array of jobs in parallel then the program will only run the corresponding job specified by the ```seq_index```. e.g. the programme only calculate features for the 1st protein in your fasta file if ```seq_index``` is set to be 1. See also the Slurm sbatch script above for example how to use it for parallel execution. :exclamation: ```seq_index``` starts from 1.
+  
+* `--use_mmseqs2`: Use mmseqs2 remotely or not. 'true' or 'false', default is 'false' ${\color{red} [add\ description]}$
+
+FLAGS related to TrueMultimer mode:
+
+* `--path_to_mmt`: Path to directory with multimeric template mmCIF files".
+  
+* `--description_file`: Path to the text file with descriptions. ${\color{red} [add\ description]}$
+
+* `--threshold_clashes` :Threshold for VDW overlap to identify clashes. The VDW overlap between two atoms is defined as the sum of their VDW radii minus the distance between their centers.
+  If the overlap exceeds this threshold, the two atoms are considered to be clashing.
+  A positive threshold is how far the VDW surfaces are allowed to interpenetrate before considering the atoms to be clashing.
+  (default: 1000, i.e. no threshold, for thresholding, use 0.6-0.9)
+  
+* `--hb_allowance`: Additional allowance for hydrogen bonding (default: 0.4) ${\color{red} [add\ description]}$
+
+* `--plddt_threshold`: Threshold for pLDDT score (default: 0)
+ </details>
+
+#### Output
 The result of ```create_individual_features.py``` run is pickle format features for each protein from the input fasta file (e.g. `sequence_name_A.pkl` and `sequence_name_B.pkl`) stored in the ```output_dir```. 
+
 > [!NOTE]
-> The name of the pickles will be the same as the descriptions of the sequences  in fasta files (e.g. `>prtoein_A` in the fasta file will yield `protein_A.pkl`). Note that special symbols such as ```| : ; #```, after ```>``` will be replaced with ```_```.
+> The name of the pickles will be the same as the descriptions of the sequences  in fasta files (e.g. `>prtoein_A` in the fasta file will yield `proteinA.pkl`). Note that special symbols such as ```| : ; #```, after ```>``` will be replaced with ```_```.
 
 Go to the next step [2.1. Basic run](#2-predict-structures-gpu-stage). For example run please use the following files:
 
@@ -236,101 +311,25 @@ Example
 
 
 </details>
-Go to the next step [2.1. Basic run](#2-predict-structures-gpu-stage).
 
-### 1.2. FLAGS
 
-Features calculation script ```create_individual_features.py``` has several optional FLAGS:
-* `--save_msa_files`
-   By default is **False** to save storage stage but can be changed into **True**. If it is set to ```True```, the programme will 
-   create individual folder for each protein. The output directory will look like:
-   
-   ```
-    output_dir
-         |- protein_A.pkl
-         |- protein_A
-               |- uniref90_hits.sto
-               |- pdb_hits.sto
-               |- etc.
-         |- protein_B.pkl
-         |- protein_B
-               |- uniref90_hits.sto
-               |- pdb_hits.sto
-               |- etc.
-   ```
-    
-    
-   If ```save_msa_files=False``` then the ```output_dir``` will look like:
-   
-   ```
-    output_dir
-         |- protein_A.pkl
-         |- protein_B.pkl
-   ```
+### 1.2. Run with custom MSA
 
- 
+To run `create_individual_features.py` with the cutom MSA. Prepare the A3M formatted MSA files for every protein. Names of these files shoud correpsond to names in from the FASTA file. Move this files to the output directory:
 
- * `--use_precomputed_msas`
-   Default value is ```False```. However, if you have already had msa files for your proteins, please set the parameter to be True and arrange your msa files in the format as below:
-   
-   ```
-    example_directory
-         |- protein_A 
-               |- uniref90_hits.sto
-               |- pdb_hits.sto
-               |-***.a3m
-               |- etc
-         |- protein_B
-               |- ***.sto
-               |- etc
-   ```
-   
-   Then, in the command line, set the ```output_dir=/path/to/example_directory```
+```
+output_dir
+    |-proteinA.a3m
+    |-proteinB.a3m
+    |-proteinC.a3m
+    |-proteinD.a3m
+    ...
+```
 
-* `--skip_existing`
+Run `create_individual_features.py` as described in [1.1. Basic run](#11-basic-run) with additionl FLAGS `--save_msa_files` and `--use_precomputed_msas`. 
 
-  Default is ```False``` but if you have run the 1st step already for some proteins and now add new proteins to the list, you can change ```skip_existing``` to ```True``` in the
-  command line to avoid rerunning the same procedure for the previously calculated proteins.
+$\text{\color{red} Check if it wroks}$
 
-* `--seq_index`
-   
-   Default is `None` and the program will run predictions one by one in the given files. However, you can set ```seq_index``` to 
-   different number if you wish to run an array of jobs in parallel then the program will only run the corresponding job specified by the ```seq_index```. e.g. the programme only calculate features for the 1st protein in your fasta file if ```seq_index``` is set to be 1. See also the Slurm sbatch script above for example how to use it for parallel execution.
-   
-   :exclamation: ```seq_index``` starts from 1.
-* `--use_mmseqs2`
-  
-  Use mmseqs2 remotely or not. 'true' or 'false', default is 'false' ${\color{red} [add\ description]}$
-
- <details>
-   
-   <summary>
-   Flags related to TrueMultimer mode:
-   </summary>
-
-* `--path_to_mmt`
-  
-  Path to directory with multimeric template mmCIF files". ${\color{red} [add\ description]}$
-  
-* `--description_file`
-  
-  Path to the text file with descriptions. ${\color{red} [add\ description]}$
-
-* `--threshold_clashes`
-  
-  Threshold for VDW overlap to identify clashes. The VDW overlap between two atoms is defined as the sum of their VDW radii minus the distance between their centers.
-  If the overlap exceeds this threshold, the two atoms are considered to be clashing.
-  A positive threshold is how far the VDW surfaces are allowed to interpenetrate before considering the atoms to be clashing.
-  (default: 1000, i.e. no threshold, for thresholding, use 0.6-0.9)
-  
-* `--hb_allowance`
-  
-  Additional allowance for hydrogen bonding (default: 0.4) ${\color{red} [add\ description]}$
-
-* `--plddt_threshold`
-  
-  Threshold for pLDDT score (default: 0)
- </details>
 
 ### 1.3. Run using MMseqs2 and ColabFold databases (faster):
 MMseq2 is another method for homologs search and MSA generation. It offers an alternative to the default HMMer and HHblits used by AlphaFold. The results of these different approaches might lead to slightly different protein structure predictions due to the variations in the captured evolutionary information within the MSAs. AlphaPulldown supports the implementation of MMseq2 search made by ColabFold, which also provides a web server for MSA generation, so no local installation of databases is needed.
@@ -358,12 +357,12 @@ create_individual_features.py \
 After the script run is finished, your output_dir will look like this:
 ```bash
 output_dir
-    |-protein_A.a3m
-    |-protein_A_env/
-    |-protein_A.pkl
-    |-protein_B.a3m
-    |-protein_B_env/
-    |-protein_B.pkl
+    |-proteinA.a3m
+    |-proteinA_env/
+    |-proteinA.pkl
+    |-proteinB.a3m
+    |-proteinB_env/
+    |-proteinB.pkl
     ...
 ```
 Go to the next step [2.1. Basic run](#2-predict-structures-gpu-stage)
@@ -374,8 +373,7 @@ AlphaPulldown does **NOT** provide interface or codes that will run mmseqs2 loca
 install mmseqs, colabfold databases, colab_search and other required dependencies and run msa alignments first. An example guide can be found on [Colabfold github](https://github.com/sokrypton/ColabFold).
 
 Suppose you have run mmseqs locally successfully using ```colab_search``` programme, for each protein of your interest, it will generate an a3m file. Thus, your output_dir
-should look like this:
-
+should look like this: 
 ```
 output_dir
     |-0.a3m
@@ -395,13 +393,13 @@ Then your ```output_dir``` will become:
 
 ```
 output_dir
-    |-protein_A.a3m
-    |-protein_B.a3m
-    |-protein_C.a3m
-    |-protein_D.a3m
+    |-proteinA.a3m
+    |-proteinB.a3m
+    |-proteinC.a3m
+    |-proteinD.a3m
     ...
 ```
-where ```protein_A``` ```protein_B``` ... correspond to the names you have in your input fasta file (">protein_A" will give you "protein_A.a3m", "protein_B" -> "protein_B.a3m" etc.). 
+where ```proteinA``` ```proteinB``` ... correspond to the names you have in your input fasta file (">proteinA" will give you "proteinA.a3m", "proteinB" -> "proteinB.a3m" etc.). 
 After this, go back to your project directory with the original FASTA file and point to this directory in the command:
 
 ```bash
@@ -419,12 +417,12 @@ and AlphaPulldown will automatically search each protein's corresponding a3m fil
 
 ```
 output_dir
-    |-protein_A.a3m
-    |-protein_A.pkl
-    |-protein_B.a3m
-    |-protein_B.pkl
-    |-protein_C.a3m
-    |-protein_C.pkl
+    |-proteinA.a3m
+    |-proteinA.pkl
+    |-proteinB.a3m
+    |-proteinB.pkl
+    |-proteinC.a3m
+    |-proteinC.pkl
     ...
 ```
 Go to the next step [2.1. Basic run](#2-predict-structures-gpu-stage)
@@ -438,19 +436,19 @@ Instead of using the default search through the PDB database for structural temp
 4. **Create a description file:** This `description.csv` file links protein sequences to templates:
 
 ```
->protein_A,TMPL.cif,A
->protein_B,TMPL.cif,B
+>proteinA,TMPL.cif,A
+>proteinB,TMPL.cif,B
 ```
 
-   * **Column 1** (>protein_A): Must exactly match protein descriptions from your FASTA file. 
+   * **Column 1** (>proteinA): Must exactly match protein descriptions from your FASTA file. 
    * **Column 2** (TMPL.cif): The filename of your template structure in PDB or CIF format.
    * **Column 3** (A): The chain ID within the template that the query sequence corresponds to.
      
 **For Multiple Templates:**  If you want to provide multiple templates for a single protein, add additional rows with the same protein name but different templates and chain IDs:
 ```
->protein_A,TMPL.cif,A
->protein_A,TMP2.cif,B
->protein_B,TMPL.cif,B
+>proteinA,TMPL.cif,A
+>proteinA,TMP2.cif,B
+>proteinB,TMPL.cif,B
 ```
 
 >[!Note]
@@ -492,25 +490,25 @@ Here's how to structure your combinations file `protein_list.txt`, with explanat
 
 **Prediction of monomers**:
   ```
-  protein_A
-  protein_B
-  protein_C,1-100  
+  proteinA
+  proteinB
+  proteinC,1-100  
   ```
   * Each line is a separate prediction
-  * Lines like `protein_A` will trigger a prediction of the entire sequence.
-  * To predict specific residue ranges (e.g., the first 100 residues of protein_C), use the format "protein_C,1-100".
+  * Lines like `proteinA` will trigger a prediction of the entire sequence.
+  * To predict specific residue ranges (e.g., the first 100 residues of proteinC), use the format "proteinC,1-100".
 
  **Prediction of complexes**:
    ```
-   protein_A;protein_B;protein_C
-   protein_B;protein_B 
-   protein_B,4
-   protein_C,2;protein_A
-   protein_A,4,1-100;protein_B
+   proteinA;proteinB;proteinC
+   proteinB;proteinB 
+   proteinB,4
+   proteinC,2;proteinA
+   proteinA,4,1-100;proteinB
    ```
    * Use semicolons (`;`) to separate protein names within a complex.
-   * Instead of repeating the protein name for homooligomers, specify the number of copies after the protein's name (e.g., `protein_B,4` for a tetramer).
-   * Combine residue ranges and homooligomer notation for specific predictions (e.g., `protein_A,4,1-100;protein_B`).
+   * Instead of repeating the protein name for homooligomers, specify the number of copies after the protein's name (e.g., `proteinB,4` for a tetramer).
+   * Combine residue ranges and homooligomer notation for specific predictions (e.g., `proteinA,4,1-100;proteinB`).
 
 #### Running Structure Prediction
 To predict structures, activate the AlphaPulldown environment and run the script `run_multimer_jobs.py` as follows:
@@ -573,29 +571,29 @@ Instead of manually typing all combinations of proteins, AlphaPulldown provides 
 #### Multiple inputs "pulldown" mode
 
 This mode allows to provide two or more lists of proteins that will generate all combinations of proteins from one list with all proteins from another list.
-If you want to emulate _in silico_ pulldown of some hypothetical protein_A bait against proteins B-G you can use two `protein_list.csv` files:
+If you want to emulate _in silico_ pulldown of some hypothetical proteinA bait against proteins B-G you can use two `protein_list.csv` files:
 
 The first `protein_list1.csv`:
 ```
-protein_A
+proteinA
 ```
 
 The second `protein_list2.csv`:
 ```
-protein_B
-protein_C
-protein_D
-protein_E
-protein_F
-protein_G
+proteinB
+proteinC
+proteinD
+proteinE
+proteinF
+proteinG
 ```
 
 This results in the following combinations of proteins: A-B, A-C, A-D, A-E, A-F, A-G.
 
 Can you add the third `protein_list3.csv`:
 ```
-protein_X
-protein_Z
+proteinX
+proteinZ
 ```
 And resulting models will contain proteins A-B-X, A-B-Z, A-C-X, A-C-Z...
 
@@ -624,11 +622,11 @@ In this mode, AlphaPulldown takes lines from the input `protein_list.csv` file a
 
 It is useful when you have a set of proteins, and you want to find out which interact with which. If you provide the list of proteins:
 ```
-protein_A
-protein_B
-protein_C
-protein_D
-protein_E
+proteinA
+proteinB
+proteinC
+proteinD
+proteinE
 ```
 The resulting models will be combinations of proteins A-B, A-C, A-D, A-E, B-C, B-D, B-E, C-D, C-E, D-E. 
 
