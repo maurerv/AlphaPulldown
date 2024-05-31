@@ -399,21 +399,21 @@ output_dir
     |-proteinD.a3m
     ...
 ```
-where ```proteinA``` ```proteinB``` ... correspond to the names you have in your input fasta file (">proteinA" will give you "proteinA.a3m", "proteinB" -> "proteinB.a3m" etc.). 
+Where ```proteinA``` ```proteinB``` ... correspond to the names you have in your input fasta file (">proteinA" will give you "proteinA.a3m", "proteinB" -> "proteinB.a3m" etc.). 
 After this, go back to your project directory with the original FASTA file and point to this directory in the command:
 
 ```bash
 source activate AlphaPulldown
 create_individual_features.py \
-  --fasta_paths=example_1_sequences.fasta \
+  --fasta_paths=<sequences>.fasta \
   --data_dir=<path to alphafold databases> \
-  --output_dir=output_dir \ 
+  --output_dir=<output_dir> \ 
   --skip_existing=False \
   --use_mmseqs2=True \
   --seq_index=<any number you want or skip the flag to run all one after another>
 ```
 
-and AlphaPulldown will automatically search each protein's corresponding a3m files. In the end, your output_dir will look like:
+AlphaPulldown will automatically search each protein's corresponding a3m files. In the end, your output_dir will look like:
 
 ```
 output_dir
