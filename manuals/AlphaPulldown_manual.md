@@ -102,12 +102,12 @@ $\text{\color{red}Do people need to download anything else in case of MMseq2 run
 
 #### 1. Create Anaconda environment
 
-  **Firstly**, install [Anaconda](https://www.anaconda.com/) and create AlphaPulldown environment, gathering necessary dependencies 
+  **Firstly**, install [Anaconda](https://www.anaconda.com/) and create AlphaPulldown environment, gathering necessary dependencies:
   ```bash
   conda create -n AlphaPulldown -c omnia -c bioconda -c conda-forge python==3.10 openmm==8.0 pdbfixer==1.9 kalign2 cctbx-base pytest importlib_metadata hhsuite
   ```
        
-  **Optionally**, if you do not have it yet on your system, install [HMMER](http://hmmer.org/documentation.html) from Anaconda
+  **Optionally**, if you do not have it yet on your system, install [HMMER](http://hmmer.org/documentation.html) from Anaconda:
   
   ```bash
   source activate AlphaPulldown
@@ -117,23 +117,31 @@ $\text{\color{red}Do people need to download anything else in case of MMseq2 run
 
 #### 2. Installation using pip
 
-   Activate the AlphaPulldown environment and install AlphaPulldown
+   Activate the AlphaPulldown environment and install AlphaPulldown:
    ```bash
    source activate AlphaPulldown
-   
    python3 -m pip install alphapulldown==1.0.4
    pip install jax==0.4.23 jaxlib==0.4.23+cuda11.cudnn86 -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
    ```
+$\text{\color{red}Change the version of AlphaPulldown}$
    
    >**For older versions of AlphaFold**
    >
    >If you haven't updated your databases according to the requirements of AlphaFold 2.3.0, you can still use AlphaPulldown with your older version of AlphaFold database. Please follow the installation instructions on the [dedicated branch](https://github.com/KosinskiLab/AlphaPulldown/tree/AlphaFold-2.2.0).
 
 #### 3. Installation for the Analysis step (optional)
-$\text{\color{red}Add description of the requirements for installation of the singularity and downloading images}$
+For making Results table you need to have Singularity installed ($\text{\color{red}add instructions or link}$).
 
-#### Snakemake pipeline installation
-$\text{\color{red}Add description}$
+Download the singularity image: 
+
+* If your results are from AlphaPulldown prior to version 1.0.0: [alpha-analysis_jax_0.3.sif](https://www.embl-hamburg.de/AlphaPulldown/downloads/alpha-analysis_jax_0.3.sif). 
+* If your results are from AlphaPulldown with version >=1.0.0: [alpha-analysis_jax_0.4.sif](https://www.embl-hamburg.de/AlphaPulldown/downloads/alpha-analysis_jax_0.4.sif). 
+
+Chrome users may not be able to download it after clicking the link. If so, please right-click and select "Save link as".
+
+
+### Snakemake pipeline installation
+AlphaPulldown Snakemake pipeline is independent and doesn't require the prior installation steps described in this manual. Its installation and running are comprehensibly described in the separate GitHub [**repository**](https://github.com/KosinskiLab/AlphaPulldownSnakemake).
 
 ### Installation for developers
 <details>
@@ -705,15 +713,9 @@ parse_results('./ProteinA_and_ProteinB', models=10)
 
 ### Results table
 
-Making a CSV table with structural properties and scores requires the download of the singularity image ```alpha-analysis.sif```
-Firstly, download the singularity image:
+Making a CSV table with structural properties and scores requires the download of the singularity image ```alpha-analysis.sif```. Pleaes refer to the installation [instruction](#3-installation-for-the-analysis-step-optional).
 
-* If your results are from AlphaPulldown prior to version 1.0.0: [alpha-analysis_jax_0.3.sif](https://www.embl-hamburg.de/AlphaPulldown/downloads/alpha-analysis_jax_0.3.sif). 
-
-* If your results are from AlphaPulldown with version >=1.0.0: [alpha-analysis_jax_0.4.sif](https://www.embl-hamburg.de/AlphaPulldown/downloads/alpha-analysis_jax_0.4.sif). 
-Chrome users may not be able to download it after clicking the link. If so, please right-click and select "Save link as".
-
-Then execute the singularity image (i.e. the sif file) by:
+To execute the singularity image (i.e. the sif file) run:
 
 ```bash
 singularity exec \
