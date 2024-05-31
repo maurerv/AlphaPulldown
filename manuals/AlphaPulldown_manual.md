@@ -6,7 +6,9 @@
 
 ## About AlphaPulldown
 
-AlphaPulldown is an implementation of [AlphaFold2-Multimer](https://github.com/google-deepmind/alphafold) designed for customizable high-throughput screening of protein-protein interactions. Besides, AlphaPulldown provides additional customizations of the AlphaFold which include custom structural multimeric templates (TrueMultimer), MMseqs2 multiple sequence alignment (MSA) and [ColabFold](https://github.com/sokrypton/ColabFold) databases, protein fragment predictions, and implementation of cross-link mass spec data using [AlphaLink2](https://github.com/Rappsilber-Laboratory/AlphaLink2/tree/main).
+AlphaPulldown is an implementation of [AlphaFold2-Multimer](https://github.com/google-deepmind/alphafold) designed for customizable high-throughput screening of protein-protein interactions. Besides, AlphaPulldown provides additional customizations of the AlphaFold which include custom structural multimeric templates (TrueMultimer), MMseqs2 multiple sequence alignment (MSA) and [ColabFold](https://github.com/sokrypton/ColabFold) databases, proteins fragments predictions, and implementation of cross-link mass spec data using [AlphaLink2](https://github.com/Rappsilber-Laboratory/AlphaLink2/tree/main).
+
+AlphaPulldown can be used in two ways: as a set of **Python scripts**, which this manual covers, and as a **Snakemake pipeline**. For details on using the Snakemake pipeline, please refer to the separate GitHub [**repository**](https://github.com/KosinskiLab/AlphaPulldownSnakemake).
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="../manuals/AP_pipeline_dark.png">
@@ -14,8 +16,7 @@ AlphaPulldown is an implementation of [AlphaFold2-Multimer](https://github.com/g
   <img alt="Shows an illustrated sun in light mode and a moon with stars in dark mode." src="../manuals/AP_pipeline.png">
 </picture>
  
-The original AlphaFold-Multimer protein complex prediction pipeline may be split into two main steps: **(1)** the databases search step that generates Features and MSA for every individual protein sequence and **(2)** protein complex structure prediction itself. AlphaPluldown executes these steps as independent scripts which is more suitable for modeling a large number of protein complexes. Additionally, **(3)** AlphaPluldown provides two options for the downstream analysis of the resulting protein models.
-
+The original [AlphaFold2-Multimer](https://github.com/google-deepmind/alphafold) protein complex prediction pipeline may be split into two steps: **(1)** the databases search step that generates Features and MSA for every individual protein sequence and **(2)** protein complex structure prediction itself. AlphaPluldown executes these steps as independent scripts which is more efficient for modeling a large number of protein complexes. Additionally, **(3)** AlphaPluldown provides two options for the downstream analysis of the resulting protein models.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="../manuals/AP_modes_dark.png">
@@ -25,8 +26,8 @@ The original AlphaFold-Multimer protein complex prediction pipeline may be split
 
 A key strength of AlphaPulldown is its ability to flexibly define how proteins are combined for structure prediction of protein complexes. Here are the three main approaches you can use:
 
-* **Single file**: Create a file where each row lists the protein sequences you want to predict together.
-* **Multiple Files**: Provide several files, each containing protein sequences. AlphaPulldown will automatically generate all possible combinations by pairing rows of protein names from each file.
+* **Single file**(custom mode): Create a file where each row lists the protein sequences you want to predict together.
+* **Multiple Files**(pulldown mode): Provide several files, each containing protein sequences. AlphaPulldown will automatically generate all possible combinations by pairing rows of protein names from each file.
 * **All versus all**: AlphaPulldown will generate all possible non-redundant combinations of proteins in the list. 
 
 AlphaPulldown work pipeline is the following:
@@ -34,9 +35,9 @@ AlphaPulldown work pipeline is the following:
 1) **Features and MSA**: At this step for every queried protein sequence AlphaFold searches for preinstalled databases using HMMER and calculates multiple sequence alignment (MSA) for all finden homologues. Additionally, AlphaFold searches for homolog structures that will be used as templates for features generation. This step requires only CPU to run.<be>
 There are a few customizable options for this step:
 
-   * To speed up the search process MMSeq2 ${\color{red} [add link]}$ instead of HHMER can be used.<br>
-   * Use custom MSA ${\color{red} [add link]}$.
-   * _NEW:_ Use a custom structural template ${\color{red} [add link]}$. Including a multimeric one (TrueMultimer mode).
+   * To speed up the search process [MMSeq2](https://doi.org/10.1038/s41592-022-01488-1) instead of deafult HHMER can be used.<br>
+   * Use custom MSA.
+   * Use a custom structural template. Including a multimeric one (TrueMultimer mode).
   
 
 2) **Structure prediction**: At this step, the AlaphaFold neural network runs and produces the final protein structure, which requires GPU computational powers.
@@ -95,7 +96,7 @@ There are a few customizable options for this step:
    </details>
    
 > [!NOTE]
-> Since the local installation of all genetic databases is space-consuming, you can alternatively use the [remotely-run MMseqs2 and ColabFold databases](https://github.com/sokrypton/ColabFold). Follow the corresponding [instruction](#13-run-using-mmseqs2-and-colabfold-databases-faster). Nonetheless, for AlaphaPulldown to function, you have to download the parameters stored in the `params/` directory of AlpahFold.
+> Since the local installation of all genetic databases is space-consuming, you can download the alternatively use the [remotely-run MMseqs2 and ColabFold databases](https://github.com/sokrypton/ColabFold). Follow the corresponding [instruction](#13-run-using-mmseqs2-and-colabfold-databases-faster). Nonetheless, for AlaphaPulldown to function, you have to download the parameters stored in the `params/` directory of AlpahFold.
 
 $\text{\color{red}Do people need to download anything else in case of MMseq2 run?}$
 
@@ -213,8 +214,18 @@ Then activate the AlphaPulldown environment and run script `create_individual_fe
 
 The result of ```create_individual_features.py``` run is pickle format features for each protein from the input fasta file (e.g. `sequence_name_A.pkl` and `sequence_name_B.pkl`) stored in the ```output_dir```. 
 > [!NOTE]
-> The name of the pickles will be the same as the descriptions of the sequences  in fasta files (e.g. `>prtoein_A` in the fasta file will yield `protein_A.pkl`). Note that special symbols such as ```| : ; #```, after ```>``` will be replaced with ```_```. 
+> The name of the pickles will be the same as the descriptions of the sequences  in fasta files (e.g. `>prtoein_A` in the fasta file will yield `protein_A.pkl`). Note that special symbols such as ```| : ; #```, after ```>``` will be replaced with ```_```.
 
+Go to the next step [2.1. Basic run](#2-predict-structures-gpu-stage). For example run please use the following files:
+
+<details>
+   
+<summary><b>
+Example
+</b></summary>
+
+
+</details>
 Go to the next step [2.1. Basic run](#2-predict-structures-gpu-stage).
 
 ### 1.2. FLAGS
