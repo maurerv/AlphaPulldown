@@ -331,30 +331,32 @@ Run `create_individual_features.py` as described in [1.1. Basic run](#11-basic-r
 $\text{\color{red} Check if it wroks}$
 
 
-### 1.3. Run using MMseqs2 and ColabFold databases (faster):
-MMseq2 is another method for homologs search and MSA generation. It offers an alternative to the default HMMer and HHblits used by AlphaFold. The results of these different approaches might lead to slightly different protein structure predictions due to the variations in the captured evolutionary information within the MSAs. AlphaPulldown supports the implementation of MMseq2 search made by ColabFold, which also provides a web server for MSA generation, so no local installation of databases is needed.
->If you used mmseqs2 please remember to cite: 
-Mirdita M, Schütze K, Moriwaki Y, Heo L, Ovchinnikov S and Steinegger M. ColabFold: Making protein folding accessible to all.
-Nature Methods (2022) doi: 10.1038/s41592-022-01488-1
+### 1.3 Run using MMseqs2 and ColabFold Databases (Faster)
 
-#### Run MMseqs2 remotely 
+MMseqs2 is another method for homolog search and MSA generation. It offers an alternative to the default HMMER and HHblits used by AlphaFold. The results of these different approaches might lead to slightly different protein structure predictions due to variations in the captured evolutionary information within the MSAs. AlphaPulldown supports the implementation of MMseqs2 search made by ColabFold, which also provides a web server for MSA generation, so no local installation of databases is needed.
+
+> **Cite:** If you use MMseqs2, please remember to cite:
+Mirdita M, Schütze K, Moriwaki Y, Heo L, Ovchinnikov S, Steinegger M. ColabFold: Making protein folding accessible to all. Nature Methods (2022) doi: 10.1038/s41592-022-01488-1
+
+#### Run MMseqs2 Remotely
 
 >[!Caution]
->To avoid overloading the remote server, do not submit a large number of jobs at the same time. If you want to calculate MSAs for many sequences, please use  [mmseqs2 locally](#run-mmseqs2-locally)
+>To avoid overloading the remote server, do not submit a large number of jobs simultaneously. If you want to calculate MSAs for many sequences, please use [MMseqs2 locally](#run-mmseqs2-locally).
 
-Same as for [1.1 Basic](#11-basic-run) run to run `create_individual_features.py` just add `--use_mmseqs2=True` FALG:
+
+To run `create_individual_features.py` using MMseqs2 remotely, add the `--use_mmseqs2=True` flag:
 ```bash
 source activate AlphaPulldown
 create_individual_features.py \
-  --fasta_paths=example_1_sequences.fasta \
+  --fasta_paths=<sequences.fasta> \
   --data_dir=<path to alphafold databases> \
   --output_dir=<dir to save the output objects> \ 
   --use_mmseqs2=True \
   --max_template_date=<any date you want, format like: 2050-01-01> \ 
-
 ```
 
-After the script run is finished, your output_dir will look like this:
+After the script run is finished, your `output_dir` will look like this:
+
 ```bash
 output_dir
     |-proteinA.a3m
@@ -365,15 +367,17 @@ output_dir
     |-proteinB.pkl
     ...
 ```
-Go to the next step [2.1. Basic run](#2-predict-structures-gpu-stage)
+
+Proceed to the next step [2.1 Basic Run](#21-basic-run).
 
 #### Run mmseqs2 locally 
 
-AlphaPulldown does **NOT** provide interface or codes that will run mmseqs2 locally. Neither will it install mmseqs or any other programme required. The user has to
-install mmseqs, colabfold databases, colab_search and other required dependencies and run msa alignments first. An example guide can be found on [Colabfold github](https://github.com/sokrypton/ColabFold).
+#### Run MMseqs2 Locally
 
-Suppose you have run mmseqs locally successfully using ```colab_search``` programme, for each protein of your interest, it will generate an a3m file. Thus, your output_dir
-should look like this: 
+AlphaPulldown does **NOT** provide an interface or code to run MMseqs2 locally, nor will it install MMseqs2 or any other required programs. The user must install MMseqs2, ColabFold databases, ColabFold search, and other required dependencies and run MSA alignments first. An example guide can be found on the [ColabFold GitHub](https://github.com/sokrypton/ColabFold).
+
+Suppose you have successfully run MMseqs2 locally using the `colab_search` program; it will generate an A3M file for each protein of your interest. Thus, your `output_dir` should look like this:
+
 ```
 output_dir
     |-0.a3m
@@ -382,7 +386,8 @@ output_dir
     |-3.a3m
     ...
 ```
-These a3m files from```colabfold_search``` are named in such inconvenient way. Thus, we have provided a ```rename_colab_search_a3m.py``` script that will help you rename all these files. Simply run:
+
+These a3m files from `colabfold_search` are inconveniently named. Thus, we have provided a `rename_colab_search_a3m.py` script to help you rename all these files. Simply run:
 
 ```bash
 # within the same conda env where you have installed AlphaPulldown
@@ -399,13 +404,13 @@ output_dir
     |-proteinD.a3m
     ...
 ```
-Where ```proteinA``` ```proteinB``` ... correspond to the names you have in your input fasta file (">proteinA" will give you "proteinA.a3m", "proteinB" -> "proteinB.a3m" etc.). 
+Here, `protein_A`, `protein_B`, etc., correspond to the names in your input FASTA file (e.g., `>protein_A` will give you `protein_A.a3m`, `>protein_B` will give you `protein_B.a3m`, etc.). 
 After this, go back to your project directory with the original FASTA file and point to this directory in the command:
 
 ```bash
 source activate AlphaPulldown
 create_individual_features.py \
-  --fasta_paths=<sequences>.fasta \
+  --fasta_paths=<sequences.fasta> \
   --data_dir=<path to alphafold databases> \
   --output_dir=<output_dir> \ 
   --skip_existing=False \
@@ -425,7 +430,8 @@ output_dir
     |-proteinC.pkl
     ...
 ```
-Go to the next step [2.1. Basic run](#2-predict-structures-gpu-stage)
+
+Proceed to the next step [2.1 Basic Run](#21-basic-run).
 
 ### 1.4 Run with custom templates (TrueMultimer)
 Instead of using the default search through the PDB database for structural templates, you can provide a custom database. AlphaPulldown supports a feature called "True Multimer," which allows AlphaFold to use multi-chain structural templates during the prediction process. This can be beneficial for protein complexes where the arrangement of the chains may vary. True Multimer mode will arrange different complex subunits as in the template.  
