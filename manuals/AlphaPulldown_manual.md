@@ -16,7 +16,7 @@ AlphaPulldown can be used in two ways: as a set of **Python scripts**, which thi
   <img alt="Shows an illustrated sun in light mode and a moon with stars in dark mode." src="../manuals/AP_pipeline.png">
 </picture>
  
-The original [AlphaFold2-Multimer](https://github.com/google-deepmind/alphafold) protein complex prediction pipeline may be split into two steps: **(1)** the databases search step that generates Features and MSA for every individual protein sequence and **(2)** protein complex structure prediction itself. AlphaPluldown executes these steps as independent scripts which is more efficient for modeling a large number of protein complexes. Additionally, **(3)** AlphaPluldown provides two options for the downstream analysis of the resulting protein models.
+The original [AlphaFold2-Multimer](https://github.com/google-deepmind/alphafold) protein complex prediction pipeline may be split into two steps: **(1)** the databases search step that generates Features and MSA for every individual protein sequence and **(2)** protein complex structure prediction itself. AlphaPulldown executes these steps as independent scripts which is more efficient for modeling a large number of protein complexes. Additionally, **(3)** AlphaPulldown provides two options for the downstream analysis of the resulting protein models.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="../manuals/AP_modes_dark.png">
@@ -26,37 +26,37 @@ The original [AlphaFold2-Multimer](https://github.com/google-deepmind/alphafold)
 
 A key strength of AlphaPulldown is its ability to flexibly define how proteins are combined for structure prediction of protein complexes. Here are the three main approaches you can use:
 
-* **Single file**(custom mode): Create a file where each row lists the protein sequences you want to predict together.
-* **Multiple Files**(pulldown mode): Provide several files, each containing protein sequences. AlphaPulldown will automatically generate all possible combinations by pairing rows of protein names from each file.
+* **Single file** (custom mode): Create a file where each row lists the protein sequences you want to predict together.
+* **Multiple Files** (pulldown mode): Provide several files, each containing protein sequences. AlphaPulldown will automatically generate all possible combinations by pairing rows of protein names from each file.
 * **All versus all**: AlphaPulldown will generate all possible non-redundant combinations of proteins in the list. 
 
 AlphaPulldown work pipeline is the following:
 
-1) **Features and MSA**: At this step for every queried protein sequence AlphaFold searches for preinstalled databases using HMMER and calculates multiple sequence alignment (MSA) for all finden homologues. Additionally, AlphaFold searches for homolog structures that will be used as templates for features generation. This step requires only CPU to run.<be>
+1) **Features and MSA**: At this step, AlphaFold searches preinstalled databases using HMMER for every queried protein sequence and calculates multiple sequence alignments (MSAs) for all found homologs. Additionally, AlphaFold searches for homolog structures that will be used as templates for features generation. This step requires only CPU to run.
 There are a few customizable options for this step:
 
-   * To speed up the search process [MMSeq2](https://doi.org/10.1038/s41592-022-01488-1) instead of deafult HHMER can be used.<br>
+   * To speed up the search process, [MMSeq2](https://doi.org/10.1038/s41592-022-01488-1) can be used instead of the default HHMER.
    * Use custom MSA.
-   * Use a custom structural template. Including a multimeric one (TrueMultimer mode).
+   * Use a custom structural template, including a multimeric one (TrueMultimer mode).
   
+2) **Structure prediction**: At this step, the AlphaFold neural network runs and produces the final protein structure, which requires GPU computational power.
+   AlphaPulldown allows:
+   * Reading all combinations of proteins to predict from one file or generating combinations of proteins using `pulldown` or `all_versus_all` modes.
+   * Specifying the number of residues that correspond to the part of the protein you want to predict.
+   * Adjusting MSA depth (allows control over how much the initial MSA influences the final model).
+   * Implementing crosslinking data with [AlphaLink2](https://github.com/Rappsilber-Laboratory/AlphaLink2/tree/main).
 
-2) **Structure prediction**: At this step, the AlaphaFold neural network runs and produces the final protein structure, which requires GPU computational powers.
-   Here, AlphaPulldown allows:
-   * Read all combinations of proteins to predict from one file or generate combinations of proteins using `pulldown` or `all_versus_all` modes.
-   * Specify the number of residues that correspond to the part of the protein you want to predict.
-   * Adjust MSA depth (allows control over how much the initial MSA influences the final model).
-   * Crosslinking data implementation with [AlphaLink2](https://github.com/Rappsilber-Laboratory/AlphaLink2/tree/main).
-
-3) **Results analysis**: The results for all predicted models could be systematized using one of the following options:
-   * Table that contains various scores and physical parameters of protein complexes' interaction.
-   * Jupyter notebook with interactive 3D models and PAE plots.
+3) **Results analysis**: The results for all predicted models can be systematized using one of the following options:
+   * A table that contains various scores and physical parameters of protein complexes' interaction.
+   * A Jupyter notebook with interactive 3D models and PAE plots.
+     
 <br>
 
 ## Installation
 
 #### 0. Alphafold databases
 
-   For the standard MSA and features calculation, AlphaPulldow requires Genetic databases. Check if you have downloaded necessary parameters and databases (e.g. BFD, MGnify etc.) as instructed in [AlphFold's documentation](https://github.com/deepmind/alphafold). You should have a directory like below:
+For the standard MSA and features calculation, AlphaPulldown requires genetic databases. Check if you have downloaded the necessary parameters and databases (e.g., BFD, MGnify, etc.) as instructed in [AlphaFold's documentation](https://github.com/deepmind/alphafold). You should have a directory like below:
 
    <details>
    <summary><b>
@@ -96,7 +96,7 @@ There are a few customizable options for this step:
    </details>
    
 > [!NOTE]
-> Since the local installation of all genetic databases is space-consuming, you can download the alternatively use the [remotely-run MMseqs2 and ColabFold databases](https://github.com/sokrypton/ColabFold). Follow the corresponding [instruction](#13-run-using-mmseqs2-and-colabfold-databases-faster). Nonetheless, for AlaphaPulldown to function, you have to download the parameters stored in the `params/` directory of AlpahFold.
+> Since the local installation of all genetic databases is space-consuming, you can alternatively use the [remotely-run MMseqs2 and ColabFold databases](https://github.com/sokrypton/ColabFold). Follow the corresponding [instructions](#13-run-using-mmseqs2-and-colabfold-databases-faster). However, for AlphaPulldown to function, you must download the parameters stored in the `params/` directory of AlphaFold.
 
 $\text{\color{red}Do people need to download anything else in case of MMseq2 run?}$
 
@@ -141,7 +141,7 @@ Chrome users may not be able to download it after clicking the link. If so, plea
 
 
 ### Snakemake pipeline installation
-AlphaPulldown Snakemake pipeline is independent and doesn't require the prior installation steps described in this manual. Its installation and running are comprehensibly described in the separate GitHub [**repository**](https://github.com/KosinskiLab/AlphaPulldownSnakemake).
+The AlphaPulldown Snakemake pipeline is independent and does not require the prior installation steps described in this manual. Its installation and usage are comprehensively described in the separate GitHub [**repository**](https://github.com/KosinskiLab/AlphaPulldownSnakemake).
 
 ### Installation for developers
 <details>
