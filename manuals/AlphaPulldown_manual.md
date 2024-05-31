@@ -195,7 +195,10 @@ Instructions
 
 ## 1. Compute multiple sequence alignment (MSA) and template features (CPU stage)
 ### 1.1. Basic run
-At this step, you need to provide a [protein FASTA format](https://www.ncbi.nlm.nih.gov/WebSub/html/help/protein.html) file with all protein sequences that will be used for complexes prediction.
+At this step, you need to provide a [protein FASTA format](https://www.ncbi.nlm.nih.gov/WebSub/html/help/protein.html) file with all protein sequences that will be used for complex prediction.
+
+Example of a FASTA file (`sequences.fasta`):
+
    ```
    >protein_A
    SEQUENCEOFPROTEINA
@@ -203,12 +206,11 @@ At this step, you need to provide a [protein FASTA format](https://www.ncbi.nlm.
    SEQUENCEOFPROTEINB
    ```
 
-Then activate the AlphaPulldown environment and run script `create_individual_features.py` as follows:
+Activate the AlphaPulldown environment and run the script `create_individual_features.py` as follows:
+
 
    ```bash
    source activate AlphaPulldown
-   ```
-   ```bash
    create_individual_features.py \
      --fasta_paths=<sequences.fasta> \
      --data_dir=<path to alphafold databases> \
