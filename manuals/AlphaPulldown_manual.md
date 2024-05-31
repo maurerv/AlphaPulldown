@@ -1079,8 +1079,8 @@ Besides `--model_selected`, the arguments are the same as for scenario 1.
 Sometimes you want to focus on a certain model from the AlphaPulldown pipeline but don't want to completely discard the other models generated. For this, `convert_to_modelcif.py` can translate all models to ModelCIF but store the excess in the Zip archive of the selected model. This is achieved by adding the option `--add_associated` together with `--model_selected`.
 
 ```bash
-$ source activate AlphaPulldown
-$ convert_to_modelcif.py \
+source activate AlphaPulldown
+convert_to_modelcif.py \
   --ap_output <output path of run_multimer_jobs.py> \
   --monomer_objects_dir <output directory of feature creation> \
   --model_selected 0 \
