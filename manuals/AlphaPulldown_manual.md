@@ -1,12 +1,14 @@
-# AlphaPulldown Manual
-
 `version 2.0.0 (beta)`
 
 > AlphaPulldown fully **maintains backward compatibility** with input files and scripts from versions 1.x. For instructions on using older files and scripts, please refer to the sections marked "Older Version".
 
-## About AlphaPulldown
 
-AlphaPulldown is an implementation of [AlphaFold2-Multimer](https://github.com/google-deepmind/alphafold) designed for customizable high-throughput screening of protein-protein interactions. Besides, AlphaPulldown provides additional customizations of the AlphaFold which include custom structural multimeric templates (TrueMultimer), MMseqs2 multiple sequence alignment (MSA) and [ColabFold](https://github.com/sokrypton/ColabFold) databases, proteins fragments predictions, and implementation of cross-link mass spec data using [AlphaLink2](https://github.com/Rappsilber-Laboratory/AlphaLink2/tree/main).
+# Table of contents 
+
+
+# About AlphaPulldown
+
+AlphaPulldown is an implementation of [AlphaFold-Multimer](https://github.com/google-deepmind/alphafold) designed for customizable high-throughput screening of protein-protein interactions. Besides, AlphaPulldown provides additional customizations of the AlphaFold which include custom structural multimeric templates (TrueMultimer), MMseqs2 multiple sequence alignment (MSA) and [ColabFold](https://github.com/sokrypton/ColabFold) databases, proteins fragments predictions, and implementation of cross-link mass spec data using [AlphaLink2](https://github.com/Rappsilber-Laboratory/AlphaLink2/tree/main).
 
 AlphaPulldown can be used in two ways: as a set of **Python scripts**, which this manual covers, and as a **Snakemake pipeline**. For details on using the Snakemake pipeline, please refer to the separate GitHub [**repository**](https://github.com/KosinskiLab/AlphaPulldownSnakemake).
 
@@ -16,7 +18,7 @@ AlphaPulldown can be used in two ways: as a set of **Python scripts**, which thi
   <img alt="Shows an illustrated sun in light mode and a moon with stars in dark mode." src="../manuals/AP_pipeline.png">
 </picture>
  
-The original [AlphaFold2-Multimer](https://github.com/google-deepmind/alphafold) protein complex prediction pipeline may be split into two steps: **(1)** the databases search step that generates Features and MSA for every individual protein sequence and **(2)** protein complex structure prediction itself. AlphaPulldown executes these steps as independent scripts which is more efficient for modeling a large number of protein complexes. Additionally, **(3)** AlphaPulldown provides two options for the downstream analysis of the resulting protein models.
+The original [AlphaFold-Multimer](https://github.com/google-deepmind/alphafold) protein complex prediction pipeline may be split into two steps: **(1)** the databases search step that generates Features and MSA for every individual protein sequence and **(2)** protein complex structure prediction itself. AlphaPulldown executes these steps as independent scripts, enhancing efficiency for modeling many protein complexes. Additionally, **(3)** AlphaPulldown  offers two options for downstream analysis of the resulting protein models.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="../manuals/AP_modes_dark.png">
@@ -24,33 +26,47 @@ The original [AlphaFold2-Multimer](https://github.com/google-deepmind/alphafold)
   <img alt="Shows an illustrated sun in light mode and a moon with stars in dark mode." src="../manuals/AP_modes.png">
 </picture>
 
-A key strength of AlphaPulldown is its ability to flexibly define how proteins are combined for structure prediction of protein complexes. Here are the three main approaches you can use:
+A key strength of AlphaPulldown is its ability to flexibly define how proteins are combined for the structure prediction of protein complexes. Here are the three main approaches you can use:
 
 * **Single file** (custom mode): Create a file where each row lists the protein sequences you want to predict together.
 * **Multiple Files** (pulldown mode): Provide several files, each containing protein sequences. AlphaPulldown will automatically generate all possible combinations by pairing rows of protein names from each file.
 * **All versus all**: AlphaPulldown will generate all possible non-redundant combinations of proteins in the list. 
 
-AlphaPulldown work pipeline is the following:
+The AlphaPulldown workflow is as follows:
 
-1) **Features and MSA**: At this step, AlphaFold searches preinstalled databases using HMMER for every queried protein sequence and calculates multiple sequence alignments (MSAs) for all found homologs. Additionally, AlphaFold searches for homolog structures that will be used as templates for features generation. This step requires only CPU to run.
-There are a few customizable options for this step:
+1) **Features and MSA**:   In this step, AlphaFold searches preinstalled databases using HMMER for each queried protein sequence and calculates multiple sequence alignments (MSAs) for all found homologs. It also searches for homolog structures to use as templates for feature generation. This step only requires CPU.
 
+   Customizable options include:
    * To speed up the search process, [MMSeq2](https://doi.org/10.1038/s41592-022-01488-1) can be used instead of the default HHMER.
    * Use custom MSA.
    * Use a custom structural template, including a multimeric one (TrueMultimer mode).
   
-2) **Structure prediction**: At this step, the AlphaFold neural network runs and produces the final protein structure, which requires GPU computational power.
+3) **Structure prediction**: In this step, the AlphaFold neural network runs and produces the final protein structure, requiring GPU.
    AlphaPulldown allows:
    * Reading all combinations of proteins to predict from one file or generating combinations of proteins using `pulldown` or `all_versus_all` modes.
-   * Specifying the number of residues that correspond to the part of the protein you want to predict.
-   * Adjusting MSA depth (allows control over how much the initial MSA influences the final model).
+   * Specify the number of residues that correspond to the part of the protein you want to predict.
+   * Adjusting MSA depth to control the influence of the initial MSA on the final model.
    * Implementing crosslinking data with [AlphaLink2](https://github.com/Rappsilber-Laboratory/AlphaLink2/tree/main).
 
-3) **Results analysis**: The results for all predicted models can be systematized using one of the following options:
-   * A table that contains various scores and physical parameters of protein complexes' interaction.
-   * A Jupyter notebook with interactive 3D models and PAE plots.
+4) **Results analysis**: The results for all predicted models can be systematized using one of the following options:
+   * A table containing various scores and physical parameters of protein complex interactions.
+   * A Jupyter notebook with interactive 3D protein models and PAE plots.
      
 <br>
+
+# Snakemake AlphaPulldown 
+
+AlphaPulldown is available as a Snakemake pipeline, allowing you to sequentially execute  **(1)** Features and MSA generation, **(2)** Structure prediction, and  **(3)** Results analysis without manual intervention between steps. For detailed installation and execution instructions, please refer to the [AlphaPulldownSnakemake](https://github.com/KosinskiLab/AlphaPulldownSnakemake) repository. 
+
+The Snakemake version of AlphaPulldown differs slightly from the conventional scripts-based AlphaPulldown in terms of input file specifications.
+
+For downstream analysis, please refer to this part of the manual: [Downstream analysis](#add_link).
+<br>
+<br>
+
+# Scripts-Based AlphaPulldown
+
+AlphaPulldown can be used as a set of Python scripts for every particular step. **(1)** `create_individual_features.py` **(2)** `run_multimer_jobs.py` **(3)** `create_notebook.py` and `alpha-analysis.sif` image.
 
 ## Installation
 
@@ -59,9 +75,9 @@ There are a few customizable options for this step:
 For the standard MSA and features calculation, AlphaPulldown requires genetic databases. Check if you have downloaded the necessary parameters and databases (e.g., BFD, MGnify, etc.) as instructed in [AlphaFold's documentation](https://github.com/deepmind/alphafold). You should have a directory like below:
 
    <details>
-   <summary><b>
-   Databases directory
-   </b></summary>
+   <summary>
+   <b>Databases directory</b>
+   </summary>
    
     ```
     alphafold_database/                             # Total: ~ 2.2 TB (download: 438 GB)
@@ -741,12 +757,6 @@ $\text{\color{red}Change description, add scores}$
 
 <br>
 
-## SnakeMake of AlphaPulldown
-Alternatively, you can integrate AlphaPulldown with the Snakemake pipeline to execute all steps sequentially. For detailed installation and execution instructions, please refer to the [AlphaPulldownSnakemake](https://github.com/KosinskiLab/AlphaPulldownSnakemake) repository.
-$\text{\color{red}Must cluster have SLURM to support the pipeline?}$. 
-
-<br>
-
 ## Running with SLURM (EMBL cluster)
 Computational clusters often use SLURM (Simple Linux Utility for Resource Management) to efficiently manage and schedule jobs. SLURM allows users to allocate resources and run jobs on HPC systems seamlessly; besides, it allows to run all jobs in parallel as a job array. The EMBL cluster utilizes SLURM, and to run AlphaPulldown on this cluster, you need to submit your job scripts through SLURM's scheduling system. This part of the manual will provide the necessary SLURM sbatch scripts to run AlphaPulldown. 
 >[!NOTE]
@@ -931,9 +941,15 @@ sbatch --array=1-$count example_data/run_multimer_jobs_SLURM.sh
  </details>
 
 
-### 3. Analysis and Visualization
-#### Jupyter Notebook remote access 
+<br>
+
+# Downstream analysis
+
+## Jupyther notebook
+
 To create a Jupyter Notebook, follow the instructions provided [previously](#jupyter-notebook). 
+
+**Jupyter Notebook remote access**
 
 To connect remotely, first launch Jupyter Notebook on the cluster. You can choose a different port number if the selected one is already in use:
 
@@ -960,10 +976,9 @@ http://localhost:8895
 
 You will be prompted to enter the token provided earlier when you launched Jupyter Lab on the cluster. Copy and paste the token from the command output into the browser prompt to gain access.
 
-#### Results table
-To create a results table, please refer to the relevant [section of the manual](#results-table).
+## Results table 
 
-<br>
+To create a results table, please refer to the relevant [section of the manual](#results-table).
 
 ## Results management scripts
 AlphaPulldown provides scripts to help optimize data storage and prepare structures for deposition.
