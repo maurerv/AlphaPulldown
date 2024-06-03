@@ -1,7 +1,6 @@
 `version 2.0.0 (beta)`
 
-> AlphaPulldown fully **maintains backward compatibility** with input files and scripts from versions 1.x. For instructions on using older files and scripts, please refer to the sections marked "Older Version".
-
+> AlphaPulldown fully **maintains backward compatibility** with input files and scripts from versions 1.x.
 
 # Table of contents 
 
@@ -112,7 +111,7 @@ For the standard MSA and features calculation, AlphaPulldown requires genetic da
    </details>
    
 > [!NOTE] 
-> Since the local installation of all genetic databases is space-consuming, you can alternatively use the [remotely-run MMseqs2 and ColabFold databases](https://github.com/sokrypton/ColabFold). Follow the corresponding [instructions](#13-run-using-mmseqs2-and-colabfold-databases-faster). However, for AlphaPulldown to function, you must download the parameters stored in the `params/` directory of AlphaFold.
+> Since the local installation of all genetic databases is space-consuming, you can alternatively use the [remotely-run MMseqs2 and ColabFold databases](https://github.com/sokrypton/ColabFold). Follow the corresponding [instructions](#13-run-using-mmseqs2-and-colabfold-databases-faster). However, for AlphaPulldown to function, you must download the parameters stored in the `params/` directory of AlphaFold database.
 
 $\text{\color{red}Do people need to download anything else in case of MMseq2 run?}$
 
@@ -146,7 +145,7 @@ $\text{\color{red}Change the version of AlphaPulldown}$
    >If you haven't updated your databases according to the requirements of AlphaFold 2.3.0, you can still use AlphaPulldown with your older version of AlphaFold database. Please follow the installation instructions on the [dedicated branch](https://github.com/KosinskiLab/AlphaPulldown/tree/AlphaFold-2.2.0).
 
 #### 3. Installation for the Analysis step (optional)
-For making Results table you need to have Singularity installed ($\text{\color{red}add instructions or link}$).
+For making the Results table, you need to have Singularity installed ($\text{\color{red}add instructions or link}$).
 
 Download the singularity image: 
 
@@ -217,6 +216,7 @@ Example of a FASTA file (`sequences.fasta`):
    >proteinB
    SEQUENCEOFPROTEINB
    ```
+#### Running Create features script
 
 Activate the AlphaPulldown environment and run the script `create_individual_features.py` as follows:
 
@@ -317,9 +317,9 @@ Go to the next step [2.1. Basic run](#2-predict-structures-gpu-stage). For examp
 
 <details>
    
-<summary><b>
+<summary><h4>
 Example
-</b></summary>
+</h4></summary>
 
 
 </details>
@@ -381,8 +381,6 @@ output_dir
 ```
 
 Proceed to the next step [2.1 Basic Run](#21-basic-run).
-
-#### Run mmseqs2 locally 
 
 #### Run MMseqs2 Locally
 
@@ -493,10 +491,7 @@ Go to the next step [2.X. Template run](#2-predict-structures-gpu-stage) ${\colo
 
 For additional Flags of TrueMultimer mode run refer to [FLAGS](#12-flags)
 
-### 1.5 Older versions
-If you are updating from previous versions of AlphaPulldown, and the local databases have not changed, there's no change to how features are generated. Input files and scripts from previous versions will work without modification in the current version.
-${\color{red} Correct\ if\ there\ are\ any\ changes}$
-
+<br>
 
 ## 2. Predict structures (GPU stage)
 ### 2.1 Basic run
