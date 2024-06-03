@@ -155,10 +155,6 @@ Download the singularity image:
 
 Chrome users may not be able to download it after clicking the link. If so, please right-click and select "Save link as".
 
-
-### Snakemake pipeline installation
-The AlphaPulldown Snakemake pipeline is independent and does not require the prior installation steps described in this manual. Its installation and usage are comprehensively described in the separate GitHub [**repository**](https://github.com/KosinskiLab/AlphaPulldownSnakemake).
-
 ### Installation for developers
 <details>
    
@@ -331,7 +327,7 @@ Example
 
 ### 1.2. Run with custom MSA
 
-To run `create_individual_features.py` with the cutom MSA. Prepare the A3M formatted MSA files for every protein. Names of these files shoud correpsond to names in from the FASTA file. Move this files to the output directory:
+To run `create_individual_features.py` with the custom MSA. Prepare the A3M formatted MSA files for every protein. The names of these files should correspond to names from the FASTA file. Move these files to the output directory:
 
 ```
 output_dir
