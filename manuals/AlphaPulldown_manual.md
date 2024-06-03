@@ -206,6 +206,7 @@ Instructions
 
 ## 1. Compute multiple sequence alignment (MSA) and template features (CPU stage)
 ### 1.1. Basic run
+#### Input
 At this step, you need to provide a [protein FASTA format](https://www.ncbi.nlm.nih.gov/WebSub/html/help/protein.html) file with all protein sequences that will be used for complex prediction.
 
 Example of a FASTA file (`sequences.fasta`):
@@ -216,7 +217,7 @@ Example of a FASTA file (`sequences.fasta`):
    >proteinB
    SEQUENCEOFPROTEINB
    ```
-#### Running Create features script
+#### Running script
 
 Activate the AlphaPulldown environment and run the script `create_individual_features.py` as follows:
 
@@ -313,16 +314,15 @@ The result of ```create_individual_features.py``` run is pickle format features 
 > [!NOTE]
 > The name of the pickles will be the same as the descriptions of the sequences  in fasta files (e.g. `>prtoein_A` in the fasta file will yield `proteinA.pkl`). Note that special symbols such as ```| : ; #```, after ```>``` will be replaced with ```_```.
 
-Go to the next step [2.1. Basic run](#2-predict-structures-gpu-stage). For example run please use the following files:
+#### Next step
+Go to the next step [2.1. Basic run](#2-predict-structures-gpu-stage).
 
+#### Example with SLURM (EMBL cluster)
 <details>
-   
-<summary><h4>
-Example
-</h4></summary>
-
-
+   add description
 </details>
+
+
 
 
 ### 1.2. Run with custom MSA
