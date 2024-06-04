@@ -59,7 +59,7 @@ AlphaPulldown is available as a Snakemake pipeline, allowing you to sequentially
 
 The Snakemake version of AlphaPulldown differs slightly from the conventional scripts-based AlphaPulldown in terms of input file specifications.
 
-For downstream analysis, please refer to this part of the manual: [Downstream analysis](#add_link).
+For downstream analysis of SnakeMake-AlphaPulldown results, please refer to this part of the manual: [Downstream analysis](#add_link).
 <br>
 <br>
 
@@ -321,7 +321,8 @@ Proceed to the next step [2.1 Basic Run](#21-basic-run).
 
 ### 1.2 Example run with SLURM (EMBL cluster)
 
-If you run AlphaPulldown on HPC, you may want to execute feature creation in parallel. Here, we provide an example of code that is suitable for an HPC cluster that utilizes SLURM Workload Manager. For more details about the SLURM on the EMBL cluster, please refer to the [EMBL Cluster wiki](https://wiki.embl.de/cluster/Main_Page) using the EMBL network.
+If you run AlphaPulldown on a computer cluster, you may want to execute feature creation in parallel. Here, we provide an example of code that is suitable for a cluster that utilizes SLURM Workload Manager. 
+> **For EMBL staff:**  For more details about the SLURM on the EMBL cluster, please refer to the [EMBL Cluster wiki](https://wiki.embl.de/cluster/Main_Page) using the EMBL network.
 
 #### Input
 
