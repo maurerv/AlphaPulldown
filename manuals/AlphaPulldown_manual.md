@@ -60,6 +60,8 @@ AlphaPulldown is available as a Snakemake pipeline, allowing you to sequentially
 >[!Warning]
 >The Snakemake version of AlphaPulldown differs slightly from the conventional scripts-based AlphaPulldown in terms of input file specifications.
 
+$\text{\color{red} Write which scripts and modes are not possible to run with the Snakmake, e.g. Alphalink2 }$
+
 For downstream analysis of SnakeMake-AlphaPulldown results, please refer to this part of the manual: [Downstream analysis](#add_link).
 <br>
 <br>
@@ -954,6 +956,10 @@ run_multimer_jobs.py \
   --data_dir=<path to AlphaFold data directory> \ 
   --num_cycle=<any number e.g. 3> 
 ```
+
+### 2.3. Run with custom templates (TrueMultimer)
+
+### 2.4. Run with crosslinking-dat (AlphaLink2)
 
 
 ## 3. Analysis and Visualization
