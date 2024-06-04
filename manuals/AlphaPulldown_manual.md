@@ -57,7 +57,8 @@ The AlphaPulldown workflow is as follows:
 
 AlphaPulldown is available as a Snakemake pipeline, allowing you to sequentially execute  **(1)** Features and MSA generation, **(2)** Structure prediction, and  **(3)** Results analysis without manual intervention between steps. For detailed installation and execution instructions, please refer to the [AlphaPulldownSnakemake](https://github.com/KosinskiLab/AlphaPulldownSnakemake) repository. 
 
-The Snakemake version of AlphaPulldown differs slightly from the conventional scripts-based AlphaPulldown in terms of input file specifications.
+>[!Warning]
+>The Snakemake version of AlphaPulldown differs slightly from the conventional scripts-based AlphaPulldown in terms of input file specifications.
 
 For downstream analysis of SnakeMake-AlphaPulldown results, please refer to this part of the manual: [Downstream analysis](#add_link).
 <br>
