@@ -438,6 +438,7 @@ Mirdita M, Schütze K, Moriwaki Y, Heo L, Ovchinnikov S, Steinegger M. ColabFold
 >[!Caution]
 >To avoid overloading the remote server, do not submit a large number of jobs simultaneously. If you want to calculate MSAs for many sequences, please use [MMseqs2 locally](#run-mmseqs2-locally).
 
+Script execution
 
 To run `create_individual_features.py` using MMseqs2 remotely, add the `--use_mmseqs2=True` flag:
 ```bash
@@ -527,7 +528,9 @@ output_dir
 Proceed to the next step [2.1 Basic Run](#21-basic-run).
 
 ### 1.5. Run with custom templates (TrueMultimer)
-Instead of using the default search through the PDB database for structural templates, you can provide a custom database. AlphaPulldown supports a feature called "True Multimer," which allows AlphaFold to use multi-chain structural templates during the prediction process. This can be beneficial for protein complexes where the arrangement of the chains may vary. True Multimer mode will arrange different complex subunits as in the template.  
+Instead of using the default search through the PDB database for structural templates, you can provide a custom database. AlphaPulldown supports a feature called "True Multimer," which allows AlphaFold to use multi-chain structural templates during the prediction process. This can be beneficial for protein complexes where the arrangement of the chains may vary. True Multimer mode will arrange different complex subunits as in the template. 
+
+#### Input
 
 1. **Prepare a FASTA File:** Create a FASTA file containing all protein sequences that will be used for predictions as outlined in [1.1 Basic run](#11-basic-run).
    ${\color{red} remove\ all\ special\ symbols \from \fasta}$
@@ -553,7 +556,7 @@ Instead of using the default search through the PDB database for structural temp
 >[!Note]
 >Your template will be renamed to a PDB code taken from *_entry_id*. If you use a *.pdb file instead of *.cif, AlphaPulldown will first try to parse the PDB code from the file. Then it will check if the filename is 4-letter long. If it is not, it will generate a random 4-letter code and use it as the PDB code.
 
-Now run:
+#### Script Execution
 
 ```bash
   create_individual_features.py \
@@ -567,12 +570,16 @@ Now run:
     --use_precomputed_msas=True \
     --skip_existing=True
 ```
-Output: Pickle format features for each protein in the `description.csv` file stored in the ```output_dir```. 
+For FLAGS explanation, see [1.1. Basis run](#11-basic-run).
+
+#### Output
+
+Pickle format features for each protein in the `description.csv` file stored in the ```output_dir```. 
 ${\color{red}Add\ True\ Multimer\ limitations}$ 
 
-Go to the next step [2.X. Template run](#2-predict-structures-gpu-stage) ${\color{red}Correct}$ 
+#### Next step
 
-For additional Flags of TrueMultimer mode run refer to [FLAGS](#12-flags)
+Go to the next step [2.X. Template run](#2-predict-structures-gpu-stage) ${\color{red}Correct}$ 
 
 <br>
 
@@ -581,7 +588,8 @@ For additional Flags of TrueMultimer mode run refer to [FLAGS](#12-flags)
 This step requires the pickle files (.pkl) generated during the [first stage](#1-compute-multiple-sequence-alignment-msa-and-template-features-cpu-stage).
 Additionally, you'll need to provide a list of protein combinations you intend to predict.
 
-#### Protein Combinations File
+#### Input
+
 Here's how to structure your combinations file `protein_list.txt`, with explanations:
 
 **Prediction of monomers**:
@@ -603,30 +611,31 @@ Here's how to structure your combinations file `protein_list.txt`, with explanat
    proteinA,4,1-100;proteinB
    ```
    * Use semicolons (`;`) to separate protein names within a complex.
-   * Instead of repeating the protein name for homooligomers, specify the number of copies after the protein's name (e.g., `proteinB,4` for a tetramer).
+   * Instead of repeating the protein name for homo-oligomers, specify the number of copies after the protein's name (e.g., `proteinB,4` for a tetramer).
    * Combine residue ranges and homooligomer notation for specific predictions (e.g., `proteinA,4,1-100;proteinB`).
 
 #### Running Structure Prediction
 To predict structures, activate the AlphaPulldown environment and run the script `run_multimer_jobs.py` as follows:
- ```bash
- source activate AlphaPulldown
- ```
+
 ```bash
+source activate AlphaPulldown
 run_multimer_jobs.py \
   --mode=custom \
-  --monomer_objects_dir=<dir that stores feature pickle files> \ 
+  --monomer_objects_dir=<dir that stores feature pickle files> \
+  --data_dir=<path to alphafold databases> \
   --protein_lists=<protein_list.txt> \
   --output_path=<path to output directory> \ 
-  --num_cycle=<any number e.g. 3> 
+  --num_cycle=<any number e.g. 3> \
+  --num_predictions_per_model=1 
 ```
-$\textrm{\color{red}Do we need to specify data dir?}$
-$\textrm{\color{red}Can we delete custom mode here?}$
 
 Explanation of arguments:
-* Instead of `<dir that stores feature pickle files>` provide the path to the directory containing the `.pkl` feature files generated in the previous step.
+* Instead of `<dir that stores feature pickle files>` provide the path to the directory containing the `.pkl` feature files generated in the [previous step](#11-basic-run). The path is the same as `--output_dir` for `create_individual_features.py`.
 * Instead of `<protein_list.txt>` provide the path to a text file containing a list of protein combinations to be modeled.
-* Instead of `<path to output directory>` provide the path where subdirectories containing the final structures will be saved.
-* `--num_cycle` This flag specifies the number of times the AlphaFold neural network will run, using the output of one cycle as input for the next. Increasing this number may improve the quality of the final structures (especially for large complexes), but it will also increase the runtime.
+* Instead of `<path to output directory>` provide a path where subdirectories containing the final structures will be saved.
+* Instead of `<path to alphafold databases>` provide a path to the genetic database (see [0. Alphafold-databases](#installation) of the installation part).
+* `--num_cycle`: specifies the number of times the AlphaFold neural network will run, using the output of one cycle as input for the next. Increasing this number may improve the quality of the final structures (especially for large complexes), but it will also increase the runtime.
+* `--num_predictions_per_model`: Specifies the number of predictions per model. The number of predicted structures N\*5.  The default value is 1, which gives 5 structures. 
 
 #### Output
 
