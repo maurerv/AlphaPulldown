@@ -320,14 +320,14 @@ The result of ```create_individual_features.py``` run is pickle format features 
 #### Next step
 Proceed to the next step [2.1 Basic Run](#21-basic-run).
 
-### 1.2 Example run with SLURM (EMBL cluster)
+### 1.2. Example run with SLURM (EMBL cluster)
 
 If you run AlphaPulldown on a computer cluster, you may want to execute feature creation in parallel. Here, we provide an example of code that is suitable for a cluster that utilizes SLURM Workload Manager. 
 > **For EMBL staff:**  For more details about the SLURM on the EMBL cluster, please refer to the [EMBL Cluster wiki](https://wiki.embl.de/cluster/Main_Page) using the EMBL network.
 
 #### Input
 
-For the following example, we will use [`example_1_sequences.fasta`](../example_data/example_1_sequences.fasta) as input. If you want to run a smaller test, you can use [`example_1_sequences_shorter.fasta`](../example_data/example_1_sequences_shorter.fasta) instead.
+For the following example, we will use [`example_2_sequences.fasta`](../example_data/example_2_sequences.fasta) as input. 
 
 #### Script Execution
 
@@ -637,166 +637,100 @@ Explanation of arguments:
 * `--num_cycle`: specifies the number of times the AlphaFold neural network will run, using the output of one cycle as input for the next. Increasing this number may improve the quality of the final structures (especially for large complexes), but it will also increase the runtime.
 * `--num_predictions_per_model`: Specifies the number of predictions per model. The number of predicted structures N\*5.  The default value is 1, which gives 5 structures.
 
+$\text{\color{red} Correct FLAGS description}$
+
 <details>
    <summary>
     Full list of arguments (FLAGS):
    </summary>
 
 * `--alphalink_weight:` Path to AlphaLink neural network weights
-
 * `--data_dir:` Path to params directory
-
 * `--job_index:` index of sequence in the fasta file, starting from 1 (an integer)
-
 * `--mode:` <pulldown|all_vs_all|homo-oligomer|custom>: choose the mode of running multimer jobs (default: 'pulldown')
-
 * `--models_to_relax:` <None|All|Best>: Which models to relax. Default is None, meaning no model will be relaxed (default: 'None')
-
 * `--monomer_objects_dir:` a list of directories where monomer objects are stored (a comma separated list)
-
 * `--oligomer_state_file:` path to oligomer state files
-
 * `--output_path:` output directory where the region data is going to be stored
-
 * `--protein_lists:` protein list files (a comma separated list)
-
 * `--unifold_model_name:` <multimer_af2|multimer_ft|multimer|multimer_af2_v3|multimer_af2_model45_v3>: choose unifold model structure (default: 'multimer_af2')
-
 * `--unifold_param:` Path to UniFold neural network weights
-
 * `--[no]use_alphalink:` Whether AlphaLink models are going to be used. Default is False (default: 'false')
-
 * `--[no]use_unifold:` Whether UniFold models are going to be used. Default is False (default: 'false')
 
 absl.app:
 
-  * `-?,--[no]help:` show this help (default: 'false')
-
-  * `--[no]helpfull:` show full help (default: 'false')
-
-  * `--[no]helpshort:` show this help (default: 'false')
-
-  * `--[no]helpxml:` like --helpfull, but generates XML output (default: 'false')
-
-  * `--[no]only_check_args:` Set to true to validate args and exit (default: 'false')
-
-  * `--[no]pdb:` Alias for --pdb_post_mortem (default: 'false')
-
-  * `--[no]pdb_post_mortem:` Set to true to handle uncaught exceptions with PDB post mortem (default: 'false')
-
-  * `--profile_file:` Dump profile information to a file (for python -m pstats). Implies --run_with_profiling.
-
-  * `--[no]run_with_pdb:` Set to true for PDB debug mode (default: 'false')
-
-  * `--[no]run_with_profiling:` Set to true for profiling the script. Execution will be slower, and the output format might change over time (default: 'false')
-
-  * `--[no]use_cprofile_for_profiling:` Use cProfile instead of the profile module for profiling. This has no effect unless --run_with_profiling is set (default: 'true')
+* `-?,--[no]help:` show this help (default: 'false')
+* `--[no]helpfull:` show full help (default: 'false')
+* `--[no]helpshort:` show this help (default: 'false')
+* `--[no]helpxml:` like --helpfull, but generates XML output (default: 'false')
+* `--[no]only_check_args:` Set to true to validate args and exit (default: 'false')
+* `--[no]pdb:` Alias for --pdb_post_mortem (default: 'false')
+* `--[no]pdb_post_mortem:` Set to true to handle uncaught exceptions with PDB post mortem (default: 'false')
+* `--profile_file:` Dump profile information to a file (for python -m pstats). Implies --run_with_profiling.
+* `--[no]run_with_pdb:` Set to true for PDB debug mode (default: 'false')
+* `--[no]run_with_profiling:` Set to true for profiling the script. Execution will be slower, and the output format might change over time (default: 'false')
+* `--[no]use_cprofile_for_profiling:` Use cProfile instead of the profile module for profiling. This has no effect unless --run_with_profiling is set (default: 'true')
 
 absl.logging:
-
-  * `--[no]alsologtostderr:` also log to stderr? (default: 'false')
-
-  * `--log_dir:` directory to write logfiles into (default: '')
-
-  * `--logger_levels:` Specify log level of loggers. The format is a CSV list of `name:level`. Where `name` is the logger name used with `logging.getLogger()`, and `level` is a level name (INFO, DEBUG, etc). e.g. `myapp.foo:INFO,other.logger:DEBUG` (default: '')
-
-  * `--[no]logtostderr:` Should only log to stderr? (default: 'false')
-
-  * `--[no]showprefixforinfo:` If False, do not prepend prefix to info messages when it's logged to stderr, --verbosity is set to INFO level, and python logging is used (default: 'true')
-
-  * `--stderrthreshold:` log messages at this level, or more severe, to stderr in addition to the logfile. Possible values are 'debug', 'info', 'warning', 'error', and 'fatal'. Obsoletes --alsologtostderr. Using --alsologtostderr cancels the effect of this flag. Please also note that this flag is subject to --verbosity and requires logfile not be stderr (default: 'fatal')
-
-  * `-v,--verbosity:` Logging verbosity level. Messages logged at this level or lower will be included. Set to 1 for debug logging. If the flag was not set or supplied, the value will be changed from the default of -1 (warning) to 0 (info) after flags are parsed (default: '-1') (an integer)
+* `--[no]alsologtostderr:` also log to stderr? (default: 'false')
+* `--log_dir:` directory to write logfiles into (default: '')
+* `--logger_levels:` Specify log level of loggers. The format is a CSV list of `name:level`. Where `name` is the logger name used with `logging.getLogger()`, and `level` is a level name (INFO, DEBUG, etc). e.g. `myapp.foo:INFO,other.logger:DEBUG` (default: '')
+* `--[no]logtostderr:` Should only log to stderr? (default: 'false')
+* `--[no]showprefixforinfo:` If False, do not prepend prefix to info messages when it's logged to stderr, --verbosity is set to INFO level, and python logging is used (default: 'true')
+* `--stderrthreshold:` log messages at this level, or more severe, to stderr in addition to the logfile. Possible values are 'debug', 'info', 'warning', 'error', and 'fatal'. Obsoletes --alsologtostderr. Using --alsologtostderr cancels the effect of this flag. Please also note that this flag is subject to --verbosity and requires logfile not be stderr (default: 'fatal')
+* `-v,--verbosity:` Logging verbosity level. Messages logged at this level or lower will be included. Set to 1 for debug logging. If the flag was not set or supplied, the value will be changed from the default of -1 (warning) to 0 (info) after flags are parsed (default: '-1') (an integer)
 
 absl.testing.absltest:
-
-  * `--test_random_seed:` Random seed for testing. Some test frameworks may change the default value of this flag between runs, so it is not appropriate for seeding probabilistic tests (default: '301') (an integer)
-
-  * `--test_randomize_ordering_seed:` If positive, use this as a seed to randomize the execution order for test cases. If "random", pick a random seed to use. If 0 or not set, do not randomize test case execution order. This flag also overrides the TEST_RANDOMIZE_ORDERING_SEED environment variable (default: '')
-
-  * `--test_srcdir:` Root of directory tree where source files live (default: '')
-
-  * `--test_tmpdir:` Directory for temporary testing files (default: '/tmp/absl_testing')
-
-  * `--xml_output_file:` File to store XML test results (default: '')
+* `--test_random_seed:` Random seed for testing. Some test frameworks may change the default value of this flag between runs, so it is not appropriate for seeding probabilistic tests (default: '301') (an integer)
+* `--test_randomize_ordering_seed:` If positive, use this as a seed to randomize the execution order for test cases. If "random", pick a random seed to use. If 0 or not set, do not randomize test case execution order. This flag also overrides the TEST_RANDOMIZE_ORDERING_SEED environment variable (default: '')
+* `--test_srcdir:` Root of directory tree where source files live (default: '')
+* `--test_tmpdir:` Directory for temporary testing files (default: '/tmp/absl_testing')
+* `--xml_output_file:` File to store XML test results (default: '')
 
 alphapulldown.scripts.run_structure_prediction:
-
-  * `--[no]benchmark:` Run multiple JAX model evaluations to obtain a timing that excludes the compilation time, which should be more indicative of the time required for inferencing many proteins (default: 'false')
-
-  * `--[no]compress_result_pickles:` Whether the result pickles are going to be gzipped. Default is False (default: 'false')
-
-  * `--crosslinks:` Path to crosslink information pickle for AlphaLink
-
-  * `--data_directory:` Path to directory containing model weights and parameters
-
-  * `--description_file:` Path to the text file with multimeric template instruction
-
-  * `--desired_num_msa:` A desired number of msa to pad (an integer)
-
-  * `--desired_num_res:` A desired number of residues to pad (an integer)
-
-  * `--features_directory:` Path to computed monomer features; repeat this option to specify a list of values
-
-  * `--fold_backend:` Folding backend that should be used for structure prediction (default: 'alphafold')
-
-  * `-i,--input:` Folds in format [fasta_path:number:start-stop],; repeat this option to specify a list of values
-
-  * `--model_names:` Names of models to use, e.g. model_2_multimer_v3 (default: all models)
-
-  * `--model_preset:` <monomer|monomer_casp14|monomer_ptm|multimer>: Choose preset model configuration - the monomer model, the monomer model with extra ensembling, monomer model with pTM head, or multimer model (default: 'monomer')
-
-  * `--msa_depth:` Number of sequences to use from the MSA (by default is taken from AF model config) (an integer)
-
-  * `--[no]msa_depth_scan:` Run predictions for each model with logarithmically distributed MSA depth (default: 'false')
-
-  * `--[no]multimeric_template:` Whether to use multimeric templates (default: 'false')
-
-  * `--[no]no_pair_msa:` Do not pair the MSAs when constructing multimer objects (default: 'false')
-
-  * `--num_cycle:` Number of recycles, defaults to 3 (default: '3') (an integer)
-
-  * `--num_predictions_per_model:` Number of predictions per model, defaults to 1 (default: '1') (an integer)
-
-  * `-o,--output_directory:` Path to output directory. Will be created if not exists
-
-  * `--path_to_mmt:` Path to directory with multimeric template mmCIF files
-
-  * `--protein_delimiter:` Delimiter for proteins of a single fold (default: '+')
-
-  * `--random_seed:` The random seed for the data pipeline. By default, this is randomly generated. Note that even if this is set, Alphafold may still not be deterministic, because processes like GPU inference are nondeterministic (an integer)
-
-  * `--[no]remove_result_pickles:` Whether the result pickles are going to be removed (default: 'true')
-
-  * `--[no]skip_templates:` Do not use template features when modelling (default: 'false')
-
-  * `--[no]use_ap_style:` Change output directory to include a description of the fold as seen in previous alphapulldown versions (default: 'false')
-
-  * `--[no]use_gpu_relax:` Whether to run Amber relaxation on GPU. Default is True (default: 'true')
+* `--[no]benchmark:` Run multiple JAX model evaluations to obtain a timing that excludes the compilation time, which should be more indicative of the time required for inferencing many proteins (default: 'false')
+* `--[no]compress_result_pickles:` Whether the result pickles are going to be gzipped. Default is False (default: 'false')
+* `--crosslinks:` Path to crosslink information pickle for AlphaLink
+* `--data_directory:` Path to directory containing model weights and parameters
+* `--description_file:` Path to the text file with multimeric template instruction
+* `--desired_num_msa:` A desired number of msa to pad (an integer)
+* `--desired_num_res:` A desired number of residues to pad (an integer)
+* `--features_directory:` Path to computed monomer features; repeat this option to specify a list of values
+* `--fold_backend:` Folding backend that should be used for structure prediction (default: 'alphafold')
+* `-i,--input:` Folds in format [fasta_path:number:start-stop],; repeat this option to specify a list of values
+* `--model_names:` Names of models to use, e.g. model_2_multimer_v3 (default: all models)
+* `--model_preset:` <monomer|monomer_casp14|monomer_ptm|multimer>: Choose preset model configuration - the monomer model, the monomer model with extra ensembling, monomer model with pTM head, or multimer model (default: 'monomer')
+* `--msa_depth:` Number of sequences to use from the MSA (by default is taken from AF model config) (an integer)
+* `--[no]msa_depth_scan:` Run predictions for each model with logarithmically distributed MSA depth (default: 'false')
+* `--[no]multimeric_template:` Whether to use multimeric templates (default: 'false')
+* `--[no]no_pair_msa:` Do not pair the MSAs when constructing multimer objects (default: 'false')
+* `--num_cycle:` Number of recycles, defaults to 3 (default: '3') (an integer)
+* `--num_predictions_per_model:` Number of predictions per model, defaults to 1 (default: '1') (an integer)
+* `-o,--output_directory:` Path to output directory. Will be created if not exists
+* `--path_to_mmt:` Path to directory with multimeric template mmCIF files
+* `--protein_delimiter:` Delimiter for proteins of a single fold (default: '+')
+* `--random_seed:` The random seed for the data pipeline. By default, this is randomly generated. Note that even if this is set, Alphafold may still not be deterministic, because processes like GPU inference are nondeterministic (an integer)
+* `--[no]remove_result_pickles:` Whether the result pickles are going to be removed (default: 'true')
+* `--[no]skip_templates:` Do not use template features when modelling (default: 'false')
+* `--[no]use_ap_style:` Change output directory to include a description of the fold as seen in previous alphapulldown versions (default: 'false')
+* `--[no]use_gpu_relax:` Whether to run Amber relaxation on GPU. Default is True (default: 'true')
 
 tensorflow.python.ops.parallel_for.pfor:
-
-  * `--[no]op_conversion_fallback_to_while_loop:` DEPRECATED: Flag is ignored (default: 'true')
+* `--[no]op_conversion_fallback_to_while_loop:` DEPRECATED: Flag is ignored (default: 'true')
 
 tensorflow.python.tpu.client.client:
-
-  * `--[no]hbm_oom_exit:` Exit the script when the TPU HBM is OOM (default: 'true')
-
-  * `--[no]runtime_oom_exit:` Exit the script when the TPU runtime is OOM (default: 'true')
+* `--[no]hbm_oom_exit:` Exit the script when the TPU HBM is OOM (default: 'true')
+* `--[no]runtime_oom_exit:` Exit the script when the TPU runtime is OOM (default: 'true')
 
 tensorflow.python.tpu.tensor_tracer_flags:
-
-  * `--delta_threshold:` Log if history based diff crosses this threshold (default: '0.5') (a number)
-
-  * `--[no]tt_check_filter:` Terminate early to check op name filtering (default: 'false')
-
-  * `--[no]tt_single_core_summaries:` Report single core metric and avoid aggregation (default: 'false')
+* `--delta_threshold:` Log if history based diff crosses this threshold (default: '0.5') (a number)
+* `--[no]tt_check_filter:` Terminate early to check op name filtering (default: 'false')
+* `--[no]tt_single_core_summaries:` Report single core metric and avoid aggregation (default: 'false')
 
 absl.flags:
-
-  * `--flagfile:` Insert flag definitions from the given file into the command line (default: '')
-
-  * `--undefok:` comma-separated list of flag names that it is okay to specify on the command line even if the program does not define a flag with that name. IMPORTANT: flags in this list that have arguments MUST use the --flag=value format (default: '')
+* `--flagfile:` Insert flag definitions from the given file into the command line (default: '')
+* `--undefok:` comma-separated list of flag names that it is okay to specify on the command line even if the program does not define a flag with that name. IMPORTANT: flags in this list that have arguments MUST use the --flag=value format (default: '')
   
 </details>
 
@@ -822,197 +756,15 @@ Please refer to the [AlphaFold manual](https://github.com/google-deepmind/alphaf
 > [!Caution]
 > AlphaPulldown is designed for screening, so its default output doesn't relax structures. To relax the top-ranked structure (`ranked_0.pdb`), you can run AlphaPulldown with the `--models_to_relax=best` flag.
 
-### 2.2 FLAGS
+### 2.2. Example run with SLURM (EMBL cluster).
 
-Structures prediction script `run_multimer_jobs.py` has several several optional FLAGS:
-$\text{\color{red}add FLAGS}$
+If you run AlphaPulldown on a computer cluster, you may want to execute feature creation in parallel. Here, we provide an example of code that is suitable for a cluster that utilizes SLURM Workload Manager.
 
-### 2.3 Pulldown and All versus all modes
-Instead of manually typing all combinations of proteins, AlphaPulldown provides two different modes of automatic generation of such combinations.
+#### Input
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="../manuals/AP_modes_dark.png">
-  <source media="(prefers-color-scheme: light)" srcset="../manuals/AP_modes.png">
-  <img alt="Shows an illustrated sun in light mode and a moon with stars in dark mode." src="../manuals/AP_modes.png">
-</picture>
+For this step, you need an example input file: [`custom_mode.txt`](../example_data/custom_mode.txt) and features (`.pkl`) files generated in the previous step [1.2 Example run with SLURM (EMBL cluster)](12-example-run-with-slurm-embl-cluster).
 
-#### Multiple inputs "pulldown" mode
-
-This mode allows to provide two or more lists of proteins that will generate all combinations of proteins from one list with all proteins from another list.
-If you want to emulate _in silico_ pulldown of some hypothetical proteinA bait against proteins B-G you can use two `protein_list.csv` files:
-
-The first `protein_list1.csv`:
-```
-proteinA
-```
-
-The second `protein_list2.csv`:
-```
-proteinB
-proteinC
-proteinD
-proteinE
-proteinF
-proteinG
-```
-
-This results in the following combinations of proteins: A-B, A-C, A-D, A-E, A-F, A-G.
-
-Can you add the third `protein_list3.csv`:
-```
-proteinX
-proteinZ
-```
-And resulting models will contain proteins A-B-X, A-B-Z, A-C-X, A-C-Z...
-
-In fact, you can provide as many files as you wish, the number of combinations you will receive is the product of numbers of lines in the input files.
-
-Lines in files should not necessarily be single proteins. Input files follow the same rules as described for [2.1 Basic run](#21-basic-run). It can contain several protein names, indicate a number of oligomers, and have residue ranges.
-
-To run `run_multimer_jobs.py` in `pulldown` mode use the following script:
-
-```bash
-run_multimer_jobs.py \
-  --mode=pulldown \
-  --monomer_objects_dir=<dir that stores feature pickle files> \ 
-  --protein_lists=<protein_list1.csv>,<protein_list2.csv> \
-  --output_path=<path to output directory> \
-  --data_dir=<path to AlphaFold data directory> \ 
-  --num_cycle=<any number e.g. 3> 
-```
-From [2.1 Basic run](#21-basic-run) this example is different with:
-* `--mode=pulldown` flag ($\text{\color{red}don't need to mention it if delete custom mode flag form the basic run}$.) that defines the mode of the run.
-* Instead of `<protein_list1.csv>`,`<protein_list2.csv>` provides the paths to the files containing a list of protein combinations to be modeled.
- 
-#### "all_vs_all" mode
-
-In this mode, AlphaPulldown takes lines from the input `protein_list.csv` file and generates all possible combinations of these lines.
-
-It is useful when you have a set of proteins, and you want to find out which interact with which. If you provide the list of proteins:
-```
-proteinA
-proteinB
-proteinC
-proteinD
-proteinE
-```
-The resulting models will be combinations of proteins A-B, A-C, A-D, A-E, B-C, B-D, B-E, C-D, C-E, D-E. 
-
->[!Caution]
-> The number of predictions rapidly increases with the number of lines in the input `protein_list.csv`. 
-
-Lines in files should not necessarily be single proteins. Input files follow the same rules as described for [2.1 Basic run](#21-basic-run). It can contain several protein names, indicate a number of oligomers, and have residue ranges.
-
-To run `run_multimer_jobs.py` in `all_vs_all` mode use the following script:
-
-```bash
-run_multimer_jobs.py \
-  --mode=all_vs_all \
-  --monomer_objects_dir=<dir that stores feature pickle files>
-  --protein_lists=<protein_list.csv> \
-  --output_path=<path to output directory> \ 
-  --data_dir=<path to AlphaFold data directory> \ 
-  --num_cycle=<any number e.g. 3> 
-```
-
-### 2.X Older version
-
-
-## 3. Analysis and Visualization
-The resulting predictions from the [step 2](#2-predict-structures-gpu-stage) can be used directly as they are. However, for evaluation systematization and ranking of the prediction, you can use an interactive [Jupyter Notebook](https://jupyter.org/) and/or table with models scores. 
-
-### Jupyter Notebook
-
-Go to the model's output directory from the [step 2](#2-predict-structures-gpu-stage).
-```bash
-cd <models_output_dir>
-```
-
-And run the script in the activated conda environment:
-```bash
-source activate AlphaPulldown
-create_notebook.py --cutoff=5.0 --output_dir=<models_output_dir>
-```
-<details>
-   
-<summary>
-Parameters:
-</summary>
-
-* `--cutoff`:
-  check the value of PAE between chains. In the case of multimers, the analysis program will create the notebook only from models with inter-chain PAE values smaller than the cutoff. Increases this parameter if you miss predictions in your notebook (e.g., 50).
-* `--output_dir`:
-  Directory where predicted models are stored $\text{\color{red}Why do we need to change the dir then?}$
-* `--pae_figsize`:
-   Figsize of pae_plot, default is 50
-* `--surface_thres` - $\text{\color{red}Add description or delete}$
-
-</details>
-
-This command will yield an `output.ipynb`, which you can open via JupyterLab. JupyterLab is already installed when installing AlphaPulldown with pip. Thus, to view the notebook launch the created notebook:
-```bash
-jupyter-lab output.ipynb
-```
->[!Note]
->If you run AlphaPulldown on a remote computer cluster, you will need a graphical connection, network mount of the remote directory, or a copy of the entire `<models_output_dir>` to open the notebook in a browser.
->
->For an example of how to establish a remote connection, please refer to the [Run on EMBL cluster](#add_link) part of this manual $\text{\color{red}cahnge link}$. 
-
-In the JupyterLab window, choose output.ipynb if it is not opened automatically and then go to the **Run** > **Run All Cells**; after all cells executions for every proteins complex, you will see PAE plots, interactive structures colored by pLDDT, interactive structures colored by a chain.
-
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="../manuals/Jupyter_results_dark.png">
-  <source media="(prefers-color-scheme: light)" srcset="../manuals/Jupyter_results.png">
-  <img alt="Shows an illustrated sun in light mode and a moon with stars in dark mode." src="../manuals/Jupyter_results.png">
-</picture>
-
-<br>
-</br>
-
-To zoom in PAE plots, click twice on them. To increase the number of displayed interactive models, add argument `models` to the `parse_results()` or `parse_results_colour_chains()` functions.
-
-```python
-parse_results('./ProteinA_and_ProteinB', models=10)
-```
-
-> [!WARNING]
-> If Jupyter Notebook has too many proteins, some interactive structures may disappear due to memory limitations. To restore the output of the cell, just rerun it by choosing it and going to **Run** > **Run Selected Cell** or pressing **Shift + Enter**.
-
-
-### Results table
-
-Making a CSV table with structural properties and scores requires the download of the singularity image ```alpha-analysis.sif```. Pleaes refer to the installation [instruction](#3-installation-for-the-analysis-step-optional).
-
-To execute the singularity image (i.e. the sif file) run:
-
-```bash
-singularity exec \
-    --no-home \
-    --bind </path/to/your/output/dir:/mnt> \
-    <path to your downloaded image>/alpha-analysis_jax_0.4.sif \
-    run_get_good_pae.sh \
-    --output_dir=/mnt \
-    --cutoff=10
-```
-$\text{\color{red}What is /path/to/your/output/dir:/mnt}$. 
-
-By default, you will have a csv file named ```predictions_with_good_interpae.csv``` created in the directory ```/path/to/your/output/dir``` as you have given in the command above. ```predictions_with_good_interpae.csv``` reports: 1. iptm, iptm+ptm scores provided by AlphaFold 2. mpDockQ score developed by [Bryant _et al._, 2022](https://gitlab.com/patrickbryant1/molpc)  3. PI_score developed by [Malhotra _et al._, 2021](https://gitlab.com/sm2185/ppi_scoring/-/wikis/home). The detailed explainations on these scores can be found in our paper and an example screenshot of the table is below. ![example](./example_table_screenshot.png)
-
-
-$\text{\color{red}Change description, add scores}$
-
-<br>
-
-## Running with SLURM (EMBL cluster)
-Computational clusters often use SLURM (Simple Linux Utility for Resource Management) to efficiently manage and schedule jobs. SLURM allows users to allocate resources and run jobs on HPC systems seamlessly; besides, it allows to run all jobs in parallel as a job array. The EMBL cluster utilizes SLURM, and to run AlphaPulldown on this cluster, you need to submit your job scripts through SLURM's scheduling system. This part of the manual will provide the necessary SLURM sbatch scripts to run AlphaPulldown. 
->[!NOTE]
->For more details about the SLURM system on the EMBL cluster, please refer to the [EMBL Cluster wiki](https://wiki.embl.de/cluster/Main_Page) using the EMBL network.
-
-
-
-
-
-### 2. Predict structures (GPU stage)
+#### Script Execution
 
 Create the ```run_multimer_jobs_SLURM.sh``` script and place the following code in it. Don't forget to change the input of `run_multimer_jobs.sh` script as described [previously in manual](#2-predict-structures-gpu-stage):
 
@@ -1113,6 +865,187 @@ sbatch --array=1-$count example_data/run_multimer_jobs_SLURM.sh
 ```
 
  </details>
+
+
+### 2.3. Pulldown and All versus all modes
+Instead of manually typing all combinations of proteins, AlphaPulldown provides two different modes of automatic generation of such combinations.
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="../manuals/AP_modes_dark.png">
+  <source media="(prefers-color-scheme: light)" srcset="../manuals/AP_modes.png">
+  <img alt="Shows an illustrated sun in light mode and a moon with stars in dark mode." src="../manuals/AP_modes.png">
+</picture>
+
+#### Multiple inputs "pulldown" mode
+
+This mode allows to provide two or more lists of proteins that will generate all combinations of proteins from one list with all proteins from another list.
+If you want to emulate _in silico_ pulldown of some hypothetical proteinA bait against proteins B-G you can use two `protein_list.csv` files:
+
+The first `protein_list1.csv`:
+```
+proteinA
+```
+
+The second `protein_list2.csv`:
+```
+proteinB
+proteinC
+proteinD
+proteinE
+proteinF
+proteinG
+```
+
+This results in the following combinations of proteins: A-B, A-C, A-D, A-E, A-F, A-G.
+
+Can you add the third `protein_list3.csv`:
+```
+proteinX
+proteinZ
+```
+And resulting models will contain proteins A-B-X, A-B-Z, A-C-X, A-C-Z...
+
+In fact, you can provide as many files as you wish, the number of combinations you will receive is the product of numbers of lines in the input files.
+
+Lines in files should not necessarily be single proteins. Input files follow the same rules as described for [2.1 Basic run](#21-basic-run). It can contain several protein names, indicate a number of oligomers, and have residue ranges.
+
+To run `run_multimer_jobs.py` in `pulldown` mode use the following script:
+
+```bash
+run_multimer_jobs.py \
+  --mode=pulldown \
+  --monomer_objects_dir=<dir that stores feature pickle files> \ 
+  --protein_lists=<protein_list1.csv>,<protein_list2.csv> \
+  --output_path=<path to output directory> \
+  --data_dir=<path to AlphaFold data directory> \ 
+  --num_cycle=<any number e.g. 3> 
+```
+From [2.1 Basic run](#21-basic-run) this example is different with:
+* `--mode=pulldown` flag ($\text{\color{red}don't need to mention it if delete custom mode flag form the basic run}$.) that defines the mode of the run.
+* Instead of `<protein_list1.csv>`,`<protein_list2.csv>` provides the paths to the files containing a list of protein combinations to be modeled.
+ 
+#### "all_vs_all" mode
+
+In this mode, AlphaPulldown takes lines from the input `protein_list.csv` file and generates all possible combinations of these lines.
+
+It is useful when you have a set of proteins, and you want to find out which interact with which. If you provide the list of proteins:
+```
+proteinA
+proteinB
+proteinC
+proteinD
+proteinE
+```
+The resulting models will be combinations of proteins A-B, A-C, A-D, A-E, B-C, B-D, B-E, C-D, C-E, D-E. 
+
+>[!Caution]
+> The number of predictions rapidly increases with the number of lines in the input `protein_list.csv`. 
+
+Lines in files should not necessarily be single proteins. Input files follow the same rules as described for [2.1 Basic run](#21-basic-run). It can contain several protein names, indicate a number of oligomers, and have residue ranges.
+
+To run `run_multimer_jobs.py` in `all_vs_all` mode use the following script:
+
+```bash
+run_multimer_jobs.py \
+  --mode=all_vs_all \
+  --monomer_objects_dir=<dir that stores feature pickle files>
+  --protein_lists=<protein_list.csv> \
+  --output_path=<path to output directory> \ 
+  --data_dir=<path to AlphaFold data directory> \ 
+  --num_cycle=<any number e.g. 3> 
+```
+
+
+## 3. Analysis and Visualization
+The resulting predictions from the [step 2](#2-predict-structures-gpu-stage) can be used directly as they are. However, for evaluation systematization and ranking of the prediction, you can use an interactive [Jupyter Notebook](https://jupyter.org/) and/or table with models scores. 
+
+### Jupyter Notebook
+
+Go to the model's output directory from the [step 2](#2-predict-structures-gpu-stage).
+```bash
+cd <models_output_dir>
+```
+
+And run the script in the activated conda environment:
+```bash
+source activate AlphaPulldown
+create_notebook.py --cutoff=5.0 --output_dir=<models_output_dir>
+```
+<details>
+   
+<summary>
+Parameters:
+</summary>
+
+* `--cutoff`:
+  check the value of PAE between chains. In the case of multimers, the analysis program will create the notebook only from models with inter-chain PAE values smaller than the cutoff. Increases this parameter if you miss predictions in your notebook (e.g., 50).
+* `--output_dir`:
+  Directory where predicted models are stored $\text{\color{red}Why do we need to change the dir then?}$
+* `--pae_figsize`:
+   Figsize of pae_plot, default is 50
+* `--surface_thres` - $\text{\color{red}Add description or delete}$
+
+</details>
+
+This command will yield an `output.ipynb`, which you can open via JupyterLab. JupyterLab is already installed when installing AlphaPulldown with pip. Thus, to view the notebook launch the created notebook:
+```bash
+jupyter-lab output.ipynb
+```
+>[!Note]
+>If you run AlphaPulldown on a remote computer cluster, you will need a graphical connection, network mount of the remote directory, or a copy of the entire `<models_output_dir>` to open the notebook in a browser.
+>
+>For an example of how to establish a remote connection, please refer to the [Run on EMBL cluster](#add_link) part of this manual $\text{\color{red}cahnge link}$. 
+
+In the JupyterLab window, choose output.ipynb if it is not opened automatically and then go to the **Run** > **Run All Cells**; after all cells executions for every proteins complex, you will see PAE plots, interactive structures colored by pLDDT, interactive structures colored by a chain.
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="../manuals/Jupyter_results_dark.png">
+  <source media="(prefers-color-scheme: light)" srcset="../manuals/Jupyter_results.png">
+  <img alt="Shows an illustrated sun in light mode and a moon with stars in dark mode." src="../manuals/Jupyter_results.png">
+</picture>
+
+<br>
+</br>
+
+To zoom in PAE plots, click twice on them. To increase the number of displayed interactive models, add argument `models` to the `parse_results()` or `parse_results_colour_chains()` functions.
+
+```python
+parse_results('./ProteinA_and_ProteinB', models=10)
+```
+
+> [!WARNING]
+> If Jupyter Notebook has too many proteins, some interactive structures may disappear due to memory limitations. To restore the output of the cell, just rerun it by choosing it and going to **Run** > **Run Selected Cell** or pressing **Shift + Enter**.
+
+
+### Results table
+
+Making a CSV table with structural properties and scores requires the download of the singularity image ```alpha-analysis.sif```. Pleaes refer to the installation [instruction](#3-installation-for-the-analysis-step-optional).
+
+To execute the singularity image (i.e. the sif file) run:
+
+```bash
+singularity exec \
+    --no-home \
+    --bind </path/to/your/output/dir:/mnt> \
+    <path to your downloaded image>/alpha-analysis_jax_0.4.sif \
+    run_get_good_pae.sh \
+    --output_dir=/mnt \
+    --cutoff=10
+```
+$\text{\color{red}What is /path/to/your/output/dir:/mnt}$. 
+
+By default, you will have a csv file named ```predictions_with_good_interpae.csv``` created in the directory ```/path/to/your/output/dir``` as you have given in the command above. ```predictions_with_good_interpae.csv``` reports: 1. iptm, iptm+ptm scores provided by AlphaFold 2. mpDockQ score developed by [Bryant _et al._, 2022](https://gitlab.com/patrickbryant1/molpc)  3. PI_score developed by [Malhotra _et al._, 2021](https://gitlab.com/sm2185/ppi_scoring/-/wikis/home). The detailed explainations on these scores can be found in our paper and an example screenshot of the table is below. ![example](./example_table_screenshot.png)
+
+
+$\text{\color{red}Change description, add scores}$
+
+<br>
+
+## Running with SLURM (EMBL cluster)
+Computational clusters often use SLURM (Simple Linux Utility for Resource Management) to efficiently manage and schedule jobs. SLURM allows users to allocate resources and run jobs on HPC systems seamlessly; besides, it allows to run all jobs in parallel as a job array. The EMBL cluster utilizes SLURM, and to run AlphaPulldown on this cluster, you need to submit your job scripts through SLURM's scheduling system. This part of the manual will provide the necessary SLURM sbatch scripts to run AlphaPulldown. 
+>[!NOTE]
+>For more details about the SLURM system on the EMBL cluster, please refer to the [EMBL Cluster wiki](https://wiki.embl.de/cluster/Main_Page) using the EMBL network.
+
 
 
 <br>
