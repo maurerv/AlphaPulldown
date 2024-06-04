@@ -986,6 +986,56 @@ run_multimer_jobs.py \
 
 ### 2.4. Run with crosslinking-dat (AlphaLink2)
 
+As [Stahl et al., 2023](https://www.nature.com/articles/s41587-023-01704-z) showed, integrating cross-link data with AlphaFold could improve the modelling quality in 
+some challenging cases. Thus AlphaPulldown has integrated [AlphaLink2](https://github.com/Rappsilber-Laboratory/AlphaLink2/tree/main) pipeline 
+and allows the user to combine cross-link data with AlphaFold Multimer inference, without the need to calculate MSAs from scratch again.
+
+> **Cite:** If you use AlphaLink2, please remember to cite:
+> Stahl, K., Demann, L., Bremenkamp, R., Warneke, R., Hormes, B., Stülke, J., Brock, O., Rappsilber, J., Der, S.-M. ", & Mensch, S. (2024). Modelling protein complexes with crosslinking mass spectrometry and deep learning. BioRxiv, 2023.06.07.544059. https://doi.org/10.1101/2023.06.07.544059
+
+Before using, install AlphaLink2 as described [here](#4-installation-for-cross-link-input-data-by-alphalink2-optional).
+
+#### Input
+
+Besides features (`.pkl`) files generated in the [previous step](#11-basic-run) you need to prepare cross-link input data:
+
+As instructed by [AlphaLink2](https://github.com/Rappsilber-Laboratory/AlphaLink2/tree/main), information of cross-linked residues
+between 2 proteins, inter-protein crosslinks A->B 1,50 and 30,80 and an FDR=20%, should look like: 
+
+```
+{'protein_A': {'protein_B': [(1, 50, 0.2), (30, 80, 0.2)]}}
+```
+
+and intra-protein crosslinks follow the same format: 
+
+```
+{'protein_A': {'protein_A': [(5, 20, 0.2)]}}
+```
+
+The keys in these dictionaries should be the same as your pickle files created by [the first stage of AlphaPulldown](https://github.com/KosinskiLab/AlphaPulldown/blob/main/example_1.md). e.g. you should have ```protein_A.pkl``` 
+and ```protein_B.pkl``` already calculated. 
+
+Dictionaries like these should be stored in **```.pkl.gz```** files and provided to AlphaPulldown in the next step. You can use the script from [AlphaLink2](https://github.com/Rappsilber-Laboratory/AlphaLink2/tree/main)
+to prepare these pickle files. 
+
+>[!Warning]
+>The dictionaries are 0-indexed, i.e., residues start from 0.
+
+#### Run with AlphaLink2 prediction via AlphaPulldown
+Within the same conda environment, run in e.g. ```custom``` mode:
+
+```bash
+run_multimer_jobs.py --mode=custom \
+--num_predictions_per_model=1 \
+--output_path=/scratch/scratch/user/output/models \
+--data_dir=/g/alphafold/AlphaFold_DBs/2.3.0/ I am running a few minutes late; my previous meeting is running over.
+--protein_lists=custom.txt \
+--monomer_objects_dir=/scratch/user/output/features \
+--job_index=$SLURM_ARRAY_TASK_ID --alphalink_weight=/scratch/user/alphalink_weights/AlphaLink-Multimer_SDA_v3.pt \
+--use_alphalink=True --crosslinks=/path/to/crosslinks.pkl.gz 
+```
+
+The other modes provided by AlphaPulldown also work in the same way.
 
 ## 3. Analysis and Visualization
 The resulting predictions from the [step 2](#2-predict-structures-gpu-stage) can be used directly as they are. However, for evaluation systematization and ranking of the prediction, you can use an interactive [Jupyter Notebook](https://jupyter.org/) and/or table with models scores. 
