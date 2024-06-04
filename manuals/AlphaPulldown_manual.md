@@ -68,7 +68,7 @@ For downstream analysis of SnakeMake-AlphaPulldown results, please refer to this
 
 # Scripts-Based AlphaPulldown
 
-AlphaPulldown can be used as a set of Python scripts for every particular step. **(1)** `create_individual_features.py` **(2)** `run_multimer_jobs.py` **(3)** `create_notebook.py` and `alpha-analysis.sif` image.
+AlphaPulldown can be used as a set of Python scripts for every particular step. [**(1)**](#1-compute-multiple-sequence-alignment-msa-and-template-features-cpu-stage) `create_individual_features.py` [**(2)**](#2-predict-structures-gpu-stage) `run_multimer_jobs.py` [**(3)**](#addname) `create_notebook.py` and `alpha-analysis.sif` image.
 
 ## Installation
 
@@ -180,7 +180,8 @@ Chrome users may not be able to download it after clicking the link. If so, plea
     
 2. Make sure you have PyTorch corresponding to the CUDA version installed. For example, [PyTorch 1.13.0+cu117](https://pytorch.org/get-started/previous-versions/) 
 and CUDA/11.7.0
-3. Download the PyTorch checkpoints from [Zenodo](https://zenodo.org/records/8007238), unzip it, then you should obtain a file named: ```AlphaLink-Multimer_SDA_v3.pt```
+$\text{\color{red}add pip install torch==1.13.1 torchvision==0.14.1 torchaudio==0.13.1}$
+4. Download the PyTorch checkpoints from [Zenodo](https://zenodo.org/records/8007238), unzip it, then you should obtain a file named: ```AlphaLink-Multimer_SDA_v3.pt```
 
 ### Installation for developers
 <details>
