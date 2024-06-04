@@ -613,10 +613,11 @@ Go to the next step [2.X. Template run](#2-predict-structures-gpu-stage) ${\colo
 
 ## 2. Predict structures (GPU stage)
 ### 2.1. Basic run
-This step requires the pickle files (.pkl) generated during the [first stage](#1-compute-multiple-sequence-alignment-msa-and-template-features-cpu-stage).
-Additionally, you'll need to provide a list of protein combinations you intend to predict.
+
 
 #### Input
+This step requires the pickle files (.pkl) generated during the [first stage](#1-compute-multiple-sequence-alignment-msa-and-template-features-cpu-stage).
+Additionally, you'll need to provide a list of protein combinations `protein_list.txt` you intend to predict.
 
 Here's how to structure your combinations file `protein_list.txt`, with explanations:
 
@@ -985,7 +986,7 @@ run_multimer_jobs.py \
 
 ### 2.3. Run with custom templates (TrueMultimer)
 
-### 2.4. Run with crosslinking-dat (AlphaLink2)
+### 2.4. Run with crosslinking-data (AlphaLink2)
 
 As [Stahl et al., 2023](https://www.nature.com/articles/s41587-023-01704-z) showed, integrating cross-link data with AlphaFold could improve the modelling quality in 
 some challenging cases. Thus AlphaPulldown has integrated [AlphaLink2](https://github.com/Rappsilber-Laboratory/AlphaLink2/tree/main) pipeline 
