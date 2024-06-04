@@ -157,6 +157,31 @@ Download the singularity image:
 
 Chrome users may not be able to download it after clicking the link. If so, please right-click and select "Save link as".
 
+#### 4. Installation for cross-link input data by AlphaLink2 (optional)
+
+1. Compile [UniCore](https://github.com/dptech-corp/Uni-Core).
+    ```bash
+    source activate AlphaPulldown
+    git clone https://github.com/dptech-corp/Uni-Core.git
+    cd Uni-Core
+    python setup.py install --disable-cuda-ext
+        
+    # test whether unicore is successfully installed
+    python -c "import unicore"
+    ```
+    You may see the following warning but it's fine:
+
+    ```
+    fused_multi_tensor is not installed corrected
+    fused_rounding is not installed corrected
+    fused_layer_norm is not installed corrected
+    fused_softmax is not installed corrected
+    ```
+    
+2. Make sure you have PyTorch corresponding to the CUDA version installed. For example, [PyTorch 1.13.0+cu117](https://pytorch.org/get-started/previous-versions/) 
+and CUDA/11.7.0
+3. Download the PyTorch checkpoints from [Zenodo](https://zenodo.org/records/8007238), unzip it, then you should obtain a file named: ```AlphaLink-Multimer_SDA_v3.pt```
+
 ### Installation for developers
 <details>
    
