@@ -242,10 +242,10 @@ Features calculation script ```create_individual_features.py``` has several opti
 
  <details>
    <summary>
-    Parameters (FLAGS) description
+    Full list of arguments (FLAGS):
    </summary>
    
-* `--save_msa_files`: By default is **False** to save storage stage but can be changed into **True**. If it is set to ```True```, the programme will 
+* `--save_msa_files`: By default is **False** to save storage stage but can be changed into **True**. If it is set to ```True```, the program will 
    create individual folder for each protein. The output directory will look like:
    
    ```
@@ -614,7 +614,7 @@ Here's how to structure your combinations file `protein_list.txt`, with explanat
    * Instead of repeating the protein name for homo-oligomers, specify the number of copies after the protein's name (e.g., `proteinB,4` for a tetramer).
    * Combine residue ranges and homooligomer notation for specific predictions (e.g., `proteinA,4,1-100;proteinB`).
 
-#### Running Structure Prediction
+#### Script Execution Structure Prediction
 To predict structures, activate the AlphaPulldown environment and run the script `run_multimer_jobs.py` as follows:
 
 ```bash
@@ -635,7 +635,170 @@ Explanation of arguments:
 * Instead of `<path to output directory>` provide a path where subdirectories containing the final structures will be saved.
 * Instead of `<path to alphafold databases>` provide a path to the genetic database (see [0. Alphafold-databases](#installation) of the installation part).
 * `--num_cycle`: specifies the number of times the AlphaFold neural network will run, using the output of one cycle as input for the next. Increasing this number may improve the quality of the final structures (especially for large complexes), but it will also increase the runtime.
-* `--num_predictions_per_model`: Specifies the number of predictions per model. The number of predicted structures N\*5.  The default value is 1, which gives 5 structures. 
+* `--num_predictions_per_model`: Specifies the number of predictions per model. The number of predicted structures N\*5.  The default value is 1, which gives 5 structures.
+
+<details>
+   <summary>
+    Full list of arguments (FLAGS):
+   </summary>
+
+* `--alphalink_weight:` Path to AlphaLink neural network weights
+
+* `--data_dir:` Path to params directory
+
+* `--job_index:` index of sequence in the fasta file, starting from 1 (an integer)
+
+* `--mode:` <pulldown|all_vs_all|homo-oligomer|custom>: choose the mode of running multimer jobs (default: 'pulldown')
+
+* `--models_to_relax:` <None|All|Best>: Which models to relax. Default is None, meaning no model will be relaxed (default: 'None')
+
+* `--monomer_objects_dir:` a list of directories where monomer objects are stored (a comma separated list)
+
+* `--oligomer_state_file:` path to oligomer state files
+
+* `--output_path:` output directory where the region data is going to be stored
+
+* `--protein_lists:` protein list files (a comma separated list)
+
+* `--unifold_model_name:` <multimer_af2|multimer_ft|multimer|multimer_af2_v3|multimer_af2_model45_v3>: choose unifold model structure (default: 'multimer_af2')
+
+* `--unifold_param:` Path to UniFold neural network weights
+
+* `--[no]use_alphalink:` Whether AlphaLink models are going to be used. Default is False (default: 'false')
+
+* `--[no]use_unifold:` Whether UniFold models are going to be used. Default is False (default: 'false')
+
+absl.app:
+
+  * `-?,--[no]help:` show this help (default: 'false')
+
+  * `--[no]helpfull:` show full help (default: 'false')
+
+  * `--[no]helpshort:` show this help (default: 'false')
+
+  * `--[no]helpxml:` like --helpfull, but generates XML output (default: 'false')
+
+  * `--[no]only_check_args:` Set to true to validate args and exit (default: 'false')
+
+  * `--[no]pdb:` Alias for --pdb_post_mortem (default: 'false')
+
+  * `--[no]pdb_post_mortem:` Set to true to handle uncaught exceptions with PDB post mortem (default: 'false')
+
+  * `--profile_file:` Dump profile information to a file (for python -m pstats). Implies --run_with_profiling.
+
+  * `--[no]run_with_pdb:` Set to true for PDB debug mode (default: 'false')
+
+  * `--[no]run_with_profiling:` Set to true for profiling the script. Execution will be slower, and the output format might change over time (default: 'false')
+
+  * `--[no]use_cprofile_for_profiling:` Use cProfile instead of the profile module for profiling. This has no effect unless --run_with_profiling is set (default: 'true')
+
+absl.logging:
+
+  * `--[no]alsologtostderr:` also log to stderr? (default: 'false')
+
+  * `--log_dir:` directory to write logfiles into (default: '')
+
+  * `--logger_levels:` Specify log level of loggers. The format is a CSV list of `name:level`. Where `name` is the logger name used with `logging.getLogger()`, and `level` is a level name (INFO, DEBUG, etc). e.g. `myapp.foo:INFO,other.logger:DEBUG` (default: '')
+
+  * `--[no]logtostderr:` Should only log to stderr? (default: 'false')
+
+  * `--[no]showprefixforinfo:` If False, do not prepend prefix to info messages when it's logged to stderr, --verbosity is set to INFO level, and python logging is used (default: 'true')
+
+  * `--stderrthreshold:` log messages at this level, or more severe, to stderr in addition to the logfile. Possible values are 'debug', 'info', 'warning', 'error', and 'fatal'. Obsoletes --alsologtostderr. Using --alsologtostderr cancels the effect of this flag. Please also note that this flag is subject to --verbosity and requires logfile not be stderr (default: 'fatal')
+
+  * `-v,--verbosity:` Logging verbosity level. Messages logged at this level or lower will be included. Set to 1 for debug logging. If the flag was not set or supplied, the value will be changed from the default of -1 (warning) to 0 (info) after flags are parsed (default: '-1') (an integer)
+
+absl.testing.absltest:
+
+  * `--test_random_seed:` Random seed for testing. Some test frameworks may change the default value of this flag between runs, so it is not appropriate for seeding probabilistic tests (default: '301') (an integer)
+
+  * `--test_randomize_ordering_seed:` If positive, use this as a seed to randomize the execution order for test cases. If "random", pick a random seed to use. If 0 or not set, do not randomize test case execution order. This flag also overrides the TEST_RANDOMIZE_ORDERING_SEED environment variable (default: '')
+
+  * `--test_srcdir:` Root of directory tree where source files live (default: '')
+
+  * `--test_tmpdir:` Directory for temporary testing files (default: '/tmp/absl_testing')
+
+  * `--xml_output_file:` File to store XML test results (default: '')
+
+alphapulldown.scripts.run_structure_prediction:
+
+  * `--[no]benchmark:` Run multiple JAX model evaluations to obtain a timing that excludes the compilation time, which should be more indicative of the time required for inferencing many proteins (default: 'false')
+
+  * `--[no]compress_result_pickles:` Whether the result pickles are going to be gzipped. Default is False (default: 'false')
+
+  * `--crosslinks:` Path to crosslink information pickle for AlphaLink
+
+  * `--data_directory:` Path to directory containing model weights and parameters
+
+  * `--description_file:` Path to the text file with multimeric template instruction
+
+  * `--desired_num_msa:` A desired number of msa to pad (an integer)
+
+  * `--desired_num_res:` A desired number of residues to pad (an integer)
+
+  * `--features_directory:` Path to computed monomer features; repeat this option to specify a list of values
+
+  * `--fold_backend:` Folding backend that should be used for structure prediction (default: 'alphafold')
+
+  * `-i,--input:` Folds in format [fasta_path:number:start-stop],; repeat this option to specify a list of values
+
+  * `--model_names:` Names of models to use, e.g. model_2_multimer_v3 (default: all models)
+
+  * `--model_preset:` <monomer|monomer_casp14|monomer_ptm|multimer>: Choose preset model configuration - the monomer model, the monomer model with extra ensembling, monomer model with pTM head, or multimer model (default: 'monomer')
+
+  * `--msa_depth:` Number of sequences to use from the MSA (by default is taken from AF model config) (an integer)
+
+  * `--[no]msa_depth_scan:` Run predictions for each model with logarithmically distributed MSA depth (default: 'false')
+
+  * `--[no]multimeric_template:` Whether to use multimeric templates (default: 'false')
+
+  * `--[no]no_pair_msa:` Do not pair the MSAs when constructing multimer objects (default: 'false')
+
+  * `--num_cycle:` Number of recycles, defaults to 3 (default: '3') (an integer)
+
+  * `--num_predictions_per_model:` Number of predictions per model, defaults to 1 (default: '1') (an integer)
+
+  * `-o,--output_directory:` Path to output directory. Will be created if not exists
+
+  * `--path_to_mmt:` Path to directory with multimeric template mmCIF files
+
+  * `--protein_delimiter:` Delimiter for proteins of a single fold (default: '+')
+
+  * `--random_seed:` The random seed for the data pipeline. By default, this is randomly generated. Note that even if this is set, Alphafold may still not be deterministic, because processes like GPU inference are nondeterministic (an integer)
+
+  * `--[no]remove_result_pickles:` Whether the result pickles are going to be removed (default: 'true')
+
+  * `--[no]skip_templates:` Do not use template features when modelling (default: 'false')
+
+  * `--[no]use_ap_style:` Change output directory to include a description of the fold as seen in previous alphapulldown versions (default: 'false')
+
+  * `--[no]use_gpu_relax:` Whether to run Amber relaxation on GPU. Default is True (default: 'true')
+
+tensorflow.python.ops.parallel_for.pfor:
+
+  * `--[no]op_conversion_fallback_to_while_loop:` DEPRECATED: Flag is ignored (default: 'true')
+
+tensorflow.python.tpu.client.client:
+
+  * `--[no]hbm_oom_exit:` Exit the script when the TPU HBM is OOM (default: 'true')
+
+  * `--[no]runtime_oom_exit:` Exit the script when the TPU runtime is OOM (default: 'true')
+
+tensorflow.python.tpu.tensor_tracer_flags:
+
+  * `--delta_threshold:` Log if history based diff crosses this threshold (default: '0.5') (a number)
+
+  * `--[no]tt_check_filter:` Terminate early to check op name filtering (default: 'false')
+
+  * `--[no]tt_single_core_summaries:` Report single core metric and avoid aggregation (default: 'false')
+
+absl.flags:
+
+  * `--flagfile:` Insert flag definitions from the given file into the command line (default: '')
+
+  * `--undefok:` comma-separated list of flag names that it is okay to specify on the command line even if the program does not define a flag with that name. IMPORTANT: flags in this list that have arguments MUST use the --flag=value format (default: '')
+  
+</details>
 
 #### Output
 
