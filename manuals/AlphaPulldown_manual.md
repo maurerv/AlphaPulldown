@@ -645,7 +645,7 @@ ${\color{red}Add\ True\ Multimer\ limitations}$
 
 #### Next step
 
-Go to the next step [2.X. Template run](#2-predict-structures-gpu-stage) ${\color{red}Correct}$ 
+Go to the next step [2.4. Run with custom templates (TrueMultimer)](#24-run-with-custom-templates-truemultimer)
 
 <br>
 
