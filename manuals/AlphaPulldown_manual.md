@@ -1068,6 +1068,8 @@ The resulting predictions from the [step 2](#2-predict-structures-gpu-stage) can
 
 ### Jupyter Notebook
 
+#### Create Notebook
+
 Go to the model's output directory from the [step 2](#2-predict-structures-gpu-stage).
 ```bash
 cd <models_output_dir>
@@ -1078,55 +1080,27 @@ And run the script in the activated conda environment:
 source activate AlphaPulldown
 create_notebook.py --cutoff=5.0 --output_dir=<models_output_dir>
 ```
-<details>
-   
-<summary>
-Parameters:
-</summary>
 
 * `--cutoff`:
   check the value of PAE between chains. In the case of multimers, the analysis program will create the notebook only from models with inter-chain PAE values smaller than the cutoff. Increases this parameter if you miss predictions in your notebook (e.g., 50).
 * `--output_dir`:
-  Directory where predicted models are stored $\text{\color{red}Why do we need to change the dir then?}$
+  Directory where predicted models are stored in this, `.` in this example
 * `--pae_figsize`:
    Figsize of pae_plot, default is 50
 * `--surface_thres` - $\text{\color{red}Add description or delete}$
 
-</details>
-
-This command will yield an `output.ipynb`, which you can open via JupyterLab. JupyterLab is already installed when installing AlphaPulldown with pip. Thus, to view the notebook launch the created notebook:
+This command will generate an output.ipynb, which you can open using JupyterLab. JupyterLab is installed with AlphaPulldown via pip. To view the notebook, launch it with:
 ```bash
 jupyter-lab output.ipynb
 ```
->[!Note]
->If you run AlphaPulldown on a remote computer cluster, you will need a graphical connection, network mount of the remote directory, or a copy of the entire `<models_output_dir>` to open the notebook in a browser.
->
->For an example of how to establish a remote connection, please refer to the [Run on EMBL cluster](#add_link) part of this manual $\text{\color{red}cahnge link}$. 
 
-In the JupyterLab window, choose output.ipynb if it is not opened automatically and then go to the **Run** > **Run All Cells**; after all cells executions for every proteins complex, you will see PAE plots, interactive structures colored by pLDDT, interactive structures colored by a chain.
+#### Next step
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="../manuals/Jupyter_results_dark.png">
-  <source media="(prefers-color-scheme: light)" srcset="../manuals/Jupyter_results.png">
-  <img alt="Shows an illustrated sun in light mode and a moon with stars in dark mode." src="../manuals/Jupyter_results.png">
-</picture>
-
-<br>
-</br>
-
-To zoom in PAE plots, click twice on them. To increase the number of displayed interactive models, add argument `models` to the `parse_results()` or `parse_results_colour_chains()` functions.
-
-```python
-parse_results('./ProteinA_and_ProteinB', models=10)
-```
-
-> [!WARNING]
-> If Jupyter Notebook has too many proteins, some interactive structures may disappear due to memory limitations. To restore the output of the cell, just rerun it by choosing it and going to **Run** > **Run Selected Cell** or pressing **Shift + Enter**.
-
+For usage of the Jupyter Notebook, refer to the [Downstream analysis](#downstream-analysis) section of this manual.
 
 ### Results table
 
-Making a CSV table with structural properties and scores requires the download of the singularity image ```alpha-analysis.sif```. Pleaes refer to the installation [instruction](#3-installation-for-the-analysis-step-optional).
+Making a CSV table with structural properties and scores requires the download of the singularity image ```alpha-analysis.sif```. Please refer to the installation [instruction](#3-installation-for-the-analysis-step-optional).
 
 To execute the singularity image (i.e. the sif file) run:
 
@@ -1148,22 +1122,24 @@ $\text{\color{red}Change description, add scores}$
 
 <br>
 
-## Running with SLURM (EMBL cluster)
-Computational clusters often use SLURM (Simple Linux Utility for Resource Management) to efficiently manage and schedule jobs. SLURM allows users to allocate resources and run jobs on HPC systems seamlessly; besides, it allows to run all jobs in parallel as a job array. The EMBL cluster utilizes SLURM, and to run AlphaPulldown on this cluster, you need to submit your job scripts through SLURM's scheduling system. This part of the manual will provide the necessary SLURM sbatch scripts to run AlphaPulldown. 
->[!NOTE]
->For more details about the SLURM system on the EMBL cluster, please refer to the [EMBL Cluster wiki](https://wiki.embl.de/cluster/Main_Page) using the EMBL network.
-
-
-
-<br>
-
 # Downstream analysis
 
 ## Jupyther notebook
 
-To create a Jupyter Notebook, follow the instructions provided [previously](#jupyter-notebook). 
+Jupyther notebook `output.ipynb` is
+* Generated during the [Create Notebook step](#create-notebook) for [Sripts-Based Alphapulldown](#scripts-based-alphapulldown)
+* Stored in the output/reports directory for [**Snakemake AlphaPulldown**](#snakemake-alphapulldown). **Snakemake AlphaPulldown** also generates a notebook with all cells executed in the output.html file, which can be copied locally and opened in a browser.
 
-**Jupyter Notebook remote access**
+You can `output.ipynb` open using JupyterLab. JupyterLab is installed with AlphaPulldown. To view the notebook, launch it with:
+```bash
+jupyter-lab output.ipynb
+```
+
+>[!Note]
+>If you run AlphaPulldown on a remote computer cluster, you will need a graphical connection, network mount of the remote directory, or a copy of the entire `<models_output_dir>` to open the notebook in a browser.
+
+<details>
+   <summary><b>Jupyter Notebook remote access</b></summary>
 
 To connect remotely, first launch Jupyter Notebook on the cluster. You can choose a different port number if the selected one is already in use:
 
@@ -1189,6 +1165,32 @@ http://localhost:8895
 ```
 
 You will be prompted to enter the token provided earlier when you launched Jupyter Lab on the cluster. Copy and paste the token from the command output into the browser prompt to gain access.
+
+</details>
+
+In the JupyterLab window, choose output.ipynb if it is not opened automatically and then go to the **Run** > **Run All Cells**; after all cells executions for every proteins complex, you will see PAE plots, interactive structures colored by pLDDT, interactive structures colored by a chain.
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="../manuals/Jupyter_results_dark.png">
+  <source media="(prefers-color-scheme: light)" srcset="../manuals/Jupyter_results.png">
+  <img alt="Shows an illustrated sun in light mode and a moon with stars in dark mode." src="../manuals/Jupyter_results.png">
+</picture>
+
+<br>
+</br>
+
+To zoom in PAE plots, click twice on them. To increase the number of displayed interactive models, add argument `models` to the `parse_results()` or `parse_results_colour_chains()` functions.
+
+```python
+parse_results('./ProteinA_and_ProteinB', models=10)
+```
+
+> [!WARNING]
+> If Jupyter Notebook has too many proteins, some interactive structures may disappear due to memory limitations. To restore the output of the cell, just rerun it by choosing it and going to **Run** > **Run Selected Cell** or pressing **Shift + Enter**.
+
+
+
+
 
 ## Results table 
 
