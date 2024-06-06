@@ -900,12 +900,11 @@ count=$(( $count1 * ( $count1 - 1) / 2 ))
 sbatch --array=1-$count example_data/run_multimer_jobs_SLURM.sh
 ```
 
+ </details>
+
 #### Output and the next step
 
 The [output](output-corerct) and [next step](output-correct) are the same as those for the basic run.
-
- </details>
-
 
 ### 2.3. Pulldown and All versus all modes
 Instead of manually typing all combinations of proteins, AlphaPulldown provides two different modes of automatic generation of such combinations.
@@ -919,14 +918,14 @@ Instead of manually typing all combinations of proteins, AlphaPulldown provides 
 #### Multiple inputs "pulldown" mode
 
 This mode allows to provide two or more lists of proteins that will generate all combinations of proteins from one list with all proteins from another list.
-If you want to emulate _in silico_ pulldown of some hypothetical proteinA bait against proteins B-G you can use two `protein_list.csv` files:
+If you want to emulate _in silico_ pulldown of some hypothetical proteinA bait against proteins B-G you can use two `protein_list.txt` files:
 
-The first `protein_list1.csv`:
+The first `protein_list1.txt`:
 ```
 proteinA
 ```
 
-The second `protein_list2.csv`:
+The second `protein_list2.txt`:
 ```
 proteinB
 proteinC
@@ -938,35 +937,35 @@ proteinG
 
 This results in the following combinations of proteins: A-B, A-C, A-D, A-E, A-F, A-G.
 
-Can you add the third `protein_list3.csv`:
+Can you add the third `protein_list3.txt`:
 ```
 proteinX
 proteinZ
 ```
-And resulting models will contain proteins A-B-X, A-B-Z, A-C-X, A-C-Z...
+The resulting models will contain proteins A-B-X, A-B-Z, A-C-X, A-C-Z...
 
 In fact, you can provide as many files as you wish, the number of combinations you will receive is the product of numbers of lines in the input files.
 
 Lines in files should not necessarily be single proteins. Input files follow the same rules as described for [2.1 Basic run](#21-basic-run). It can contain several protein names, indicate a number of oligomers, and have residue ranges.
 
-To run `run_multimer_jobs.py` in `pulldown` mode use the following script:
+To run `run_multimer_jobs.py` in `pulldown` mode, use the following script:
 
 ```bash
 run_multimer_jobs.py \
   --mode=pulldown \
   --monomer_objects_dir=<dir that stores feature pickle files> \ 
-  --protein_lists=<protein_list1.csv>,<protein_list2.csv> \
+  --protein_lists=<protein_list1.txt>,<protein_list2.txt> \
   --output_path=<path to output directory> \
   --data_dir=<path to AlphaFold data directory> \ 
   --num_cycle=<any number e.g. 3> 
 ```
 From [2.1 Basic run](#21-basic-run) this example is different with:
-* `--mode=pulldown` flag ($\text{\color{red}don't need to mention it if delete custom mode flag form the basic run}$.) that defines the mode of the run.
-* Instead of `<protein_list1.csv>`,`<protein_list2.csv>` provides the paths to the files containing a list of protein combinations to be modeled.
+* `--mode=pulldown` flag that defines the mode of the run.
+* Instead of `<protein_list1.txt>`,`<protein_list2.txt>` provides the paths to the files containing a list of protein combinations to be modeled. 
  
 #### "all_vs_all" mode
 
-In this mode, AlphaPulldown takes lines from the input `protein_list.csv` file and generates all possible combinations of these lines.
+In this mode, AlphaPulldown takes lines from the input `protein_list.txt` file and generates all possible combinations of these lines.
 
 It is useful when you have a set of proteins, and you want to find out which interact with which. If you provide the list of proteins:
 ```
@@ -979,7 +978,7 @@ proteinE
 The resulting models will be combinations of proteins A-B, A-C, A-D, A-E, B-C, B-D, B-E, C-D, C-E, D-E. 
 
 >[!Caution]
-> The number of predictions rapidly increases with the number of lines in the input `protein_list.csv`. 
+> The number of predictions rapidly increases with the number of lines in the input `protein_list.txt`. 
 
 Lines in files should not necessarily be single proteins. Input files follow the same rules as described for [2.1 Basic run](#21-basic-run). It can contain several protein names, indicate a number of oligomers, and have residue ranges.
 
@@ -989,13 +988,27 @@ To run `run_multimer_jobs.py` in `all_vs_all` mode use the following script:
 run_multimer_jobs.py \
   --mode=all_vs_all \
   --monomer_objects_dir=<dir that stores feature pickle files>
-  --protein_lists=<protein_list.csv> \
+  --protein_lists=<protein_list.txt> \
   --output_path=<path to output directory> \ 
   --data_dir=<path to AlphaFold data directory> \ 
   --num_cycle=<any number e.g. 3> 
 ```
 
+From [2.1 Basic run](#21-basic-run) this example is different with:
+* `--mode=all_vs_all` flag that defines the mode of the run.
+
+
 ### 2.3. Run with custom templates (TrueMultimer)
+
+#### Input
+
+This step requires the pickle files (.pkl) generated with custom templates during the [first stage](#15-run-with-custom-templates-truemultimer). Additionally, you'll need to provide a list of protein combinations protein_list.txt you intend to predict.
+
+#### Script Execution TrueMultimer Structure Prediction
+
+Run the script as described in the [basic run](#21-basic-run) but with the FLAG `--multimeric_mode=True`. 
+>[!NOTE]
+>To increase the impact of the custom templates on the final prediction (making the model more similar to the template), you can decrease the influence of the MSA by specifying the MSA depth with the `--msa_depth=<number>` flag.
 
 ### 2.4. Run with crosslinking-data (AlphaLink2)
 
@@ -1128,7 +1141,7 @@ singularity exec \
 ```
 $\text{\color{red}What is /path/to/your/output/dir:/mnt}$. 
 
-By default, you will have a csv file named ```predictions_with_good_interpae.csv``` created in the directory ```/path/to/your/output/dir``` as you have given in the command above. ```predictions_with_good_interpae.csv``` reports: 1. iptm, iptm+ptm scores provided by AlphaFold 2. mpDockQ score developed by [Bryant _et al._, 2022](https://gitlab.com/patrickbryant1/molpc)  3. PI_score developed by [Malhotra _et al._, 2021](https://gitlab.com/sm2185/ppi_scoring/-/wikis/home). The detailed explainations on these scores can be found in our paper and an example screenshot of the table is below. ![example](./example_table_screenshot.png)
+By default, you will have a csv file named ```predictions_with_good_interpae.txt``` created in the directory ```/path/to/your/output/dir``` as you have given in the command above. ```predictions_with_good_interpae.txt``` reports: 1. iptm, iptm+ptm scores provided by AlphaFold 2. mpDockQ score developed by [Bryant _et al._, 2022](https://gitlab.com/patrickbryant1/molpc)  3. PI_score developed by [Malhotra _et al._, 2021](https://gitlab.com/sm2185/ppi_scoring/-/wikis/home). The detailed explainations on these scores can be found in our paper and an example screenshot of the table is below. ![example](./example_table_screenshot.png)
 
 
 $\text{\color{red}Change description, add scores}$
