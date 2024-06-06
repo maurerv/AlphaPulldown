@@ -4,7 +4,45 @@
 
 # Table of contents 
 
+1. [About AlphaPulldown](#about-alphapulldown)
+2. [Snakemake AlphaPulldown](#snakemake-alphapulldown)
+3. [Scripts-Based AlphaPulldown](#scripts-based-alphapulldown)
+   - [Installation](#installation)
+     - [0. Alphafold databases](#0-alphafold-databases)
+     - [1. Create Anaconda environment](#1-create-anaconda-environment)
+     - [2. Installation using pip](#2-installation-using-pip)
+     - [3. Installation for the Analysis step (optional)](#3-installation-for-the-analysis-step-optional)
+     - [4. Installation for cross-link input data by AlphaLink2 (optional)](#4-installation-for-cross-link-input-data-by-alphalink2-optional)
+     - [Installation for developers](#installation-for-developers)
+   - [1. Compute multiple sequence alignment (MSA) and template features (CPU stage)](#1-compute-multiple-sequence-alignment-msa-and-template-features-cpu-stage)
+     - [1.1. Basic run](#11-basic-run)
+     - [1.2. Example run with SLURM (EMBL cluster)](#12-example-run-with-slurm-embl-cluster)
+     - [1.3. Run with custom MSA](#13-run-with-custom-msa)
+     - [1.4. Run using MMseqs2 and ColabFold Databases (Faster)](#14-run-using-mmseqs2-and-colabfold-databases-faster)
+     - [1.5. Run with custom templates (TrueMultimer)](#15-run-with-custom-templates-truemultimer)
+   - [2. Predict structures (GPU stage)](#2-predict-structures-gpu-stage)
+     - [2.1. Basic run](#21-basic-run)
+     - [2.2. Example run with SLURM (EMBL cluster)](#22-example-run-with-slurm-embl-cluster)
+     - [2.3. Pulldown and All versus all modes](#23-pulldown-and-all-versus-all-modes)
+     - [2.4. Run with custom templates (TrueMultimer)](#24-run-with-custom-templates-truemultimer)
+     - [2.5. Run with crosslinking-data (AlphaLink2)](#25-run-with-crosslinking-data-alphalink2)
+   - [3. Analysis and Visualization](#3-analysis-and-visualization)
+     - [Create Notebook](#create-notebook)
+     - [Results table](#results-table)
+4. [Downstream analysis](#downstream-analysis)
+     - [Jupyter notebook](#jupyter-notebook)
+     - [Results table](#results-table-1)
+     - [Results management scripts](#results-management-scripts)
+       - [Decrease the size of AlphaPulldown output](#decrease-the-size-of-alphapulldown-output)
+       - [Convert Models from PDB Format to ModelCIF Format](#convert-models-from-pdb-format-to-modelcif-format)
+         - [1. Convert all models to separate ModelCIF files](#1-convert-all-models-to-separate-modelcif-files)
+         - [2. Only convert a specific single model for each complex](#2-only-convert-a-specific-single-model-for-each-complex)
+         - [3. Have a representative model and keep associated models](#3-have-a-representative-model-and-keep-associated-models)
+         - [Associated Zip Archives](#associated-zip-archives)
+         - [Miscellaneous Options](#miscellaneous-options)
 
+<br>
+         
 # About AlphaPulldown
 
 AlphaPulldown is an implementation of [AlphaFold-Multimer](https://github.com/google-deepmind/alphafold) designed for customizable high-throughput screening of protein-protein interactions. Besides, AlphaPulldown provides additional customizations of the AlphaFold which include custom structural multimeric templates (TrueMultimer), MMseqs2 multiple sequence alignment (MSA) and [ColabFold](https://github.com/sokrypton/ColabFold) databases, proteins fragments predictions, and implementation of cross-link mass spec data using [AlphaLink2](https://github.com/Rappsilber-Laboratory/AlphaLink2/tree/main).
@@ -998,7 +1036,7 @@ From [2.1 Basic run](#21-basic-run) this example is different with:
 * `--mode=all_vs_all` flag that defines the mode of the run.
 
 
-### 2.3. Run with custom templates (TrueMultimer)
+### 2.4. Run with custom templates (TrueMultimer)
 
 #### Input
 
@@ -1010,7 +1048,7 @@ Run the script as described in the [basic run](#21-basic-run) but with the FLAG 
 >[!NOTE]
 >To increase the impact of the custom templates on the final prediction (making the model more similar to the template), you can decrease the influence of the MSA by specifying the MSA depth with the `--msa_depth=<number>` flag.
 
-### 2.4. Run with crosslinking-data (AlphaLink2)
+### 2.5. Run with crosslinking-data (AlphaLink2)
 
 As [Stahl et al., 2023](https://www.nature.com/articles/s41587-023-01704-z) showed, integrating cross-link data with AlphaFold could improve the modelling quality in 
 some challenging cases. Thus AlphaPulldown has integrated [AlphaLink2](https://github.com/Rappsilber-Laboratory/AlphaLink2/tree/main) pipeline 
@@ -1199,7 +1237,7 @@ To create a results table, please refer to the relevant [section of the manual](
 ## Results management scripts
 AlphaPulldown provides scripts to help optimize data storage and prepare structures for deposition.
 
-### Deceraes the size of AlphaPulldown output
+### Decrease the size of AlphaPulldown output
 The most space-consuming part of the [structure prediction results](#2-predict-structures-gpu-stage) are pickle files `result_model_{1,2,3,4,5}_*.pkl files`. Please refer to the [AlphaFold manual](https://github.com/google-deepmind/alphafold) for more details on output files. Some information in these files is needed only for very special tasks. The `truncate_pickles.py` script copies the output of AlphaPulldown to a new directory and deletes the specified information from the pickle files. It may decrease the size of the output up to 100 times. 
 
 ```bash
