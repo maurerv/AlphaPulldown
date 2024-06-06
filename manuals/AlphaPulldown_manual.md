@@ -15,20 +15,20 @@
      - [4. Installation for cross-link input data by AlphaLink2 (optional)](#4-installation-for-cross-link-input-data-by-alphalink2-optional)
      - [Installation for developers](#installation-for-developers)
    - [1. Compute multiple sequence alignment (MSA) and template features (CPU stage)](#1-compute-multiple-sequence-alignment-msa-and-template-features-cpu-stage)
-     - [1.1. Basic run](#11-basic-run)
+     - [**1.1. Basic run**](#11-basic-run)
      - [1.2. Example run with SLURM (EMBL cluster)](#12-example-run-with-slurm-embl-cluster)
      - [1.3. Run with custom MSA](#13-run-with-custom-msa)
      - [1.4. Run using MMseqs2 and ColabFold Databases (Faster)](#14-run-using-mmseqs2-and-colabfold-databases-faster)
      - [1.5. Run with custom templates (TrueMultimer)](#15-run-with-custom-templates-truemultimer)
    - [2. Predict structures (GPU stage)](#2-predict-structures-gpu-stage)
-     - [2.1. Basic run](#21-basic-run)
+     - [**2.1. Basic run**](#21-basic-run)
      - [2.2. Example run with SLURM (EMBL cluster)](#22-example-run-with-slurm-embl-cluster)
      - [2.3. Pulldown and All versus all modes](#23-pulldown-and-all-versus-all-modes)
      - [2.4. Run with custom templates (TrueMultimer)](#24-run-with-custom-templates-truemultimer)
      - [2.5. Run with crosslinking-data (AlphaLink2)](#25-run-with-crosslinking-data-alphalink2)
    - [3. Analysis and Visualization](#3-analysis-and-visualization)
-     - [Create Notebook](#create-notebook)
-     - [Results table](#results-table)
+     - [**Create Notebook**](#create-notebook)
+     - [**Results table**](#results-table)
 4. [Downstream analysis](#downstream-analysis)
      - [Jupyter notebook](#jupyter-notebook)
      - [Results table](#results-table-1)
@@ -100,7 +100,7 @@ AlphaPulldown is available as a Snakemake pipeline, allowing you to sequentially
 
 $\text{\color{red} Write which scripts and modes are not possible to run with the Snakmake, e.g. Alphalink2 }$
 
-For downstream analysis of SnakeMake-AlphaPulldown results, please refer to this part of the manual: [Downstream analysis](#add_link).
+For downstream analysis of SnakeMake-AlphaPulldown results, please refer to this part of the manual: [Downstream analysis](#downstream-analysis).
 <br>
 <br>
 
@@ -1127,7 +1127,7 @@ create_notebook.py --cutoff=5.0 --output_dir=<models_output_dir>
    Figsize of pae_plot, default is 50
 * `--surface_thres` - $\text{\color{red}Add description or delete}$
 
-This command will generate an output.ipynb, which you can open using JupyterLab. JupyterLab is installed with AlphaPulldown via pip. To view the notebook, launch it with:
+This command will generate an `output.ipynb`, which you can open using JupyterLab. JupyterLab is installed with AlphaPulldown via pip. To view the notebook, launch it with:
 ```bash
 jupyter-lab output.ipynb
 ```
@@ -1153,10 +1153,7 @@ singularity exec \
 ```
 $\text{\color{red}What is /path/to/your/output/dir:/mnt}$. 
 
-By default, you will have a csv file named ```predictions_with_good_interpae.txt``` created in the directory ```/path/to/your/output/dir``` as you have given in the command above. ```predictions_with_good_interpae.txt``` reports: 1. iptm, iptm+ptm scores provided by AlphaFold 2. mpDockQ score developed by [Bryant _et al._, 2022](https://gitlab.com/patrickbryant1/molpc)  3. PI_score developed by [Malhotra _et al._, 2021](https://gitlab.com/sm2185/ppi_scoring/-/wikis/home). The detailed explainations on these scores can be found in our paper and an example screenshot of the table is below. ![example](./example_table_screenshot.png)
-
-
-$\text{\color{red}Change description, add scores}$
+#### Next step
 
 <br>
 
@@ -1232,7 +1229,12 @@ parse_results('./ProteinA_and_ProteinB', models=10)
 
 ## Results table 
 
-To create a results table, please refer to the relevant [section of the manual](#results-table).
+To create a results table, please refer to the relevant [section of the manual](#results-table). $\text{\color{red}Describe for Snakemake and Scripts}$
+
+By default, you will have a csv file named ```predictions_with_good_interpae.txt``` created in the directory ```/path/to/your/output/dir``` as you have given in the command above. ```predictions_with_good_interpae.txt``` reports: 1. iptm, iptm+ptm scores provided by AlphaFold 2. mpDockQ score developed by [Bryant _et al._, 2022](https://gitlab.com/patrickbryant1/molpc)  3. PI_score developed by [Malhotra _et al._, 2021](https://gitlab.com/sm2185/ppi_scoring/-/wikis/home). The detailed explainations on these scores can be found in our paper and an example screenshot of the table is below. ![example](./example_table_screenshot.png)
+
+
+$\text{\color{red}Change description, add scores}$
 
 ## Results management scripts
 AlphaPulldown provides scripts to help optimize data storage and prepare structures for deposition.
