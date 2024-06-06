@@ -614,12 +614,13 @@ Go to the next step [2.X. Template run](#2-predict-structures-gpu-stage) ${\colo
 ## 2. Predict structures (GPU stage)
 ### 2.1. Basic run
 
+This is a general example of `run_multimer_jobs.py` usage. For information on running specific tasks or parallel execution on a cluster, please refer to the corresponding sections of this chapter.
 
 #### Input
-This step requires the pickle files (.pkl) generated during the [first stage](#1-compute-multiple-sequence-alignment-msa-and-template-features-cpu-stage).
+This step requires the pickle files (.pkl) generated during the [first step](#1-compute-multiple-sequence-alignment-msa-and-template-features-cpu-stage).
 Additionally, you'll need to provide a list of protein combinations `protein_list.txt` you intend to predict.
 
-Here's how to structure your combinations file `protein_list.txt`, with explanations:
+Here's how to structure your combinations file `protein_list.txt`. Protein names should correspond to the names of features files (`proteinA` for `proteinA.pkl`):
 
 **Prediction of monomers**:
   ```
@@ -643,7 +644,7 @@ Here's how to structure your combinations file `protein_list.txt`, with explanat
    * Instead of repeating the protein name for homo-oligomers, specify the number of copies after the protein's name (e.g., `proteinB,4` for a tetramer).
    * Combine residue ranges and homooligomer notation for specific predictions (e.g., `proteinA,4,1-100;proteinB`).
 
-#### Script Execution Structure Prediction
+#### Script Execution: Structure Prediction
 To predict structures, activate the AlphaPulldown environment and run the script `run_multimer_jobs.py` as follows:
 
 ```bash
@@ -766,7 +767,7 @@ absl.flags:
 #### Output
 
 The `run_multimer_jobs.py` script generates a set of directories for each specified protein complex.
-Full structure of the output directories is the following:
+The full structure of the output directories is the following:
 ```
 <complex_name>/
     <complex_name>_ranked_{0,1,2,3,4}.png
@@ -785,6 +786,14 @@ Please refer to the [AlphaFold manual](https://github.com/google-deepmind/alphaf
 > [!Caution]
 > AlphaPulldown is designed for screening, so its default output doesn't relax structures. To relax the top-ranked structure (`ranked_0.pdb`), you can run AlphaPulldown with the `--models_to_relax=best` flag.
 
+#### Next step
+
+Proceed to the next step [3.1. Analysis and Visualization].
+
+The results of structure predictions can be very large. To copy the cropped output results for storage, use the `truncate_pickles.py` script by following the instructions provided [add instruction link].
+
+Additionally, you can prepare the structures for deposition by creating `.cif` files containing all the necessary information about your predicted models. To do this, follow the instructions provided [add instruction link].
+
 ### 2.2. Example run with SLURM (EMBL cluster).
 
 If you run AlphaPulldown on a computer cluster, you may want to execute feature creation in parallel. Here, we provide an example of code that is suitable for a cluster that utilizes SLURM Workload Manager.
@@ -795,7 +804,7 @@ For this step, you need an example input file: [`custom_mode.txt`](../example_da
 
 #### Script Execution
 
-Create the ```run_multimer_jobs_SLURM.sh``` script and place the following code in it. Don't forget to change the input of `run_multimer_jobs.sh` script as described [previously in manual](#2-predict-structures-gpu-stage):
+Create the ```run_multimer_jobs_SLURM.sh``` script and place the following code in it. Replace input parameters with the appropriate arguments for the `run_multimer_jobs.sh` script as per the instructions mentioned [Basic run](#2-predict-structures-gpu-stage) or any other type of run you wish to execute:
 
 ```bash
 #!/bin/bash
@@ -844,12 +853,10 @@ run_multimer_jobs.py \
   --output_path=<path to output directory> \ 
   --num_cycle=<any number e.g. 3> \
   --data_dir=/scratch/AlphaFold_DBs/2.3.2/ \
+  --num_predictions_per_model=1 \
   --job_index=$SLURM_ARRAY_TASK_ID
 ####
 ```
-$\textrm{\color{red}Do we need to specify data dir?}$
-$\textrm{\color{red}Can we delete custom mode here?}$
-$\textrm{\color{red}Num of pred per model?}$
 
 Make the script executable by running:
 
@@ -892,6 +899,10 @@ count1=`grep -c "" <protein_list.txt>` #count lines even if the last one has no 
 count=$(( $count1 * ( $count1 - 1) / 2 ))
 sbatch --array=1-$count example_data/run_multimer_jobs_SLURM.sh
 ```
+
+#### Output and the next step
+
+The [output](output-corerct) and [next step](output-correct) are the same as those for the basic run.
 
  </details>
 
