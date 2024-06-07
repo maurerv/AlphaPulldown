@@ -912,7 +912,7 @@ For `all_vs_all` mode:
 mkdir -p logs
 #Count the number of jobs corresponding to the number of sequences:
 count1=`grep -c "" <protein_list.txt>` #count lines even if the last one has no end of line
-count=$(( $count1 * ( $count1 - 1) / 2 ))
+count=$(( $count1 * ( $count1 + 1) / 2 ))
 sbatch --array=1-$count example_data/run_multimer_jobs_SLURM.sh
 ```
 
@@ -991,14 +991,14 @@ proteinC
 proteinD
 proteinE
 ```
-The resulting models will be combinations of proteins A-B, A-C, A-D, A-E, B-C, B-D, B-E, C-D, C-E, D-E. 
+The resulting models will be all possible combinations of proteins A-A, A-B, A-C, A-D, A-E, B-B, B-C, B-D, B-E, C-C, C-D... 
 
 >[!Caution]
 > The number of predictions rapidly increases with the number of lines in the input `protein_list.txt`. 
 
 Lines in files should not necessarily be single proteins. Input files follow the same rules as described for [2.1 Basic run](#21-basic-run). It can contain several protein names, indicate a number of oligomers, and have residue ranges.
 
-To run `run_multimer_jobs.py` in `all_vs_all` mode use the following script:
+To run `run_multimer_jobs.py` in `all_vs_all` mode, use the following script:
 
 ```bash
 run_multimer_jobs.py \
