@@ -41,7 +41,7 @@
          
 # About AlphaPulldown
 
-AlphaPulldown is an implementation of [AlphaFold-Multimer](https://github.com/google-deepmind/alphafold) designed for customizable high-throughput screening of protein-protein interactions. Besides, AlphaPulldown provides additional customizations of the AlphaFold which include custom structural multimeric templates (TrueMultimer), MMseqs2 multiple sequence alignment (MSA) and [ColabFold](https://github.com/sokrypton/ColabFold) databases, proteins fragments predictions, and implementation of cross-link mass spec data using [AlphaLink2](https://github.com/Rappsilber-Laboratory/AlphaLink2/tree/main).
+AlphaPulldown is an implementation of [AlphaFold-Multimer](https://github.com/google-deepmind/alphafold) designed for customizable high-throughput screening of protein-protein interactions. In addition, AlphaPulldown provides additional customizations of AlphaFold, including custom structural multimeric templates (TrueMultimer), MMseqs2 multiple sequence alignment (MSA) and [ColabFold](https://github.com/sokrypton/ColabFold) databases, proteins fragments predictions, and implementation of cross-link mass spec data using [AlphaLink2](https://github.com/Rappsilber-Laboratory/AlphaLink2/tree/main).
 
 AlphaPulldown can be used in two ways: as a set of **Python scripts**, which this manual covers, and as a **Snakemake pipeline**. For details on using the Snakemake pipeline, please refer to the separate GitHub [**repository**](https://github.com/KosinskiLab/AlphaPulldownSnakemake).
 
@@ -108,7 +108,7 @@ AlphaPulldown can be used as a set of Python scripts for every particular step. 
 
 #### 0. Alphafold databases
 
-For the standard MSA and features calculation, AlphaPulldown requires genetic databases. Check if you have downloaded the necessary parameters and databases (e.g., BFD, MGnify, etc.) as instructed in [AlphaFold's documentation](https://github.com/deepmind/alphafold). You should have a directory like below:
+For the standard MSA and features calculation, AlphaPulldown requires genetic databases. Check if you have downloaded the necessary parameters and databases (e.g., BFD, MGnify, etc.) as instructed in [AlphaFold's documentation](https://github.com/deepmind/alphafold). You should have a directory structured as follows:
 
    <details>
    <summary>
@@ -165,7 +165,7 @@ $\text{\color{red}Do people need to download anything else in case of MMseq2 run
   source activate AlphaPulldown
   conda install -c bioconda hmmer
   ```
-  This usually works, but on some compute systems users may wish to use other versions or optimized builds of already installed HMMER and HH-suite.
+  This usually works, but on some compute systems, users may prefer to use other versions or optimized builds of HMMER and HH-suite that are already installed.
 
 #### 2. Installation using pip
 
@@ -175,14 +175,14 @@ $\text{\color{red}Do people need to download anything else in case of MMseq2 run
    python3 -m pip install alphapulldown==1.0.4
    pip install jax==0.4.23 jaxlib==0.4.23+cuda11.cudnn86 -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
    ```
-$\text{\color{red}Change the version of AlphaPulldown}$
+$\text{\color{red}Update the version of AlphaPulldown.}$
    
    >[!NOTE] 
    >**For older versions of AlphaFold**:
    >If you haven't updated your databases according to the requirements of AlphaFold 2.3.0, you can still use AlphaPulldown with your older version of AlphaFold database. Please follow the installation instructions on the [dedicated branch](https://github.com/KosinskiLab/AlphaPulldown/tree/AlphaFold-2.2.0).
 
 #### 3. Installation for the Analysis step (optional)
-For making the Results table, you need to have Singularity installed ($\text{\color{red}add instructions or link}$).
+To create the Results table, you need to have Singularity installed ($\text{\color{red}add instructions or link}$).
 
 Download the singularity image: 
 
@@ -203,7 +203,7 @@ Chrome users may not be able to download it after clicking the link. If so, plea
     # test whether unicore is successfully installed
     python -c "import unicore"
     ```
-    You may see the following warning but it's fine:
+    You may see the following warning, but it's fine:
 
     ```
     fused_multi_tensor is not installed corrected
@@ -454,7 +454,7 @@ sbatch --array=1-$count%100 create_individual_features_SLURM.sh
    If you have several FASTA files, use the following commands:
    </summary>
 
-Example for two files (for more files create `count3`, `count4`, etc. variables and add them as a term to the sum of counts):
+Example for two files (For more files, create `count3`, `count4`, etc., variables and add them to the sum of counts):
  ```bash
 mkdir logs
 #Count the number of jobs corresponding to the number of sequences:
@@ -472,7 +472,7 @@ sbatch --array=1-$count%100 create_individual_features_SLURM.sh
 
 ### 1.3. Run with custom MSA
 
-To run `create_individual_features.py` with the custom MSA. Prepare the A3M formatted MSA files for every protein. The names of these files should correspond to names from the FASTA file. Move these files to the output directory:
+To run `create_individual_features.py` with the custom MSA, prepare the A3M formatted MSA files for every protein. The names of these files should correspond to names from the FASTA file. Place these files in the output directory:
 
 ```
 output_dir
@@ -560,7 +560,9 @@ output_dir
     |-proteinD.a3m
     ...
 ```
-Here, `protein_A`, `protein_B`, etc., correspond to the names in your input FASTA file (e.g., `>protein_A` will give you `protein_A.a3m`, `>protein_B` will give you `protein_B.a3m`, etc.). 
+
+Here, `proteinA`, `proteinB`, etc., correspond to the names in your input FASTA file (e.g., `>proteinA` will give you `proteinA.a3m`, `>proteinB` will give you `proteinB.a3m`, etc.).
+
 After this, go back to your project directory with the original FASTA file and point to this directory in the command:
 
 ```bash
@@ -629,7 +631,7 @@ Instead of using the default search through the PDB database for structural temp
     --output_dir=<dir to save the output objects> \ 
     --max_template_date=<any date you want, format like: 2050-01-01> \
     --save_msa_files=True \
-    --use_precomputed_msas=True \
+    --use_precomputed_msas=True I am running a few minutes late; my previous meeting is running over.
     --skip_existing=True
 ```
 For FLAGS explanation, see [1.1. Basis run](#11-basic-run).
@@ -971,7 +973,7 @@ proteinG
 
 This results in the following combinations of proteins: A-B, A-C, A-D, A-E, A-F, A-G.
 
-Can you add the third `protein_list3.txt`:
+You can add a third `protein_list3.txt`:
 ```
 proteinX
 proteinZ
@@ -980,7 +982,7 @@ The resulting models will contain proteins A-B-X, A-B-Z, A-C-X, A-C-Z...
 
 In fact, you can provide as many files as you wish, the number of combinations you will receive is the product of numbers of lines in the input files.
 
-Lines in files should not necessarily be single proteins. Input files follow the same rules as described for [2.1 Basic run](#21-basic-run). It can contain several protein names, indicate a number of oligomers, and have residue ranges.
+Lines in the files do not necessarily have to be single proteins. Input files follow the same rules as described for [2.1 Basic run](#21-basic-run). It can contain several protein names, indicate a number of oligomers, and have residue ranges.
 
 To run `run_multimer_jobs.py` in `pulldown` mode, use the following script:
 
@@ -993,10 +995,10 @@ run_multimer_jobs.py \
   --data_dir=<path to AlphaFold data directory> \ 
   --num_cycle=<any number e.g. 3> 
 ```
-From [2.1 Basic run](#21-basic-run) this example is different with:
+Compared to  [2.1 Basic run](#21-basic-run), this example differs in:
 * `--mode=pulldown` flag that defines the mode of the run.
-* Instead of `<protein_list1.txt>`,`<protein_list2.txt>` provides the paths to the files containing a list of protein combinations to be modeled. 
- 
+* Instead of `<protein_list1.txt>,<protein_list2.txt>`, provide the paths to the files containing the list of protein combinations to be modeled.
+  
 #### "all_vs_all" mode
 
 In this mode, AlphaPulldown takes lines from the input `protein_list.txt` file and generates all possible combinations of these lines.
@@ -1047,8 +1049,8 @@ Run the script as described in the [basic run](#21-basic-run) but with the FLAG 
 ### 2.5. Run with crosslinking-data (AlphaLink2)
 
 As [Stahl et al., 2023](https://www.nature.com/articles/s41587-023-01704-z) showed, integrating cross-link data with AlphaFold could improve the modelling quality in 
-some challenging cases. Thus AlphaPulldown has integrated [AlphaLink2](https://github.com/Rappsilber-Laboratory/AlphaLink2/tree/main) pipeline 
-and allows the user to combine cross-link data with AlphaFold Multimer inference, without the need to calculate MSAs from scratch again.
+some challenging cases. Thus, AlphaPulldown has integrated the [AlphaLink2](https://github.com/Rappsilber-Laboratory/AlphaLink2/tree/main) pipeline,  
+allowing users to combine cross-link data with AlphaFold Multimer inference without needing to calculate MSAs from scratch again.
 
 > **Cite:** If you use AlphaLink2, please remember to cite:
 > Stahl, K., Demann, L., Bremenkamp, R., Warneke, R., Hormes, B., Stülke, J., Brock, O., Rappsilber, J., Der, S.-M. ", & Mensch, S. (2024). Modelling protein complexes with crosslinking mass spectrometry and deep learning. BioRxiv, 2023.06.07.544059. https://doi.org/10.1101/2023.06.07.544059
@@ -1072,8 +1074,7 @@ and intra-protein crosslinks follow the same format:
 {'protein_A': {'protein_A': [(5, 20, 0.2)]}}
 ```
 
-The keys in these dictionaries should be the same as your pickle files created by [the first stage of AlphaPulldown](https://github.com/KosinskiLab/AlphaPulldown/blob/main/example_1.md). e.g. you should have ```protein_A.pkl``` 
-and ```protein_B.pkl``` already calculated. 
+The keys in these dictionaries should be the same as your pickle files created in the [first step of AlphaPulldown](#11-basic-run). For example, you should have `proteinA.pkl` and `proteinB.pkl` already calculated.
 
 Dictionaries like these should be stored in **```.pkl.gz```** files and provided to AlphaPulldown in the next step. You can use the script from [AlphaLink2](https://github.com/Rappsilber-Laboratory/AlphaLink2/tree/main)
 to prepare these pickle files. 
@@ -1197,7 +1198,7 @@ You will be prompted to enter the token provided earlier when you launched Jupyt
 
 </details>
 
-In the JupyterLab window, choose output.ipynb if it is not opened automatically and then go to the **Run** > **Run All Cells**; after all cells executions for every proteins complex, you will see PAE plots, interactive structures colored by pLDDT, interactive structures colored by a chain.
+In the JupyterLab window, choose output.ipynb if it does not open automatically. Then, go to **Run** > **Run All Cells**. After all cells have been executed for every protein complex, you will see PAE plots, interactive structures colored by pLDDT, and interactive structures colored by a chain.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="../manuals/Jupyter_results_dark.png">
@@ -1208,14 +1209,14 @@ In the JupyterLab window, choose output.ipynb if it is not opened automatically 
 <br>
 </br>
 
-To zoom in PAE plots, click twice on them. To increase the number of displayed interactive models, add argument `models` to the `parse_results()` or `parse_results_colour_chains()` functions.
+To zoom in on PAE plots, double-click on them. To increase the number of displayed interactive models, add the argument `models` to the `parse_results()` or `parse_results_colour_chains()` functions.
 
 ```python
 parse_results('./ProteinA_and_ProteinB', models=10)
 ```
 
 > [!WARNING]
-> If Jupyter Notebook has too many proteins, some interactive structures may disappear due to memory limitations. To restore the output of the cell, just rerun it by choosing it and going to **Run** > **Run Selected Cell** or pressing **Shift + Enter**.
+> If the Jupyter Notebook contains too many proteins, some interactive structures may disappear due to memory limitations. To restore the output of the cell, simply rerun it by selecting the cell and going to **Run** > **Run Selected Cell** or pressing **Shift + Enter**.
 
 
 
