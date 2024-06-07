@@ -17,9 +17,8 @@
    - [1. Compute multiple sequence alignment (MSA) and template features (CPU stage)](#1-compute-multiple-sequence-alignment-msa-and-template-features-cpu-stage)
      - [**1.1. Basic run**](#11-basic-run)
      - [1.2. Example run with SLURM (EMBL cluster)](#12-example-run-with-slurm-embl-cluster)
-     - [1.3. Run with custom MSA](#13-run-with-custom-msa)
-     - [1.4. Run using MMseqs2 and ColabFold Databases (Faster)](#14-run-using-mmseqs2-and-colabfold-databases-faster)
-     - [1.5. Run with custom templates (TrueMultimer)](#15-run-with-custom-templates-truemultimer)
+     - [1.3. Run using MMseqs2 and ColabFold Databases (Faster)](#13-run-using-mmseqs2-and-colabfold-databases-faster)
+     - [1.4. Run with custom templates (TrueMultimer)](#14-run-with-custom-templates-truemultimer)
    - [2. Predict structures (GPU stage)](#2-predict-structures-gpu-stage)
      - [**2.1. Basic run**](#21-basic-run)
      - [2.2. Example run with SLURM (EMBL cluster)](#22-example-run-with-slurm-embl-cluster)
@@ -43,7 +42,7 @@
 
 AlphaPulldown is an implementation of [AlphaFold-Multimer](https://github.com/google-deepmind/alphafold) designed for customizable high-throughput screening of protein-protein interactions. In addition, AlphaPulldown provides additional customizations of AlphaFold, including custom structural multimeric templates (TrueMultimer), MMseqs2 multiple sequence alignment (MSA) and [ColabFold](https://github.com/sokrypton/ColabFold) databases, proteins fragments predictions, and implementation of cross-link mass spec data using [AlphaLink2](https://github.com/Rappsilber-Laboratory/AlphaLink2/tree/main).
 
-AlphaPulldown can be used in two ways: as a set of **Python scripts**, which this manual covers, and as a **Snakemake pipeline**. For details on using the Snakemake pipeline, please refer to the separate GitHub [**repository**](https://github.com/KosinskiLab/AlphaPulldownSnakemake).
+AlphaPulldown can be used in two ways: as a set of **Scripts**, which this manual covers, and as a **Snakemake pipeline**. For details on using the Snakemake pipeline, please refer to the separate GitHub [**repository**](https://github.com/KosinskiLab/AlphaPulldownSnakemake).
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="../manuals/AP_pipeline_dark.png">
@@ -89,12 +88,10 @@ The AlphaPulldown workflow is as follows:
 
 # Snakemake AlphaPulldown 
 
-AlphaPulldown is available as a Snakemake pipeline, allowing you to sequentially execute  **(1)** Features and MSA generation, **(2)** Structure prediction, and  **(3)** Results analysis without manual intervention between steps. For detailed installation and execution instructions, please refer to the [AlphaPulldownSnakemake](https://github.com/KosinskiLab/AlphaPulldownSnakemake) repository. 
+AlphaPulldown is available as a Snakemake pipeline, allowing you to sequentially execute  **(1)** Features and MSA generation, **(2)** Structure prediction, and  **(3)** Results analysis without manual intervention between steps. For installation and execution instructions, please refer to the [AlphaPulldownSnakemake](https://github.com/KosinskiLab/AlphaPulldownSnakemake) repository. 
 
 >[!Warning]
 >The Snakemake version of AlphaPulldown differs slightly from the conventional scripts-based AlphaPulldown in terms of input file specifications.
-
-$\text{\color{red} Write which scripts and modes are not possible to run with the Snakmake, e.g. Alphalink2 }$
 
 For downstream analysis of SnakeMake-AlphaPulldown results, please refer to this part of the manual: [Downstream analysis](#downstream-analysis).
 <br>
@@ -102,7 +99,7 @@ For downstream analysis of SnakeMake-AlphaPulldown results, please refer to this
 
 # Scripts-Based AlphaPulldown
 
-AlphaPulldown can be used as a set of Python scripts for every particular step. [**(1)**](#1-compute-multiple-sequence-alignment-msa-and-template-features-cpu-stage) `create_individual_features.py` [**(2)**](#2-predict-structures-gpu-stage) `run_multimer_jobs.py` [**(3)**](#addname) `create_notebook.py` and `alpha-analysis.sif` image.
+AlphaPulldown can be used as a set of scripts for every particular step. [**(1)**](#1-compute-multiple-sequence-alignment-msa-and-template-features-cpu-stage) `create_individual_features.py` [**(2)**](#2-predict-structures-gpu-stage) `run_multimer_jobs.py` [**(3)**](#downstream-analysis) `create_notebook.py` and `alpha-analysis.sif` image.
 
 ## Installation
 
@@ -150,8 +147,6 @@ For the standard MSA and features calculation, AlphaPulldown requires genetic da
 > [!NOTE] 
 > Since the local installation of all genetic databases is space-consuming, you can alternatively use the [remotely-run MMseqs2 and ColabFold databases](https://github.com/sokrypton/ColabFold). Follow the corresponding [instructions](#13-run-using-mmseqs2-and-colabfold-databases-faster). However, for AlphaPulldown to function, you must download the parameters stored in the `params/` directory of AlphaFold database.
 
-$\text{\color{red}Do people need to download anything else in case of MMseq2 run?}$
-
 #### 1. Create Anaconda environment
 
   **Firstly**, install [Anaconda](https://www.anaconda.com/) and create AlphaPulldown environment, gathering necessary dependencies:
@@ -182,7 +177,7 @@ $\text{\color{red}Update the version of AlphaPulldown.}$
    >If you haven't updated your databases according to the requirements of AlphaFold 2.3.0, you can still use AlphaPulldown with your older version of AlphaFold database. Please follow the installation instructions on the [dedicated branch](https://github.com/KosinskiLab/AlphaPulldown/tree/AlphaFold-2.2.0).
 
 #### 3. Installation for the Analysis step (optional)
-To create the Results table, you need to have Singularity installed ($\text{\color{red}add instructions or link}$).
+To create the Results table, you need to have [Singularity](https://apptainer.org/admin-docs/master/installation.html) installed.
 
 Download the singularity image: 
 
@@ -192,6 +187,8 @@ Download the singularity image:
 Chrome users may not be able to download it after clicking the link. If so, please right-click and select "Save link as".
 
 #### 4. Installation for cross-link input data by AlphaLink2 (optional)
+
+$\text{\color{red}Update the installation manual after resolving the dependency conflict.}$
 
 1. Compile [UniCore](https://github.com/dptech-corp/Uni-Core).
     ```bash
@@ -214,7 +211,6 @@ Chrome users may not be able to download it after clicking the link. If so, plea
     
 2. Make sure you have PyTorch corresponding to the CUDA version installed. For example, [PyTorch 1.13.0+cu117](https://pytorch.org/get-started/previous-versions/) 
 and CUDA/11.7.0
-$\text{\color{red}add pip install torch==1.13.1 torchvision==0.14.1 torchaudio==0.13.1}$
 4. Download the PyTorch checkpoints from [Zenodo](https://zenodo.org/records/8007238), unzip it, then you should obtain a file named: ```AlphaLink-Multimer_SDA_v3.pt```
 
 ### Installation for developers
@@ -469,26 +465,7 @@ sbatch --array=1-$count%100 create_individual_features_SLURM.sh
  #### Next step
  Proceed to the next step [2.2 Example run with SLURM (EMBL cluster)](#add_link).
 
-
-### 1.3. Run with custom MSA
-
-To run `create_individual_features.py` with the custom MSA, prepare the A3M formatted MSA files for every protein. The names of these files should correspond to names from the FASTA file. Place these files in the output directory:
-
-```
-output_dir
-    |-proteinA.a3m
-    |-proteinB.a3m
-    |-proteinC.a3m
-    |-proteinD.a3m
-    ...
-```
-
-Run `create_individual_features.py` as described in [1.1. Basic run](#11-basic-run) with additionl FLAGS `--save_msa_files` and `--use_precomputed_msas`. 
-
-$\text{\color{red} Check if it wroks}$
-
-
-### 1.4. Run using MMseqs2 and ColabFold Databases (Faster)
+### 1.3. Run using MMseqs2 and ColabFold Databases (Faster)
 
 MMseqs2 is another method for homolog search and MSA generation. It offers an alternative to the default HMMER and HHblits used by AlphaFold. The results of these different approaches might lead to slightly different protein structure predictions due to variations in the captured evolutionary information within the MSAs. AlphaPulldown supports the implementation of MMseqs2 search made by ColabFold, which also provides a web server for MSA generation, so no local installation of databases is needed.
 
@@ -563,6 +540,9 @@ output_dir
 
 Here, `proteinA`, `proteinB`, etc., correspond to the names in your input FASTA file (e.g., `>proteinA` will give you `proteinA.a3m`, `>proteinB` will give you `proteinB.a3m`, etc.).
 
+>[!Note]
+>You can also provide your own custom MSA file in `.a3m` format instead of using the files created by MMSeq2 or standard HHMER. Place appropriately named files in the output directory and use the code as follows:
+
 After this, go back to your project directory with the original FASTA file and point to this directory in the command:
 
 ```bash
@@ -591,7 +571,7 @@ output_dir
 
 Proceed to the next step [2.1 Basic Run](#21-basic-run).
 
-### 1.5. Run with custom templates (TrueMultimer)
+### 1.4. Run with custom templates (TrueMultimer)
 Instead of using the default search through the PDB database for structural templates, you can provide a custom database. AlphaPulldown supports a feature called "True Multimer," which allows AlphaFold to use multi-chain structural templates during the prediction process. This can be beneficial for protein complexes where the arrangement of the chains may vary. True Multimer mode will arrange different complex subunits as in the template. 
 
 #### Input
