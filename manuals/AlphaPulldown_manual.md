@@ -27,19 +27,15 @@
      - [2.4. Run with custom templates (TrueMultimer)](#24-run-with-custom-templates-truemultimer)
      - [2.5. Run with crosslinking-data (AlphaLink2)](#25-run-with-crosslinking-data-alphalink2)
    - [3. Analysis and Visualization](#3-analysis-and-visualization)
-     - [**Create Notebook**](#create-notebook)
-     - [**Results table**](#results-table)
+     - [**Create Jupyter Notebook**](#create-jupyter-notebook)
+     - [**Create Results table**](#create-results-table)
 4. [Downstream analysis](#downstream-analysis)
      - [Jupyter notebook](#jupyter-notebook)
-     - [Results table](#results-table-1)
+     - [Results table](#results-table)
      - [Results management scripts](#results-management-scripts)
        - [Decrease the size of AlphaPulldown output](#decrease-the-size-of-alphapulldown-output)
        - [Convert Models from PDB Format to ModelCIF Format](#convert-models-from-pdb-format-to-modelcif-format)
-         - [1. Convert all models to separate ModelCIF files](#1-convert-all-models-to-separate-modelcif-files)
-         - [2. Only convert a specific single model for each complex](#2-only-convert-a-specific-single-model-for-each-complex)
-         - [3. Have a representative model and keep associated models](#3-have-a-representative-model-and-keep-associated-models)
-         - [Associated Zip Archives](#associated-zip-archives)
-         - [Miscellaneous Options](#miscellaneous-options)
+
 
 <br>
          
@@ -1104,9 +1100,7 @@ The other modes provided by AlphaPulldown also work in the same way.
 ## 3. Analysis and Visualization
 The resulting predictions from the [step 2](#2-predict-structures-gpu-stage) can be used directly as they are. However, for evaluation systematization and ranking of the prediction, you can use an interactive [Jupyter Notebook](https://jupyter.org/) and/or table with models scores. 
 
-### Jupyter Notebook
-
-#### Create Notebook
+### Create Jupyter Notebook
 
 Go to the model's output directory from the [step 2](#2-predict-structures-gpu-stage).
 ```bash
@@ -1136,7 +1130,7 @@ jupyter-lab output.ipynb
 
 For usage of the Jupyter Notebook, refer to the [Downstream analysis](#downstream-analysis) section of this manual.
 
-### Results table
+### Create Results table
 
 Making a CSV table with structural properties and scores requires the download of the singularity image ```alpha-analysis.sif```. Please refer to the installation [instruction](#3-installation-for-the-analysis-step-optional).
 
@@ -1159,7 +1153,7 @@ $\text{\color{red}What is /path/to/your/output/dir:/mnt}$.
 
 # Downstream analysis
 
-## Jupyther notebook
+## Jupyter notebook
 
 Jupyther notebook `output.ipynb` is
 * Generated during the [Create Notebook step](#create-notebook) for [Sripts-Based Alphapulldown](#scripts-based-alphapulldown)
