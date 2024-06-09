@@ -572,12 +572,11 @@ output_dir
 Proceed to the next step [2.1 Basic Run](#21-basic-run).
 
 ### 1.4. Run with custom templates (TrueMultimer)
-Instead of using the default search through the PDB database for structural templates, you can provide a custom database. AlphaPulldown supports a feature called "True Multimer," which allows AlphaFold to use multi-chain structural templates during the prediction process. This can be beneficial for protein complexes where the arrangement of the chains may vary. True Multimer mode will arrange different complex subunits as in the template. 
+Instead of using the default search through the PDB database for structural templates, you can provide a custom database. AlphaPulldown supports a feature called "True Multimer," which allows AlphaFold to use multi-chain structural templates during the prediction process. This can be beneficial for protein complexes where the arrangement of the chains may vary.
 
 #### Input
 
 1. **Prepare a FASTA File:** Create a FASTA file containing all protein sequences that will be used for predictions as outlined in [1.1 Basic run](#11-basic-run).
-   ${\color{red} remove\ all\ special\ symbols \from \fasta}$
 3. **Create a Template Directory:** Designate a folder (e.g., "templates") to store your custom template files in PDB or CIF format.
 4. **Create a description file:** This `description.csv` file links protein sequences to templates:
 
@@ -601,6 +600,9 @@ Instead of using the default search through the PDB database for structural temp
 >Your template will be renamed to a PDB code taken from *_entry_id*. If you use a *.pdb file instead of *.cif, AlphaPulldown will first try to parse the PDB code from the file. Then it will check if the filename is 4-letter long. If it is not, it will generate a random 4-letter code and use it as the PDB code.
 
 #### Script Execution
+If you have already generated feature files (`.pkl`) for protein sequences without custom templates to with the different templates, instead of generating them once again, you can go directly to the [second step](#24-run-with-custom-templates-truemultimer) and use templates and `description.csv` in combination with previously generated features.
+
+Otherwise, run the following script:
 
 ```bash
   create_individual_features.py \
